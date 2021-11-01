@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Beat Saber Overlay | By Hyldra Zolxy" />
+        <meta property="og:description" content="A Beat Saber Overlay for HTTPStatus and DataPuller mods" />
+        <meta property="og:url" content="https://overlay.hyldrazolxy.fr/" />
+        <!-- <meta property="og:image" content="./images/OGCard.png" /> -->
+
+        <title>Beat Saber Overlay | By Hyldra Zolxy</title>
+        <!-- <link rel="icon" href="./images/icon.png" type="image/png" /> -->
+
+        <link rel="stylesheet" type="text/css" href="./css/index.css" />
+        <link rel="stylesheet" type="text/css" href="./css/all.min.css" />
+        <script type="text/javascript" src="./js/jquery-3.6.0.min.js"></script>
+        <script type="module" src="./js/app.js"></script>
+    </head>
+    <body>
+        <div id="box" class="fade">
+            <div id="cover">
+                <div class="coverLine"></div>
+            </div>
+            <div id="bgInfoCover">
+                <div id="bgInfoCoverPos"></div>
+            </div>
+            <div id="songInformations">
+                <div class="songInformationsLine"></div>
+                <div id="songTitle"></div>
+                <div id="songArtist"></div>
+                <div id="songMapper"></div>
+                <div id="mapInformation">
+                    <div id="mapDifficulty">
+                        <i class="fas fa-star"></i>
+                        <span id="mapDifficultyJS"></span>
+                    </div>
+                    <div id="mapDuration">
+                        <i class="fas fa-clock"></i>
+                        <span id="mapDurationElapsed"></span> / <span id="mapDurationLenght"></span>
+                    </div>
+                    <div id="mapId">
+                        <i class="far fa-bookmark"></i>
+                        !bsr <span id="mapIdJS"></span>
+                    </div>
+                </div>
+                <div id="percentage">
+                    <span id="percentageJS"></span>
+                    <i class="fas fa-percent"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- 
+            That part is inspired of BlackParot Overlay
+            Link: https://theblackparrot.me/
+        -->
+        <div id="scoreInformations" class="fade">
+            <div id="scorePlacement">
+                <span class="scoreStack" style="width: 20px;">8</span>
+                <span class="scoreStack" style="width: 62px;">888</span>
+                <span class="scoreStack" style="width: 62px;">888</span>
+            </div>
+            <div id="score">
+                <span id="millions" class="scoreStack" style="width: 20px;"></span>
+                <span id="thousands" class="scoreStack" style="width: 62px;"></span>
+                <span id="other" class="scoreStack" style="width: 62px;">0</span>
+            </div>
+            <div id="statsScoreInformations">
+                <div id="combo">
+                    <i class="fas fa-link"></i>
+                    <span id="comboJS"></span>
+                </div>
+                <div id="hitNotes">
+                    <i class="fas fa-check"></i>
+                    <span id="hitNotesJS"></span>
+                </div>
+                <div id="missNotes">
+                    <i class="fas fa-times"></i>
+                    <span id="missNotesJS"></span>
+                </div>
+                <div id="notesPerSeconds">
+                    <i class="fas fa-cubes"></i>
+                    <span id="notesPerSecondsJS"></span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

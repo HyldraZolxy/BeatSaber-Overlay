@@ -1,0 +1,290 @@
+/**
+ * Font
+ */
+
+@font-face {
+    font-family: "grooker";
+    src: url("../fonts/grooker_regular-webfont.woff2") format("woff2"),
+         url("../fonts/grooker_regular-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "LCD";
+    src: url("../fonts/att-webfont.woff2") format("woff2"),
+         url("../fonts/att-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+/**
+ * Difficulty Color
+ */
+.ExpertPlus {
+    background-color: #6610f2;
+}
+
+.Expert {
+    background-color: #e74c3c;
+}
+
+.Hard {
+    background-color: #da6300;
+}
+
+.Normal {
+    background-color: #3498db;
+}
+
+.Easy {
+    background-color: #00a279;
+}
+
+/**
+ * Animation
+ */
+ .fade {
+    transition: opacity 1s;
+ }
+
+/**
+ * Main
+ */
+body {
+    font-family: "grooker";
+    font-size: 20pt;
+    font-weight: 500;
+    color: #ffff;
+}
+
+/**
+ * Main box
+ */
+#box {
+    position: absolute;
+    width: 600px;
+    height: 180px;
+    margin: 10px;
+    background-color: rgb(54, 54, 54);
+    filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
+    opacity: 0;
+}
+
+/**
+ * Cover box
+ */
+#cover {
+    width: 180px;
+    height: 180px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#cover .coverLine {
+    position: absolute;
+    width: 178px;
+    height: 178px;
+    border: 1px solid rgba(255, 255, 255, 0.247);
+}
+
+/**
+ * Cover background song information
+ */
+#bgInfoCover {
+    position: absolute;
+    top: 0;
+    left: 180px;
+    width: 420px;
+    height: 180px;
+    clip-path: inset(0%);
+}
+
+#bgInfoCoverPos {
+    position: relative;
+    width: 450px;
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    opacity: 1;
+    filter: blur(5px);
+}
+
+/**
+ * Song information
+ */
+#songInformations {
+    position: absolute;
+    top: 0px;
+    left: 180px;
+    width: 420px;
+    height: 180px;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(56, 56, 56, 0.7));
+    line-height: 30px;
+}
+
+#songInformations .songInformationsLine {
+    position: absolute;
+    width: 419px;
+    height: 178px;
+    margin-left: 0px !important;
+    border: 1px solid rgba(255, 255, 255, 0.247);
+	border-left: 0px;
+}
+
+#songInformations div {
+    margin-left: 15px;
+}
+
+#songTitle, #songArtist, #songMapper {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#songTitle {
+    width: 405px;
+    margin-top: 15px;
+    font-size: 30pt;
+    line-height: 37px;
+    text-shadow: 2px 2px 3px rgb(139, 139, 139);
+}
+
+#songArtist {
+    font-size: 18pt;
+    text-shadow: 2px 2px 3px rgb(139, 139, 139);
+}
+
+#songMapper {
+    font-size: 18pt;
+    color: rgb(170, 170, 170);
+}
+
+#songMapper::before {
+    content: "Mapped by ";
+}
+
+#mapInformation {
+    position: relative;
+    width: 405px;
+    margin-top: 35px;
+    font-size: 12pt;
+}
+
+#mapInformation div {
+    display: inline-block;
+    margin-left: 0px;
+}
+
+#mapInformation i {
+    position: relative;
+    top: -2px;
+    margin-right: 4px;
+    font-size: 8pt;
+}
+
+#mapDifficulty {
+    position: relative;
+    display: inline-block;
+    padding-left: 3px;
+    padding-right: 3px;
+    line-height: 20px;
+    border-radius: 2px;
+}
+
+#mapDuration {
+    position: relative;
+    display: inline-block;
+    padding-left: 10px;
+    line-height: 20px;
+}
+
+#mapId {
+    position: relative;
+    display: inline-block;
+    padding-left: 10px;
+    line-height: 20px;
+}
+
+#percentage {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    font-size: 25pt;
+    font-weight: bold;
+}
+
+#percentage i {
+    font-size: 15pt;
+}
+
+/**
+ * Score information
+ */
+#scoreInformations {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 600px;
+    height: 50px;
+    opacity: 0;
+}
+
+#scorePlacement, #score {
+    display: block;
+    float: left;
+    margin-top: 8px;
+    margin-left: 10px;
+    font-family: "LCD";
+    font-size: 35pt;
+    font-style: italic;
+}
+
+#scorePlacement span, #score span {
+    margin-left: 7px;
+}
+
+#scorePlacement {
+    color: rgba(0, 0, 0, 0.2);
+}
+
+#score {
+    position: absolute;
+    text-shadow: 0px 0px 16px rgba(255, 255, 255, 0.8);
+}
+
+.scoreStack {
+    display: inline-block;
+    text-align: right;
+}
+
+#statsScoreInformations {
+    position: relative;
+    left: 20px;
+    margin-top: 15px;
+    font-size: 13pt;
+}
+
+#statsScoreInformations div {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+#statsScoreInformations i {
+    position: relative;
+    top: -1px;
+    margin-right: 4px;
+    font-size: 8pt;
+}
+
+#hitNotes {
+    color: rgb(79, 212, 74);
+}
+
+#missNotes {
+    color: rgb(247, 72, 72);
+}
+
+#notesPerSeconds {
+    color: rgb(68, 249, 255);
+}
