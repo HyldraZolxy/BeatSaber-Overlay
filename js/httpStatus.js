@@ -206,6 +206,7 @@ export class HTTPStatus {
         $("#songTitle").text(data.songName);
         $("#songArtist").text("By " + data.songAuthorName);
         $("#songMapper").text(data.levelAuthorName);
+        $("#mapDifficulty").removeClass();
         $("#mapDifficulty").addClass(data.difficultyEnum);
         $("#mapDifficultyJS").text(data.difficulty);
         $("#cover").css("background-image", "url(data:image/png;base64," + data.songCover + ")");
