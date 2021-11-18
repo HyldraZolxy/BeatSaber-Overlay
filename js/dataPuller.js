@@ -1,19 +1,17 @@
-/**
- * That class is not finished, so DataPuller is not supported for now
- */
-
 export class DataPuller {
     urlParams = new URLSearchParams(location.search);
     debug;
     firstTime = true;
+
     combo = 0;
     noteHit = 0;
     score = 0;
 
     constructor(_debug) {
-        this.debug = _debug;
         if (this.urlParams.has("debug") && (this.urlParams.get("debug") === "DataPuller")) {
             this.debug = true;
+        } else {
+            this.debug = _debug;
         }
     
         if (this.debug) {
@@ -52,25 +50,31 @@ export class DataPuller {
         if (value) {
             document.getElementById("box").style.opacity = 1;
             document.getElementById("scoreInformations").style.opacity = 1;
+
+            /// TODO: Notes per Seconds need more research, so for now just disable it ...
+            document.getElementById("notesPerSeconds").style.display = "none";
         } else {
             document.getElementById("box").style.opacity = 0;
             document.getElementById("scoreInformations").style.opacity = 0;
 
-            /// TODO: Notes per Seconds need more research, so for now just disable it ...
             document.getElementById("notesPerSeconds").style.display = "none";
         }
     }
 
     setSongData(data) {
         $("#mapIdJS").text(data.BSRKey);
+
         $("#songTitle").text(data.SongName);
         $("#songArtist").text("By " + data.SongAuthor);
         $("#songMapper").text(data.Mapper);
+
         $("#mapDifficulty").removeClass();
         $("#mapDifficulty").addClass(data.Difficulty);
         $("#mapDifficultyJS").text(data.Difficulty == "ExpertPlus" ? "Expert +" : data.Difficulty);
+
         $("#cover").css("background-image", "url(" + data.coverImage + ")");
         $("#bgInfoCoverPos").css("background-image", "url(" + data.coverImage + ")");
+
         $("#mapDurationLenght").text(this.formatTime(data.Length));
 
         if (!data.LevelPaused) {
@@ -99,11 +103,11 @@ export class DataPuller {
         }
         if (score >= 1000) {
             thousands = (Math.floor(score / 1000) % 1000).toString();
-            other = other.padStart(3, '0');
+            other = other.padStart(3, "0");
         }
         if (score >= 1000000) {
             millions = (Math.floor(score / 1000000)).toString();
-            thousands = thousands.padStart(3, '0');
+            thousands = thousands.padStart(3, "0");
         }
     
         $("#millions").text(millions);

@@ -3,11 +3,13 @@ import { Client } from "./client.js";
 const wsParams = {
     "HTTPStatus":
     {
+        "ip": "127.0.0.1",
         "port": "6557",
         "entry": "/socket"
     },
     "DataPuller":
     {
+        "ip": "127.0.0.1",
         "port": "2946",
         "entry": "/BSDataPuller/",
         "endPoint":
@@ -21,95 +23,91 @@ const wsParams = {
 class App {
     urlParams = new URLSearchParams(location.search);
     debug = false;
-    ip = "127.0.0.1";
-    client = [];
+    setup = false;
+
+    connected = false;
     try = 0;
-    tryConnection = 3;
-    pluginChanged = false;
+    plugin = "HTTPStatus";
+
+    client = [];
 
     constructor() {
+        /// TODO: IP Param is removed, maybe let user set a other IP later ? (For Dual PC Stream)
         this.debug = this.urlParams.has("debug") ? this.urlParams.get("debug") === "true" ? this.urlParams.get("debug") : false : false;
+        this.setup = this.urlParams.has("setup") ? this.urlParams.get("setup") === "true" ? this.urlParams.get("setup") : false : false;
 
         if (this.debug) {
             console.log("%cWarning! Debug mode activated! You risk being spammed in the log console\n", "background-color:red");
         }
 
-        this.ip = (this.urlParams.get("ip") != (null || undefined) && RegExp(/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/).test(this.urlParams.get("ip"))) ? this.urlParams.get("ip") : "127.0.0.1";
-
-        /**
-         * First i try to connect HTTPStatus, then i try DataPuller
-         */
-
-         let loop = setInterval(() => {
-            this.client.push(new Client(this.ip, wsParams.HTTPStatus, "", true, "HTTPStatus", this.debug));
-            
-            if (this.debug) {
-                console.log("%cApp.js log...", "background-color:blue");
-                console.log(this.client);
-                console.log("Change plugin ? (HTTPStatus to DataPuller) ... " + this.pluginChanged);
-                console.log("Try number: " + (this.try + 1));
-                console.log("\n");
-            }
-
-            if (this.try == this.tryConnection) {
+        setInterval(() => {
+            try {
+                this.connected = this.client[0].getWebSocketStatus();
+            } catch {
                 if (this.debug) {
                     console.log("%cApp.js log...", "background-color:blue");
-                    console.log("Number of try is over, change the plugin");
-                    console.log("And set try to 0");
+                    console.log("%cWebSocket client doesn't exist, this is the first try...", "background-color:orange");
+                    console.log("\n");
+                }
+            }
+
+            if (!this.connected) {
+                if (this.debug) {
+                    console.log("%cApp.js log...", "background-color:blue");
+                    console.log("%cWebSocket is not connected !", "background-color:red");
+                    console.log("Let's try to connect it ...");
                     console.log("\n");
                 }
 
-                if (this.pluginChanged) {
-                    this.pluginChanged = false;
-                } else {
-                    this.pluginChanged = true;
+                if (this.try >= 3) {
+                    if (this.debug) {
+                        console.log("%cApp.js log...", "background-color:blue");
+                        console.log("Number of try is reached, change the plugin...");
+                        console.log("\n");
+                    }
+
+                    this.try = 0;
+                    this.plugin = this.plugin == "HTTPStatus" ? this.plugin = "DataPuller" : this.plugin = "HTTPStatus";
                 }
 
-                this.try = 0;
-            }
+                this.try++;
 
-            if (this.try < this.tryConnection && !this.pluginChanged) {
+                switch(this.plugin) {
+                    case "HTTPStatus":
+                        if (this.debug) {
+                            console.log("%cApp.js log...", "background-color:blue");
+                            console.log("Trying connection for HTTPStatus...");
+                            console.log("\n");
+                        }
+
+                        this.client = [];
+                        this.client.push(new Client(wsParams.HTTPStatus, "", this.plugin, this.debug));
+
+                        break;
+
+                    case "DataPuller":
+                        if (this.debug) {
+                            console.log("%cApp.js log...", "background-color:blue");
+                            console.log("Trying connection for DataPuller...");
+                            console.log("\n");
+                        }
+
+                        this.client = [];
+                        this.client.push(new Client(wsParams.DataPuller, wsParams.DataPuller.endPoint.mapData, this.plugin, this.debug));
+                        this.client.push(new Client(wsParams.DataPuller, wsParams.DataPuller.endPoint.liveData, this.plugin, this.debug));
+
+                        break;
+
+                    default:
+                        break;
+                }
+            } else {
                 if (this.debug) {
                     console.log("%cApp.js log...", "background-color:blue");
-                    console.log("Try connection to HTTPStatus plugin...");
+                    console.log("%cWebSocket is already connected !", "background-color:green");
                     console.log("\n");
                 }
-
-                if (!this.client[0].getWebSocketStatus) {
-                    this.try++;
-                    this.client = [];
-                    this.client.push(new Client(this.ip, wsParams.HTTPStatus, "", false, "HTTPStatus", this.debug));
-                }
-
-                if (this.client[0].getWebSocketStatus) {
-                    if (this.debug) {
-                        console.log("%cApp.js log...", "background-color:blue");
-                        console.log("Connection to HTTPStatus is ok, so i kill the loop");
-                        console.log("\n");
-                    }
-
-                    clearInterval(loop);
-                }
             }
-
-            if (this.try < this.tryConnection && this.pluginChanged) {
-                if (!this.client[0].getWebSocketStatus) {
-                    this.try++;
-                    this.client = [];
-                    this.client.push(new Client(this.ip, wsParams.DataPuller, wsParams.DataPuller.endPoint.mapData, false, "DataPuller", this.debug));
-                    this.client.push(new Client(this.ip, wsParams.DataPuller, wsParams.DataPuller.endPoint.liveData, false, "DataPuller", this.debug));
-                }
-
-                if (this.client[0].getWebSocketStatus) {
-                    if (this.debug) {
-                        console.log("%cApp.js log...", "background-color:blue");
-                        console.log("Connection to DataPuller is ok, so i kill the loop");
-                        console.log("\n");
-                    }
-
-                    clearInterval(loop);
-                }
-             }
         }, 5000);
     }
 }

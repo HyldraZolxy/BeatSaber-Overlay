@@ -1,98 +1,67 @@
 import { HTTPStatus } from "./httpStatus.js";
 import { DataPuller } from "./dataPuller.js";
 
-var webSocketStatus = false;
+var webSocketConnected = false;
 
 export class Client {
-    ip;
     wsParams = {};
     endPoint;
-    firstCall;
     plugin;
     debug;
+
     webSocket;
 
     HTTPStatusClass;
     DataPullerClass;
 
-    constructor(_ip, _wsParams, _endPoint, _firstCall, _plugin, _debug) {
-        this.ip = _ip;
+    constructor(_wsParams, _endPoint, _plugin, _debug) {
         this.wsParams = _wsParams;
         this.endPoint = _endPoint;
-        this.firstCall = _firstCall;
         this.plugin = _plugin;
         this.debug = _debug;
 
-        this.HTTPStatusClass = new HTTPStatus(this.debug);
-        this.DataPullerClass = new DataPuller(this.debug);
+        this.webSocket = this.Connect(this.endPoint);
 
-        if (this.debug) {
-            console.log("%cClient.js log...", "background-color:blue");
-            console.log(this.ip);
-            console.log(this.wsParams);
-            console.log(this.endPoint);
-            console.log(this.firstCall);
-            console.log(this.plugin);
-            if (this.firstCall) {
-                console.log("This is the first call !");
-            } else {
-                console.log("This is not the first call !");
+        this.webSocket.onopen = () => {
+            webSocketConnected = true;
+
+            if (this.debug) {
+                console.log("%cClient.js log...", "background-color:blue");
+                console.log("%cConnected to " + this.wsParams.ip + ":" + this.wsParams.port + "...", "background-color: green");
+                console.log("webSocketConnected set to: " + webSocketConnected);
+                console.log("\n");
             }
-            console.log("\n");
-        }
 
-        if (!this.firstCall) {
-            this.webSocket = this.Connect(this.endPoint);
+            this.plugin == "HTTPStatus" ? (this.HTTPStatusClass = new HTTPStatus(this.debug)) : (this.DataPullerClass = new DataPuller(this.debug));
+        };
 
-            this.webSocket.onopen = () => {
-                webSocketStatus = true;
+        this.webSocket.onclose = () => {
+            webSocketConnected = false;
 
-                if (this.debug) {
-                    console.log("%cClient.js log...", "background-color:blue");
-                    console.log("%cConnected to " + this.ip + ":" + this.wsParams.port + "...", "background-color: green");
-                    console.log("webSocketStatus set to: " + webSocketStatus);
-                    console.log("\n");
-                }
-            };
+            if (this.debug) {
+                console.log("%cClient.js log...", "background-color:blue");
+                console.log("%cConnection failed, retrying in 5 seconds...", "background-color: red");
+                console.log("webSocketConnected set to: " + webSocketConnected);
+                console.log("\n");
+            }
+        };
 
-            this.webSocket.onclose = () => {
-                webSocketStatus = false;
-
-                if (this.debug) {
-                    console.log("%cClient.js log...", "background-color:blue");
-                    console.log("%cConnection failed, retrying in 5 seconds...", "background-color: red");
-                    console.log("webSocketStatus set to: " + webSocketStatus);
-                    console.log("\n");
-                }
-            };
-
-            this.webSocket.onmessage = (data) => {
-                if (this.debug) {
-                    console.log("%cClient.js log...", "background-color:blue");
-                    console.log(data);
-                    console.log("\n");
-                }
-
-                if (this.plugin == "HTTPStatus") {
-                    this.HTTPStatusClass.eventHandler(data);
-                } else {
-                    this.DataPullerClass.eventHandler(data, this.endPoint);
-                }
-            };
-        }
+        this.webSocket.onmessage = (data) => {
+            this.plugin == "HTTPStatus" ? this.HTTPStatusClass.eventHandler(data) : this.DataPullerClass.eventHandler(data, this.endPoint);
+        };
     }
 
-    get getWebSocketStatus() {
-        return webSocketStatus;
+    getWebSocketStatus() {
+        return webSocketConnected;
     }
 
     Connect(_endPoint) {
         if (this.debug) {
             console.log("%cClient.js log...", "background-color:blue");
-            console.log("Trying connection on: ws://" + this.ip + ":" + this.wsParams.port + this.wsParams.entry + _endPoint)
+            console.log("Trying connection on: ws://" + this.wsParams.ip + ":" + this.wsParams.port + this.wsParams.entry + _endPoint)
             console.log("\n");
         }
 
-        return new WebSocket("ws://" + this.ip + ":" + this.wsParams.port + this.wsParams.entry + _endPoint);
+        return new WebSocket("ws://" + this.wsParams.ip + ":" + this.wsParams.port + this.wsParams.entry + _endPoint);
     }
 }
