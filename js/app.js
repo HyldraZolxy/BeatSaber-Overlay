@@ -1,115 +1,107 @@
-import { Client } from "./client.js";
+import { Template } from "./template.js";
+import { BeatSaberConnection } from "./beatSaberConnection.js";
+import { ScoreSaber } from "./scoreSaber.js";
 
-const wsParams = {
-    "HTTPStatus":
-    {
-        "ip": "127.0.0.1",
-        "port": "6557",
-        "entry": "/socket"
-    },
-    "DataPuller":
-    {
-        "ip": "127.0.0.1",
-        "port": "2946",
-        "entry": "/BSDataPuller/",
-        "endPoint":
-        {
-            "mapData": "MapData",
-            "liveData": "LiveData"
-        }
-    }  
-};
+var urlParams;
 
 class App {
-    urlParams = new URLSearchParams(location.search);
-    debug = false;
-    setup = false;
-
-    connected = false;
-    try = 0;
-    plugin = "HTTPStatus";
-
-    client = [];
-
     constructor() {
-        /// TODO: IP Param is removed, maybe let user set a other IP later ? (For Dual PC Stream)
-        this.debug = this.urlParams.has("debug") ? this.urlParams.get("debug") === "true" ? this.urlParams.get("debug") : false : false;
-        this.setup = this.urlParams.has("setup") ? this.urlParams.get("setup") === "true" ? this.urlParams.get("setup") : false : false;
+        urlParams = getUrlParams();
+        sessionStorage.setItem("urlParams", JSON.stringify(urlParams));
 
-        if (this.debug) {
-            console.log("%cWarning! Debug mode activated! You risk being spammed in the log console\n", "background-color:red");
+        if (urlParams.debug) {
+            console.log("%cWarning! Debug mode activated! You risk being spammed in the log console\n\n", "background-color:red");
+
+            console.log("%cApp.js", "background-color:cyan");
+            console.log("URL Parameters validated:");
+            console.log(urlParams);
+            console.log("\n\n");
         }
-
-        setInterval(() => {
-            try {
-                this.connected = this.client[0].getWebSocketStatus();
-            } catch {
-                if (this.debug) {
-                    console.log("%cApp.js log...", "background-color:blue");
-                    console.log("%cWebSocket client doesn't exist, this is the first try...", "background-color:orange");
-                    console.log("\n");
-                }
-            }
-
-            if (!this.connected) {
-                if (this.debug) {
-                    console.log("%cApp.js log...", "background-color:blue");
-                    console.log("%cWebSocket is not connected !", "background-color:red");
-                    console.log("Let's try to connect it ...");
-                    console.log("\n");
-                }
-
-                if (this.try >= 3) {
-                    if (this.debug) {
-                        console.log("%cApp.js log...", "background-color:blue");
-                        console.log("Number of try is reached, change the plugin...");
-                        console.log("\n");
-                    }
-
-                    this.try = 0;
-                    this.plugin = this.plugin == "HTTPStatus" ? this.plugin = "DataPuller" : this.plugin = "HTTPStatus";
-                }
-
-                this.try++;
-
-                switch(this.plugin) {
-                    case "HTTPStatus":
-                        if (this.debug) {
-                            console.log("%cApp.js log...", "background-color:blue");
-                            console.log("Trying connection for HTTPStatus...");
-                            console.log("\n");
-                        }
-
-                        this.client = [];
-                        this.client.push(new Client(wsParams.HTTPStatus, "", this.plugin, this.debug));
-
-                        break;
-
-                    case "DataPuller":
-                        if (this.debug) {
-                            console.log("%cApp.js log...", "background-color:blue");
-                            console.log("Trying connection for DataPuller...");
-                            console.log("\n");
-                        }
-
-                        this.client = [];
-                        this.client.push(new Client(wsParams.DataPuller, wsParams.DataPuller.endPoint.mapData, this.plugin, this.debug));
-                        this.client.push(new Client(wsParams.DataPuller, wsParams.DataPuller.endPoint.liveData, this.plugin, this.debug));
-
-                        break;
-
-                    default:
-                        break;
-                }
-            } else {
-                if (this.debug) {
-                    console.log("%cApp.js log...", "background-color:blue");
-                    console.log("%cWebSocket is already connected !", "background-color:green");
-                    console.log("\n");
-                }
-            }
-        }, 5000);
     }
 }
 
 new App();
+
+const template = new Template();
+template.loadSkin();
+template.setScale(urlParams.scale);
+
+const pluginConnection = new BeatSaberConnection();
+pluginConnection.loopConnection();
+
+setInterval(() => {
+    if (pluginConnection.isConnected && urlParams.playerId) {
+        new ScoreSaber().updatePlayerInfo();
+    }
+}, TIMER_UPDATE_SCORESABER);
+
+// TODO: Change that for better use, because in app.js is ugly ...
+if (urlParams.setup) {
+    new ScoreSaber().updatePlayerInfo();
+
+    setTimeout(() => {
+        let setupSong = {
+            songCover: ["#", "modify", "background-image", "url(https://eu.cdn.beatsaver.com/eed7fc6935a86b9ad1248107ae6b2f65d9da7a1f.jpg)"],
+
+            songStatus: ["#", "modify", "opacity", "1"],
+
+            songTitle: "[BLEED BLOOD]",
+            songArtisteMapper: "Camellia [jabob]",
+
+            songDifficulty: "Expert+",
+            songDifficulty2: ["#", "remove"],
+            songDifficulty3: ["#", "add", "ExpertPlus"],
+
+            songKey: "10217",
+
+            songElapsed: ["#", "modify", "width", "23%"],
+
+            songPercentage: "97.26"
+        }
+        template.updateSkin(setupSong);
+    }, 100);
+
+    setTimeout(() => {
+        const playerShow = {
+            player: ["#", "remove"],
+            player2: ["#", "add", "showFirst"],
+    
+            playerInfo: ["#", "remove"],
+            playerInfo2: ["#", "add", "showSecond"]
+        }
+    
+        template.updateSkin(playerShow);
+    }, 100);
+
+    setInterval(() => {
+        let songShow = {
+            player: ["#", "remove"],
+            player2: ["#", "add", "hiddenSecond"],
+            playerInfo: ["#", "remove"],
+            playerInfo2: ["#", "add", "hiddenFirst"],
+
+            songOverlay: ["#", "remove"],
+            songOverlay2: ["#", "add", "showFirst"],
+            songInfo: ["#", "remove"],
+            songInfo2: ["#", "add", "showSecond"]
+        }
+
+        template.updateSkin(songShow);
+
+        setTimeout(() => {
+            const playerShow = {
+                player: ["#", "remove"],
+                player2: ["#", "add", "showFirst"],
+                playerInfo: ["#", "remove"],
+                playerInfo2: ["#", "add", "showSecond"],
+
+                songOverlay: ["#", "remove"],
+                songOverlay2: ["#", "add", "hiddenSecond"],
+                songInfo: ["#", "remove"],
+                songInfo2: ["#", "add", "hiddenFirst"]
+            }
+        
+            template.updateSkin(playerShow);
+        }, 5000);
+    }, 10000);
+}
