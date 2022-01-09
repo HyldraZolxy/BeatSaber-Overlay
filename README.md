@@ -46,6 +46,8 @@ To use the Overlay, it is necessary to follow the instructions below to ensure t
 - [HTTPStatus Plugin](https://github.com/opl-/beatsaber-http-status/releases)
 - [DataPuller Plugin](https://github.com/kOFReadie/BSDataPuller/releases)
 
+**YOU HAVE TO INSTALL THE DEPENDENCIES OF THE PLUGINS !**
+
 2. You will need a Stream software
 - [OBS](https://obsproject.com/)
 - [StreamLabs](https://streamlabs.com/)
