@@ -31,6 +31,9 @@
       <a href="#options">Options</a>
     </li>
     <li>
+      <a href="#roadmap">Roadmap</a>
+    </li>
+    <li>
       <a href="#contact">Contact</a>
     </li>
   </ol>
@@ -45,7 +48,6 @@ To use the Overlay, it is necessary to follow the instructions below to ensure t
 1. You will need to download **one** of the two plugins that will be used for the overlay to connect to your game
 - [HTTPStatus Plugin](https://github.com/opl-/beatsaber-http-status/releases)
 - [DataPuller Plugin](https://github.com/kOFReadie/BSDataPuller/releases)
-
 **YOU HAVE TO INSTALL THE DEPENDENCIES OF THE PLUGINS !**
 
 2. You will need a Stream software
@@ -166,8 +168,22 @@ https://overlay.hyldrazolxy.fr/?skin=NameOfSkin
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+## Roadmap
+
+- [ ] Optimising the code
+- [ ] Adding more data for futur skin
+- [ ] Add OBS Support
+- [ ] Add more skin
+    - [ ] Youtube Video skin (OBS Related)
+    - [ ] Friday Night Funkin'
+    - [ ] more ....
+- [ ] *Twitch support ? (For custom things when channel point is used)*
+    - [ ] *Create a PHP support to upload files for twitch by the overlay users*
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Contact
 You can contact me on Discord `Hyldra Zolxy#1910` to ask for various changes, improvements or even special requests!
 
 ##### Thanks all and cya <3
+<p align="right">(<a href="#top">back to top</a>)</p>
