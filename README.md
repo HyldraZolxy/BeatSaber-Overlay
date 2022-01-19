@@ -31,6 +31,9 @@
       <a href="#options">Options</a>
     </li>
     <li>
+      <a href="#roadmap">Roadmap</a>
+    </li>
+    <li>
       <a href="#contact">Contact</a>
     </li>
   </ol>
@@ -110,6 +113,8 @@ https://overlay.hyldrazolxy.fr/?scale=1.5
 
 If you want to see how the overlay will look on your stream
 
+**DO NOT USE IN PRODUCTION**
+
 ```sh
 setup=VALUE
 
@@ -166,8 +171,22 @@ https://overlay.hyldrazolxy.fr/?skin=NameOfSkin
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+## Roadmap
+
+- [x] Optimising the code
+- [ ] Adding more data for futur skin
+- [ ] Add OBS Support
+- [ ] Add more skin
+    - [ ] Youtube Video skin (OBS Related)
+    - [ ] Friday Night Funkin'
+    - [ ] more ....
+- [ ] *Twitch support ? (For custom things when channel point is used)*
+    - [ ] *Create a PHP support to upload files for twitch by the overlay users*
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Contact
 You can contact me on Discord `Hyldra Zolxy#1910` to ask for various changes, improvements or even special requests!
 
 ##### Thanks all and cya <3
+<p align="right">(<a href="#top">back to top</a>)</p>

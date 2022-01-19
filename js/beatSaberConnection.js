@@ -1,6 +1,6 @@
+import { Template } from "./template.js";
 import { DataPuller } from "./dataPuller/dataPuller.js";
 import { HTTPStatus } from "./httpStatus/httpStatus.js";
-import { Template } from "./template.js";
 
 export class BeatSaberConnection {
     urlParams = JSON.parse(sessionStorage.getItem("urlParams"));
@@ -9,21 +9,19 @@ export class BeatSaberConnection {
     plugin = "HTTPStatus";
     numberOfTry = 1;
 
+    template = new Template();
+    httpStatus = new HTTPStatus();
+    dataPuller = new DataPuller();
+
     constructor() {}
 
     loopConnection() {
-        let numberOfAlreadyConnected = 0;
-
         setInterval(() => {
             if (this.isConnected) {
-                if (numberOfAlreadyConnected == 0) {
-                    if (this.urlParams.debug) {
-                        console.log("%cbeatSaberConnection.js", "background-color:cyan");
-                        console.log("%cWebSocket is already connected !", "background-color:green");
-                        console.log("\n\n");
-                    }
-
-                    numberOfAlreadyConnected++;
+                if (this.urlParams.debug) {
+                    console.log("%cbeatSaberConnection.js", "background-color:cyan");
+                    console.log("%cWebSocket is already connected !", "background-color:green");
+                    console.log("\n\n");
                 }
             } else {
                 if (this.urlParams.debug) {
@@ -33,7 +31,6 @@ export class BeatSaberConnection {
                     console.log("\n\n");
                 }
 
-                numberOfAlreadyConnected = 0;
                 this.webSocketConnection();
                 this.pluginChanger();
             }
@@ -43,43 +40,43 @@ export class BeatSaberConnection {
     webSocketConnection() {
         switch(this.plugin) {
             case "HTTPStatus":
-                let httpStatus = new HTTPStatus();
-                let HTTPStatusWebSocket = new WebSocket("ws://" + ((this.urlParams.ip) ? this.urlParams.ip : PARAMS.ip[0]) + ":" + WEBSOCKET_PARAMS.HTTPStatus.port + WEBSOCKET_PARAMS.HTTPStatus.entry);
+                let HTTPStatusWebSocket = new WebSocket("ws://" + ((this.urlParams.ip) ? this.urlParams.ip : URL_PARAMS.ip[0]) + ":" + WEBSOCKET_PARAMS.HTTPStatus.port + WEBSOCKET_PARAMS.HTTPStatus.entry);
                 
                 HTTPStatusWebSocket.onopen = () => {
                     this.isConnected = true;
+                    this.template.showPlayer();
                 };
 
                 HTTPStatusWebSocket.onclose = () => {
                     this.isConnected = false;
-                    httpStatus.stopTimer();
-                    this.hiddingElement();
+                    this.httpStatus.stopTimer(true); // Prevent of multiple timer
+                    this.template.hiddenEverythings();
                 };
 
                 HTTPStatusWebSocket.onmessage = (data) => {
-                    httpStatus.eventHandler(data);
+                    this.httpStatus.eventHandler(data);
                 };
                 break;
             case "DataPuller":
-                let dataPuller = new DataPuller();
-                let DataPullerWebSocket = new WebSocket("ws://" + ((this.urlParams.ip) ? this.urlParams.ip : PARAMS.ip[0]) + ":" + WEBSOCKET_PARAMS.DataPuller.port + WEBSOCKET_PARAMS.DataPuller.entry + WEBSOCKET_PARAMS.DataPuller.endpoint.mapData);
-                let DataPullerWebSocket2 = new WebSocket("ws://" + ((this.urlParams.ip) ? this.urlParams.ip : PARAMS.ip[0]) + ":" + WEBSOCKET_PARAMS.DataPuller.port + WEBSOCKET_PARAMS.DataPuller.entry + WEBSOCKET_PARAMS.DataPuller.endpoint.liveData);
+                let DataPullerWebSocket = new WebSocket("ws://" + ((this.urlParams.ip) ? this.urlParams.ip : URL_PARAMS.ip[0]) + ":" + WEBSOCKET_PARAMS.DataPuller.port + WEBSOCKET_PARAMS.DataPuller.entry + WEBSOCKET_PARAMS.DataPuller.endpoint.mapData);
+                let DataPullerWebSocket2 = new WebSocket("ws://" + ((this.urlParams.ip) ? this.urlParams.ip : URL_PARAMS.ip[0]) + ":" + WEBSOCKET_PARAMS.DataPuller.port + WEBSOCKET_PARAMS.DataPuller.entry + WEBSOCKET_PARAMS.DataPuller.endpoint.liveData);
                 
                 DataPullerWebSocket.onopen = () => {
                     this.isConnected = true;
+                    this.template.showPlayer();
                 };
 
                 DataPullerWebSocket.onclose = () => {
                     this.isConnected = false;
-                    this.hiddingElement();
+                    this.template.hiddenEverythings();
                 };
 
                 DataPullerWebSocket.onmessage = (data) => {
-                    dataPuller.eventHandler(data, "mapData");
+                    this.dataPuller.eventHandler(data, "mapData");
                 };
 
                 DataPullerWebSocket2.onmessage = (data) => {
-                    dataPuller.eventHandler(data, "liveData");
+                    this.dataPuller.eventHandler(data, "liveData");
                 };
                 break;
             default:
@@ -99,24 +96,6 @@ export class BeatSaberConnection {
             this.plugin = this.plugin == "HTTPStatus" ? this.plugin = "DataPuller" : this.plugin = "HTTPStatus";
         } else {
             this.numberOfTry++;
-        }
-    }
-
-    hiddingElement() {
-        if (this.urlParams.playerId) {
-            const hiddingElement = {
-                player: ["#", "remove"],
-                player2: ["#", "add", "hiddenSecond"],
-                playerInfo: ["#", "remove"],
-                playerInfo2: ["#", "add", "hiddenFirst"],
-
-                songOverlay: ["#", "remove"],
-                songOverlay2: ["#", "add", "hiddenSecond"],
-                songInfo: ["#", "remove"],
-                songInfo2: ["#", "add", "hiddenFirst"]
-            }
-
-            new Template().updateSkin(hiddingElement);
         }
     }
 }

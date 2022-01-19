@@ -1,6 +1,6 @@
 import { Template } from "./template.js";
-import { BeatSaberConnection } from "./beatSaberConnection.js";
 import { ScoreSaber } from "./scoreSaber.js";
+import { BeatSaberConnection } from "./beatSaberConnection.js";
 
 var urlParams;
 
@@ -23,85 +23,15 @@ class App {
 new App();
 
 const template = new Template();
-template.loadSkin();
-template.setScale(urlParams.scale);
-
+const scoreSaber = new ScoreSaber();
 const pluginConnection = new BeatSaberConnection();
-pluginConnection.loopConnection();
 
-setInterval(() => {
-    if (pluginConnection.isConnected && urlParams.playerId) {
-        new ScoreSaber().updatePlayerInfo();
-    }
-}, TIMER_UPDATE_SCORESABER);
+template.loadSkin(urlParams.skin);
+template.setScale(urlParams.scale);
+template.setupMode(urlParams.setup);
 
-// TODO: Change that for better use, because in app.js is ugly ...
-if (urlParams.setup) {
-    new ScoreSaber().updatePlayerInfo();
-
-    setTimeout(() => {
-        let setupSong = {
-            songCover: ["#", "modify", "background-image", "url(https://eu.cdn.beatsaver.com/eed7fc6935a86b9ad1248107ae6b2f65d9da7a1f.jpg)"],
-
-            songStatus: ["#", "modify", "opacity", "1"],
-
-            songTitle: "[BLEED BLOOD]",
-            songArtisteMapper: "Camellia [jabob]",
-
-            songDifficulty: "Expert+",
-            songDifficulty2: ["#", "remove"],
-            songDifficulty3: ["#", "add", "ExpertPlus"],
-
-            songKey: "10217",
-
-            songElapsed: ["#", "modify", "width", "23%"],
-
-            songPercentage: "97.26"
-        }
-        template.updateSkin(setupSong);
-    }, 100);
-
-    setTimeout(() => {
-        const playerShow = {
-            player: ["#", "remove"],
-            player2: ["#", "add", "showFirst"],
-    
-            playerInfo: ["#", "remove"],
-            playerInfo2: ["#", "add", "showSecond"]
-        }
-    
-        template.updateSkin(playerShow);
-    }, 100);
-
-    setInterval(() => {
-        let songShow = {
-            player: ["#", "remove"],
-            player2: ["#", "add", "hiddenSecond"],
-            playerInfo: ["#", "remove"],
-            playerInfo2: ["#", "add", "hiddenFirst"],
-
-            songOverlay: ["#", "remove"],
-            songOverlay2: ["#", "add", "showFirst"],
-            songInfo: ["#", "remove"],
-            songInfo2: ["#", "add", "showSecond"]
-        }
-
-        template.updateSkin(songShow);
-
-        setTimeout(() => {
-            const playerShow = {
-                player: ["#", "remove"],
-                player2: ["#", "add", "showFirst"],
-                playerInfo: ["#", "remove"],
-                playerInfo2: ["#", "add", "showSecond"],
-
-                songOverlay: ["#", "remove"],
-                songOverlay2: ["#", "add", "hiddenSecond"],
-                songInfo: ["#", "remove"],
-                songInfo2: ["#", "add", "hiddenFirst"]
-            }
-        
-            template.updateSkin(playerShow);
-        }, 5000);
-    }, 10000);
+if (urlParams.playerId) {
+    scoreSaber.updatePlayerInfo();
 }
+
+pluginConnection.loopConnection();

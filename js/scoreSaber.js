@@ -3,27 +3,49 @@ import { Template } from "./template.js";
 export class ScoreSaber {
     urlParams = JSON.parse(sessionStorage.getItem("urlParams"));
 
+    template = new Template();
+
     constructor() {}
 
     updatePlayerInfo() {
         this.getPlayerInfo(this.urlParams.playerId).then((playerScoreSaberInfo) => {
-            var playerInfo = {
-                playerAvatar: ["#", "modify", "background-image", "url('" + playerScoreSaberInfo.profilePicture + "')"],
-                playerCountry: ["#", "modify", "background-image", "url('../images/country/" + playerScoreSaberInfo.country + ".svg')"],
-            
-                playerCountryTop: playerScoreSaberInfo.countryRank,
-                playerWorldTop: playerScoreSaberInfo.rank,
-                playerPerformancePoint: playerScoreSaberInfo.pp
+            var playerInfo = DEFAULT_PLAYER;
+            if (!playerScoreSaberInfo.errorMessage) {
+                playerInfo = {
+                    playerAvatar: {
+                        selector: "#",
+                        modify: {
+                            background_image: "url('" + playerScoreSaberInfo.profilePicture + "')"
+                        }
+                    },
+                    playerCountry: {
+                        selector: "#",
+                        modify: {
+                            background_image: "url('../images/country/" + playerScoreSaberInfo.country + ".svg')"
+                        }
+                    },
+                    playerCountryTop: {
+                        selector: "#",
+                        value: playerScoreSaberInfo.countryRank
+                    },
+                    playerWorldTop: {
+                        selector: "#",
+                        value: playerScoreSaberInfo.rank
+                    },
+                    playerPerformancePoint: {
+                        selector: "#",
+                        value: playerScoreSaberInfo.pp
+                    }
+                }
             }
-        
-            setTimeout(function() {
-                const template = new Template();
-                template.updateSkin(playerInfo);
-            }, 100);
+            
+            setTimeout(() => {
+                this.template.updateSkin(playerInfo);
+            }, TIMER_UPDATE_TEMPLATE);
         });
     }
 
     getPlayerInfo(playerId) {
-        return getJson(PROXY_SCORESABER_URL + "?playerId=" + playerId);
+        return getJson(PROXY_SCORESABER_URL + "/?params=player" + "&playerId=" + playerId + "&endPoint=basic");
     }
 }

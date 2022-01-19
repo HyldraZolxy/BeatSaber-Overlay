@@ -3,6 +3,7 @@ import { ScoreSaber } from "../scoreSaber.js";
 
 export class HTTPStatus {
     urlParams = JSON.parse(sessionStorage.getItem("urlParams"));
+
     template = new Template();
     scoreSaber = new ScoreSaber();
 
@@ -20,9 +21,7 @@ export class HTTPStatus {
                 console.log("%cBeat Saber " + dataParsed.status.game.gameVersion + " | HTTPStatus " + dataParsed.status.game.pluginVersion, "background-color: green");
                 console.log("\n\n");
 
-                if (dataParsed.status.beatmap == null) {
-                    this.showPlayer();
-                } else {
+                if (dataParsed.status.beatmap != null) {
                     if (dataParsed.status.beatmap.paused != null) {
                         this.songElapsedTime = ((dataParsed.status.beatmap.paused - dataParsed.status.beatmap.start) / 100);
                     } else {
@@ -30,13 +29,13 @@ export class HTTPStatus {
                         this.startTimer(dataParsed.status.beatmap.length);
                     }
                     this.songData(dataParsed.status.beatmap);
-                    this.showSong();
+                    this.template.showSong();
                 }
                 break;
             case "songStart":
                 this.startTimer(dataParsed.status.beatmap.length);
                 this.songData(dataParsed.status.beatmap);
-                this.showSong();
+                this.template.showSong();
                 break;
             case "pause":
                 this.stopTimer();
@@ -47,17 +46,12 @@ export class HTTPStatus {
                 break;
             case "menu":
                 this.stopTimer();
-                this.showPlayer();
+                this.scoreSaber.updatePlayerInfo();
+                this.template.showPlayer();
                 this.songElapsedTime = 0;
                 break;
             case "scoreChanged":
                 this.updatePercentage(dataParsed.status.performance);
-                break;
-            case "failed":
-                this.stopTimer();
-                break;
-            case "finished":
-                this.stopTimer();
                 break;
             default:
                 // For development and testing
@@ -67,84 +61,61 @@ export class HTTPStatus {
         }
     }
 
-    showPlayer() {
-        if (this.urlParams.playerId) {
-            this.scoreSaber.updatePlayerInfo();
-            const playerShow = {
-                player: ["#", "remove"],
-                player2: ["#", "add", "showFirst"],
-
-                playerInfo: ["#", "remove"],
-                playerInfo2: ["#", "add", "showSecond"]
-            }
-
-            this.template.updateSkin(playerShow);
-        }
-
-        const songHidden = {
-            songOverlay: ["#", "remove"],
-            songOverlay2: ["#", "add", "hiddenSecond"],
-
-            songInfo: ["#", "remove"],
-            songInfo2: ["#", "add", "hiddenFirst"]
-        }
-
-        this.template.updateSkin(songHidden);
-    }
-
-    showSong() {
-        if (this.urlParams.playerId) {
-            const playerHidden = {
-                player: ["#", "remove"],
-                player2: ["#", "add", "hiddenSecond"],
-
-                playerInfo: ["#", "remove"],
-                playerInfo2: ["#", "add", "hiddenFirst"]
-            }
-
-            this.template.updateSkin(playerHidden);
-        }
-
-        const songShow = {
-            songOverlay: ["#", "remove"],
-            songOverlay2: ["#", "add", "showFirst"],
-
-            songInfo: ["#", "remove"],
-            songInfo2: ["#", "add", "showSecond"]
-        }
-
-        this.template.updateSkin(songShow);
-    }
-
     songData(beatmapData) {
         getJson(BEATSAVER_URL + beatmapData.songHash).then((response) => {
             let bsrKey = response.id;
             let ranked = response.ranked;
 
-            let song = {
-                songStatus: ["#", "modify", "opacity", ((ranked) ? "1" : "0")],
-                songKey: bsrKey
+            let songInfo = {
+                songStatus: {
+                    selector: "#",
+                    modify: {
+                        opacity: ((ranked) ? "1" : "0")
+                    }
+                },
+                songKey: {
+                    selector: "#",
+                    value: bsrKey
+                }
             }
     
-            this.template.updateSkin(song);
+            this.template.updateSkin(songInfo);
         });
 
-        let song = {
-            songCover: ["#", "modify", "background-image", "url(data:image/png;base64," + beatmapData.songCover + ")"],
-
-            songTitle: beatmapData.songName + " " + beatmapData.songSubName,
-            songArtisteMapper: beatmapData.songAuthorName + " [" + beatmapData.levelAuthorName +"]",
-
-            songDifficulty: beatmapData.difficulty,
-            songDifficulty2: ["#", "remove"],
-            songDifficulty3: ["#", "add", beatmapData.difficultyEnum],
-
-            songElapsed: ["#", "modify", "width", this.formatElapsedTime(beatmapData.length, this.songElapsedTime) + "%"],
-
-            songPercentage: "100"
+        let songInfo = {
+            songCover: {
+                selector: "#",
+                modify: {
+                    background_image: "url(data:image/png;base64," + beatmapData.songCover + ")"
+                }
+            },
+            songTitle: {
+                selector: "#",
+                value: beatmapData.songName + " " + beatmapData.songSubName
+            },
+            songArtisteMapper: {
+                selector: "#",
+                value: beatmapData.songAuthorName + " [" + beatmapData.levelAuthorName +"]"
+            },
+            songDifficulty: {
+                selector: "#",
+                removeClass: "",
+                addClass: beatmapData.difficultyEnum,
+                value: beatmapData.difficulty
+            },
+            songElapsed: {
+                selector: "#",
+                modify: {
+                    width: this.formatElapsedTime(beatmapData.length, this.songElapsedTime) + "%"
+                }
+            },
+            songPercentage: {
+                selector: "#",
+                value: "100"
+            }
         }
 
-        this.template.updateSkin(song);
+        this.template.updateSkin(songInfo);
     }
 
     formatElapsedTime(songLenght, elapsedTime) {
@@ -159,23 +130,35 @@ export class HTTPStatus {
         this.songTimer = setInterval(() => {
             this.songElapsedTime++;
 
-            let song = {
-                songElapsed: ["#", "modify", "width", this.formatElapsedTime(songLenght, this.songElapsedTime) + "%"]
+            let songInfo = {
+                songElapsed: {
+                    selector: "#",
+                    modify: {
+                        width: this.formatElapsedTime(songLenght, this.songElapsedTime) + "%"
+                    }
+                }
             }
-
-            this.template.updateSkin(song);
+    
+            this.template.updateSkin(songInfo);
         }, 100);
     }
 
-    stopTimer() {
+    stopTimer(preventDualTimer = false) {
         clearInterval(this.songTimer);
+
+        if (preventDualTimer) {
+            this.songElapsedTime = 0;
+        }
     }
 
     updatePercentage(performanceData) {
-        let percentage = {
-            songPercentage: Math.round((performanceData.score.toFixed(2) / performanceData.currentMaxScore.toFixed(2)) * 10000) / 100
+        let songInfo = {
+            songPercentage: {
+                selector: "#",
+                value: Math.round((performanceData.score.toFixed(2) / performanceData.currentMaxScore.toFixed(2)) * 10000) / 100
+            }
         }
 
-        this.template.updateSkin(percentage);
+        this.template.updateSkin(songInfo);
     }
 }

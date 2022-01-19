@@ -9,6 +9,8 @@ export class DataPuller {
     scoreSaber = new ScoreSaber();
 
     songLength = 0;
+    elapsedTime = 0;
+    percentage = 100;
 
     constructor() {}
 
@@ -39,102 +41,89 @@ export class DataPuller {
         }
     }
 
-    showPlayer() {
-        if (this.urlParams.playerId) {
-            this.scoreSaber.updatePlayerInfo();
-            const playerShow = {
-                player: ["#", "remove"],
-                player2: ["#", "add", "showFirst"],
-
-                playerInfo: ["#", "remove"],
-                playerInfo2: ["#", "add", "showSecond"]
-            }
-
-            this.template.updateSkin(playerShow);
-        }
-
-        const songHidden = {
-            songOverlay: ["#", "remove"],
-            songOverlay2: ["#", "add", "hiddenSecond"],
-
-            songInfo: ["#", "remove"],
-            songInfo2: ["#", "add", "hiddenFirst"]
-        }
-
-        this.template.updateSkin(songHidden);
-    }
-
-    showSong() {
-        if (this.urlParams.playerId) {
-            const playerHidden = {
-                player: ["#", "remove"],
-                player2: ["#", "add", "hiddenSecond"],
-
-                playerInfo: ["#", "remove"],
-                playerInfo2: ["#", "add", "hiddenFirst"]
-            }
-
-            this.template.updateSkin(playerHidden);
-        }
-
-        const songShow = {
-            songOverlay: ["#", "remove"],
-            songOverlay2: ["#", "add", "showFirst"],
-
-            songInfo: ["#", "remove"],
-            songInfo2: ["#", "add", "showSecond"]
-        }
-
-        this.template.updateSkin(songShow);
-    }
-
     isInLevel(value) {
         if (value) {
-            this.showSong();
+            this.template.showSong();
         } else {
             this.songLength = 0;
-            this.showPlayer();
+            this.elapsedTime = 0;
+            this.percentage = 100;
+            this.scoreSaber.updatePlayerInfo();
+            this.template.showPlayer();
         }
     }
 
     songData(mapData) {
+        console.log(mapData);
         this.songLength = mapData.Length;
 
-        let song = {
-            songCover: ["#", "modify", "background-image", "url(" + mapData.coverImage + ")"],
-
-            songStatus: ["#", "modify", "opacity", ((mapData.PP != "0") ? "1" : "0")],
-
-            songTitle: mapData.SongName + " " + mapData.SongSubName,
-            songArtisteMapper: mapData.SongAuthor + " [" + mapData.Mapper +"]",
-
-            songDifficulty: (mapData.Difficulty == "ExpertPlus" ? "Expert+" : mapData.Difficulty),
-            songDifficulty2: ["#", "remove"],
-            songDifficulty3: ["#", "add", mapData.Difficulty],
-
-            songKey: mapData.BSRKey,
-
-            songElapsed: ["#", "modify", "width", "0%"],
-
-            songPercentage: "100"
+        let songInfo = {
+            songCover: {
+                selector: "#",
+                modify: {
+                    background_image: (mapData.coverImage != null) ? "url(" + mapData.coverImage + ")" : "url('../images/not_found.jpg')"
+                }
+            },
+            songTitle: {
+                selector: "#",
+                value: mapData.SongName + " " + mapData.SongSubName
+            },
+            songArtisteMapper: {
+                selector: "#",
+                value: mapData.SongAuthor + " [" + mapData.Mapper +"]"
+            },
+            songDifficulty: {
+                selector: "#",
+                removeClass: "",
+                addClass: mapData.Difficulty,
+                value: (mapData.Difficulty == "ExpertPlus" ? "Expert+" : mapData.Difficulty)
+            },
+            songStatus: {
+                selector: "#",
+                modify: {
+                    opacity: ((mapData.PP != "0") ? "1" : "0")
+                }
+            },
+            songKey: {
+                selector: "#",
+                value: mapData.BSRKey
+            },
+            songElapsed: {
+                selector: "#",
+                modify: {
+                    width: (this.elapsedTime != 0) ? this.elapsedTime + "%" : "0" + "%"
+                }
+            },
+            songPercentage: {
+                selector: "#",
+                value: (this.percentage != 100) ? this.percentage : "100"
+            }
         }
 
-        this.template.updateSkin(song);
+        this.template.updateSkin(songInfo);
     }
 
     songUpdate(liveData) {
-        let song = {
-            songElapsed: ["#", "modify", "width", this.updateElapsed(liveData.TimeElapsed) + "%"],
-
-            songPercentage: this.updatePercentage(liveData.Accuracy)
+        let songInfo = {
+            songElapsed: {
+                selector: "#",
+                modify: {
+                    width: this.updateElapsed(liveData.TimeElapsed) + "%"
+                }
+            },
+            songPercentage: {
+                selector: "#",
+                value: this.updatePercentage(liveData.Accuracy)
+            }
         }
 
-        this.template.updateSkin(song);
+        this.template.updateSkin(songInfo);
     }
 
     updatePercentage(value) {
         if (value != 100) {
-            return value.toFixed(2);
+            this.percentage = value.toFixed(2);
+            return this.percentage;
         } else {
             return "100";
         }
@@ -142,7 +131,8 @@ export class DataPuller {
 
     updateElapsed(value) {
         if (value != 0) {
-            return (value / this.songLength) * 100;
+            this.elapsedTime = (value / this.songLength) * 100;
+            return this.elapsedTime;
         } else {
             return 0;
         }
