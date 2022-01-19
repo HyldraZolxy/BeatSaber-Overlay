@@ -1,6 +1,6 @@
 const URL = location.search;
 
-const PROXY_SCORESABER_URL = "http://overlay/fetchingData.php"; // change for ../fetchingData.php when dev is over
+const PROXY_SCORESABER_URL = "../fetchingData.php";
 const BEATSAVER_URL = "https://api.beatsaver.com/maps/hash/";
 
 const TIMER_UPDATE_PLUGINS = 5000;
