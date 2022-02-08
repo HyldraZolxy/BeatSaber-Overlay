@@ -46,7 +46,7 @@ To use the Overlay, it is necessary to follow the instructions below to ensure t
 ### Prerequisites
 
 1. You will need to download **one** of the tree plugins that will be used for the overlay to connect to your game
-- [BeatSaberPlus Plugin](https://github.com/hardcpp/BeatSaberPlus)
+- [BeatSaberPlus Plugin](https://github.com/hardcpp/BeatSaberPlus#discord--downloadupdate)
 - [HTTPStatus Plugin](https://github.com/opl-/beatsaber-http-status/releases)
 - [DataPuller Plugin](https://github.com/kOFReadie/BSDataPuller/releases)
 
