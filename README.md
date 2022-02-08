@@ -2,7 +2,7 @@
 <div align="center">
     <h3 align="center">
         BeatSaber-Overlay | Work with
-        <a href="https://github.com/opl-/beatsaber-http-status/releases"><strong>HTTPStatus</strong></a> & <a href="https://github.com/kOFReadie/BSDataPuller/releases"><strong>DataPuller</strong></a> !
+        <a href="https://github.com/hardcpp/BeatSaberPlus"><strong>BeatSaberPlus</strong></a> & <a href="https://github.com/opl-/beatsaber-http-status/releases"><strong>HTTPStatus</strong></a> & <a href="https://github.com/kOFReadie/BSDataPuller/releases"><strong>DataPuller</strong></a> !
     </h3>
     <p align="center">
         <br />
@@ -45,7 +45,8 @@ To use the Overlay, it is necessary to follow the instructions below to ensure t
 
 ### Prerequisites
 
-1. You will need to download **one** of the two plugins that will be used for the overlay to connect to your game
+1. You will need to download **one** of the tree plugins that will be used for the overlay to connect to your game
+- [BeatSaberPlus Plugin](https://github.com/hardcpp/BeatSaberPlus)
 - [HTTPStatus Plugin](https://github.com/opl-/beatsaber-http-status/releases)
 - [DataPuller Plugin](https://github.com/kOFReadie/BSDataPuller/releases)
 
@@ -62,6 +63,8 @@ To use the Overlay, it is necessary to follow the instructions below to ensure t
 
 2. Put the previously downloaded plugin in your Beat Saber folder `Beat Saber\Plugins\`
     ```sh
+    Beat Saber\Plugins\BeatSaberPlus.dll
+    Or
     Beat Saber\Plugins\BeatSaberHTTPStatus.dll
     Or
     Beat Saber\Plugins\DataPuller.dll
