@@ -1,0 +1,58 @@
+<span id="closeButton">&times;</span>
+
+<h1>General Settings</h1>
+<p>
+    <label for="ip"><b>IP:</b></label>
+    <input type="text" placeholder="localhost" id="ip" />
+    <input type="button" id="ipChanger" value="Apply" />
+</p>
+<p>
+    <label for="playerId"><b>Player ID:</b></label>
+    <input type="text" placeholder="https://scoresaber.com/u/76561198235823594" id="playerId" />
+    <input type="button" id="playerIdChanger" value="Apply" />
+</p>
+<hr />
+
+<h1>Player Card Settings</h1>
+<p>
+    <label for="playerCardPosition"><b>Position:</b></label>
+    <select id="playerCardPosition" name="playerCardPosition">
+        <option value="">-- Please choose an option --</option>
+        <option value="top-left">Top-left</option>
+        <option value="top-right">Top-right</option>
+        <option value="bottom-left">bottom-left</option>
+        <option value="bottom-right">bottom-right</option>
+    </select>
+
+    <label for="playerCardScale"><b>Scale:</b></label>
+    <input type="range" min="0.50" max="1.70" step="0.01" id="playerCardScale" />
+</p>
+<hr />
+
+<h1>Song Card Settings</h1>
+<p>
+    <label for="songCardSkin"><b>Skin:</b></label>
+    <select id="songCardSkin" name="songCardSkin">
+        <option value="">-- Please choose an option --</option>
+        <option value="default">Default</option>
+        <option value="freemium">Freemium</option>
+    </select>
+
+    <label for="songCardPosition"><b>Position:</b></label>
+    <select id="songCardPosition" name="songCardPosition">
+        <option value="">-- Please choose an option --</option>
+        <option value="top-left">Top-left</option>
+        <option value="top-right">Top-right</option>
+        <option value="bottom-left">bottom-left</option>
+        <option value="bottom-right">bottom-right</option>
+    </select>
+
+    <label for="songCardScale"><b>Scale:</b></label>
+    <input type="range" min="0.50" max="1.40" step="0.01" id="songCardScale" />
+</p>
+<hr />
+
+<p>
+    <label for="urlText">URL Customized with your settings</label>
+    <textarea readonly="readonly" id="urlText" onclick="this.select()">https://overlay.hyldrazolxy.fr/</textarea>
+</p>

@@ -1,0 +1,95 @@
+/*  ===========
+    == FONTS ==
+    ===========
+*/
+@font-face {
+    font-family: "walkway";
+    src: url("./fonts/walkway_black.woff") format('woff');
+    font-weight: 900;
+}
+
+/*  =================
+    == REUSED TAGS ==
+    =================
+*/
+.top-left {
+    top: 0;
+    left: 0;
+}
+
+.top-right {
+    top: 0;
+    right: 0;
+}
+
+.bottom-left {
+    bottom: 0;
+    left: 0;
+}
+
+.bottom-right {
+    bottom: 0;
+    right: 0;
+}
+
+.ExpertPlus {
+    background-color: #6610f2;
+}
+
+.Expert {
+    background-color: #de2d1b;
+}
+
+.Hard {
+    background-color: #da6300;
+}
+
+.Normal {
+    background-color: #3498db;
+}
+
+.Easy {
+    background-color: #00a279;
+}
+
+.ssClass {
+    color: #18d7d7 !important;
+}
+
+.sClass {
+    color: #a7a7a7 !important;
+}
+
+.aClass {
+    color: #2fcb2f !important;
+}
+
+.bClass {
+    color: #d9c80b !important;
+}
+
+.cClass {
+    color: #ea7c0d !important;
+}
+
+.deClass {
+    color: #e10404 !important;
+}
+
+/*  ==================
+    == GENERAL TAGS ==
+    ==================
+*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-width: 100vw;
+    min-height: 100vh;
+    background-color: #3b3b3b;
+
+    overflow: hidden;
+}
