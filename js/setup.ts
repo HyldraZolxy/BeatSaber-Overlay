@@ -95,7 +95,11 @@ export class Setup {
         $("#playerIdChanger").on("click", () => {
             let playerIdValue = $("#playerId").val();
             if ((playerIdValue !== undefined) && (typeof playerIdValue === "string")) {
-                playerIdValue = playerIdValue.slice(25);
+                if (RegExp(/\bhttps:\/\/scoresaber.com\/u\/\b/).test(playerIdValue)) {
+                    playerIdValue = playerIdValue.slice(25);
+                    playerIdValue = playerIdValue.split("?")[0];
+                }
+
                 if (this._parameters.parseParameters("pid", playerIdValue)) {
                     this._playerCard.playerCardParameters.playerId = playerIdValue;
                     this._playerCard.playerCardParameters.needUpdate = true;

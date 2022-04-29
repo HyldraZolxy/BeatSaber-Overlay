@@ -35,7 +35,7 @@ export namespace GlobalVariable {
 
         "scsk",     // Skin of Song Card
         "scpos",    // Position of Song Card
-        "pcsc"      // Scale of Player Card
+        "scsc"      // Scale of Song Card
     ];
 
     /////////////////////////////////
