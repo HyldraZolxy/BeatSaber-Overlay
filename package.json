@@ -1,0 +1,16 @@
+{
+    "name": "beatsaber_overlay",
+    "version": "2.0.2",
+    "description": "Beat Saber Overlay for BSPlus, HTTPStatus and DataPuller",
+    "main": "init.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "tsc --build"
+    },
+    "author": "Hyldra Zolxy",
+    "license": "ISC",
+    "type": "module",
+    "devDependencies": {
+        "@types/jquery": "^3.5.14"
+    }
+}

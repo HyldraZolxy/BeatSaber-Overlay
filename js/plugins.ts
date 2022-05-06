@@ -15,11 +15,11 @@ export class Plugins {
     ////////////////////////////
     // PRIVATE CLASS VARIABLE //
     ////////////////////////////
+    private _songCard: SongCard;
+    private _playerCard: PlayerCard;
     private _bsPlus: BSPlus;
     private _httpStatus: HTTPStatus;
     private _dataPuller: DataPuller;
-    private _songCard: SongCard;
-    private _playerCard: PlayerCard;
 
     //////////////////////
     // PRIVATE VARIABLE //
@@ -31,22 +31,16 @@ export class Plugins {
     /////////////////////
     public pluginsParameters: {
         ip: string;
-        BSPlus: boolean;
-        HTTPStatus: boolean;
-        DataPuller: boolean;
     } = {
-        ip: "127.0.0.1",
-        BSPlus: false,
-        HTTPStatus: false,
-        DataPuller: false
+        ip: "127.0.0.1"
     };
 
     constructor() {
+        this._songCard = SongCard.Instance;
+        this._playerCard = PlayerCard.Instance;
         this._bsPlus = new BSPlus();
         this._httpStatus = new HTTPStatus();
         this._dataPuller = new DataPuller();
-        this._songCard = SongCard.Instance;
-        this._playerCard = PlayerCard.Instance;
     }
 
     //////////////////////
@@ -97,6 +91,7 @@ export class Plugins {
                     this.isConnected = GlobalVariable.WEBSOCKET_STATE.DISCONNECTED;
                     this._songCard.songCardParameters.started = false;
                     this._songCard.songCardParameters.inProgress = false;
+
                     this._playerCard.playerCardParameters.display = false;
                 }
                 rejectInternal();
@@ -131,16 +126,13 @@ export class Plugins {
     /////////////////////
     // PUBLIC FUNCTION //
     /////////////////////
-    public beatSaberConnection() {
+    public beatSaberConnection(): void {
         this.webSocketConnection(GlobalVariable.BeatSaberPlus, GlobalVariable.RETRY_NUMBER).then((socket: WebSocket) => {
             console.log("socket initialized on BeatSaberPlus!");
-            this.pluginsParameters.BSPlus = true;
             console.log("\n\n");
 
-            if (this.pluginsParameters.BSPlus && (!this.pluginsParameters.DataPuller || !this.pluginsParameters.HTTPStatus)) {
-                socket.onmessage = (data) => {
-                    this._bsPlus.dataParser(data);
-                }
+            socket.onmessage = (data) => {
+                this._bsPlus.dataParser(data);
             }
         }, () => {
             console.log("init of BeatSaberPlus socket failed!");
@@ -148,13 +140,10 @@ export class Plugins {
 
             this.webSocketConnection(GlobalVariable.HttpStatus, GlobalVariable.RETRY_NUMBER).then((socket: WebSocket) => {
                 console.log("socket initialized on HTTPSstatus!");
-                this.pluginsParameters.HTTPStatus = true;
                 console.log("\n\n");
 
-                if (this.pluginsParameters.HTTPStatus && (!this.pluginsParameters.DataPuller || !this.pluginsParameters.BSPlus)) {
-                    socket.onmessage = (data) => {
-                        this._httpStatus.dataParser(data);
-                    }
+                socket.onmessage = (data) => {
+                    this._httpStatus.dataParser(data);
                 }
             }, () => {
                 console.log("init of HTTPSstatus socket failed!");
@@ -162,32 +151,25 @@ export class Plugins {
 
                 this.webSocketConnection(GlobalVariable.DataPuller, GlobalVariable.RETRY_NUMBER, GlobalVariable.DataPuller.endPoint.mapData).then((socket: WebSocket) => {
                     console.log("socket initialized on DataPuller MapData!");
-                    this.pluginsParameters.DataPuller = true;
                     console.log("\n\n");
 
-                    if (this.pluginsParameters.DataPuller && (!this.pluginsParameters.BSPlus || !this.pluginsParameters.HTTPStatus)) {
-                        this.webSocketConnection(GlobalVariable.DataPuller, GlobalVariable.RETRY_NUMBER, GlobalVariable.DataPuller.endPoint.liveData).then((socket: WebSocket) => {
-                            console.log("socket initialized on DataPuller LiveData!");
-                            console.log("\n\n");
-
-                            socket.onmessage = (data) => {
-                                this._dataPuller.dataParser(data, "LiveData");
-                            }
-                        });
+                    this.webSocketConnection(GlobalVariable.DataPuller, GlobalVariable.RETRY_NUMBER, GlobalVariable.DataPuller.endPoint.liveData).then((socket: WebSocket) => {
+                        console.log("socket initialized on DataPuller LiveData!");
+                        console.log("\n\n");
 
                         socket.onmessage = (data) => {
-                            this._dataPuller.dataParser(data, "MapData");
+                            this._dataPuller.dataParser(data, "LiveData");
                         }
+                    });
+
+                    socket.onmessage = (data) => {
+                        this._dataPuller.dataParser(data, "MapData");
                     }
                 }, () => {
                     console.log("init of DataPuller socket failed!");
                     console.log("\n\n");
 
                     setTimeout(() => {
-                        this.pluginsParameters.BSPlus = false;
-                        this.pluginsParameters.HTTPStatus = false;
-                        this.pluginsParameters.DataPuller = false;
-
                         this.beatSaberConnection();
                     }, GlobalVariable.TIME_BEFORE_RETRY);
                 });

@@ -3,7 +3,7 @@ export class Template {
     /////////////////////
     // PUBLIC FUNCTION //
     /////////////////////
-    public loadFile(skinPath: string, skinFiles: string[], classCall: string) {
+    public loadFile(skinPath: string, skinFiles: string[], classCall: string): Promise<any> {
         return new Promise(resolve => {
             $(`link[rel=stylesheet][href*="./skins/${classCall}/"]`).remove();
             $(`script[src*="./skins/${classCall}/"]`).remove();
@@ -19,7 +19,10 @@ export class Template {
 
                 if (
                     skinFiles[i] == "index.html"
-                    || skinFiles[i] == "setup.html"
+                    || skinFiles[i] == "home.html"
+                    || skinFiles[i] == "general.html"
+                    || skinFiles[i] == "playerCard.html"
+                    || skinFiles[i] == "songCard.html"
                 ) {
                     $(`#${classCall}`).load(`${skinPath}${skinFiles[i]}`);
                 }
@@ -29,7 +32,7 @@ export class Template {
         });
     }
 
-    public refreshUI(data: object, classCall: string) {
+    public refreshUI(data: object, classCall: string): void {
         Object.entries(data).forEach(entry => {
             const [key, value] = entry;
 
@@ -47,6 +50,7 @@ export class Template {
                         case "playerFlag":
                             $("#" + key).css("background-image", "url('./pictures/country/" + value + ".svg')");
                             break;
+
                         case "avatar":
                             $("#" + key).css("background-image", "url('" + value + "')");
                             break;
@@ -82,9 +86,11 @@ export class Template {
                         case "ranked":
                             $("#" + key).css("display", (value) ? "inline-block" : "none");
                             break;
+
                         case "difficultyClass":
                             $("." + key).removeClass("ExpertPlus Expert Hard Normal Easy").addClass(value);
                             break;
+
                         case "timeToBarLength":
                             $("#" + key).css("width", value + "%");
                             break;
@@ -107,12 +113,15 @@ export class Template {
                     case "element":
                         htmlElement = value;
                         break;
+
                     case "removeClass":
                         $(htmlElement).removeClass(value);
                         break;
+
                     case "addClass":
                         $(htmlElement).addClass(value);
                         break;
+
                     case "modify":
                         Object.entries<string>(value).forEach(entry => {
                             let [key, value] = entry;
@@ -126,7 +135,7 @@ export class Template {
         });
     }
 
-    public accuracyToLetter(accuracy: number) {
+    public accuracyToLetter(accuracy: number): string {
         if (accuracy >= 90) {
             return "SS";
         }

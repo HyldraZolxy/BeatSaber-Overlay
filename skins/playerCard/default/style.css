@@ -2,7 +2,6 @@
     == REUSED TAGS ==
     =================
 */
-
 .hiddenFirstLeft {
     animation: hiddenElementFirstLeft 3s;
     transition: opacity 3s;

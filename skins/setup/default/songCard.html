@@ -1,0 +1,35 @@
+<button class="returnButton">< Return</button>
+<button class="closeButton">&times;</button>
+
+<div id="headerSetup">
+    <h1>Song Card Settings</h1>
+
+    <hr />
+</div>
+
+<div id="parametersSetup">
+    <p>
+        <label for="songCardSkin">Skin:</label>
+        <select id="songCardSkin" name="songCardSkin">
+            <option value="">-- Please choose an option --</option>
+            <option value="default">Default</option>
+            <option value="freemium">Freemium</option>
+        </select>
+    </p>
+
+    <p>
+        <label for="songCardPosition">Position:</label>
+        <select id="songCardPosition" name="songCardPosition">
+            <option value="">-- Please choose an option --</option>
+            <option value="top-left">Top-left</option>
+            <option value="top-right">Top-right</option>
+            <option value="bottom-left">bottom-left</option>
+            <option value="bottom-right">bottom-right</option>
+        </select>
+    </p>
+
+    <p>
+        <label for="songCardScale">Scale:</label>
+        <input type="range" min="0.50" max="1.70" step="0.01" id="songCardScale" />
+    </p>
+</div>

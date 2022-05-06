@@ -23,23 +23,28 @@ export class HTTPStatus {
                 console.log("%cBeat Saber " + dataEvent.status.game.gameVersion + " | HTTPStatus " + dataEvent.status.game.pluginVersion, "background-color: green;");
                 console.log("\n\n");
 
-                this._playerCard.playerCardParameters.needUpdate = true;
-                this._playerCard.playerCardParameters.display = true;
                 this._songCard.songCardParameters.finished = true;
 
+                this._playerCard.playerCardParameters.needUpdate = true;
+                this._playerCard.playerCardParameters.display = true;
+
                 if (dataEvent.status.beatmap !== null) {
-                    this._playerCard.playerCardParameters.display = false;
                     this._songCard.songCardParameters.started = true;
                     this._songCard.songCardParameters.finished = false;
+
+                    this._playerCard.playerCardParameters.display = false;
+
                     this.mapInfoParser(dataEvent.status.beatmap);
 
                     if (dataEvent.status.beatmap.paused !== null) {
                         this._songCard.songCardParameters.paused = true;
                         this._songCard.songCardParameters.inProgress = false;
+
                         this._songCard.songCardData.time = dataEvent.status.beatmap.paused - dataEvent.status.beatmap.start;
                     } else {
                         this._songCard.songCardParameters.paused = false;
                         this._songCard.songCardParameters.inProgress = true;
+
                         this._songCard.songCardData.time = dataEvent.time - dataEvent.status.beatmap.start;
                     }
 
@@ -49,9 +54,11 @@ export class HTTPStatus {
                 break;
 
             case "songStart":
-                this._playerCard.playerCardParameters.display = false;
                 this._songCard.songCardParameters.started = true;
                 this._songCard.songCardParameters.inProgress = true;
+
+                this._playerCard.playerCardParameters.display = false;
+
                 this.mapInfoParser(dataEvent.status.beatmap);
                 break;
 
@@ -67,13 +74,14 @@ export class HTTPStatus {
 
             case "finished":
                 this._songCard.songCardParameters.finished = true;
-                this._songCard.songCardParameters.started = false;
-                this._songCard.songCardParameters.inProgress = false;
+
+                this._playerCard.playerCardParameters.needUpdate = true;
                 break;
 
             case "menu":
                 this._songCard.songCardParameters.started = false;
                 this._songCard.songCardParameters.inProgress = false;
+
                 this._playerCard.playerCardParameters.display = true;
                 break;
 
@@ -114,7 +122,7 @@ export class HTTPStatus {
         this._songCard.songCardData.accuracy = +(((scoreInfo.score * 100) / scoreInfo.currentMaxScore).toFixed(2));
     }
 
-    public dataParser(data: any) {
+    public dataParser(data: any): void {
         let dataParsed = JSON.parse(data.data);
         this.eHandler(dataParsed);
     }

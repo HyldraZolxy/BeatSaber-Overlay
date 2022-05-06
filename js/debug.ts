@@ -1,4 +1,6 @@
-/// TODO: FOR FUTUR
+/// TODO:   FOR FUTUR
+///         Store those message from many function
+///         Can store some notification
 
 export class Debug {
 

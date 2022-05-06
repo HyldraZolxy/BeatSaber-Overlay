@@ -34,11 +34,17 @@ export class DataPuller {
                     this._songCard.songCardParameters.started = true;
                     this._songCard.songCardParameters.inProgress = true;
                     this._songCard.songCardParameters.finished = false;
+
                     this._playerCard.playerCardParameters.display = false;
 
                     if (this.helloEvent) {
                         this.timeResolve = true;
                     }
+                } else { // MENU
+                    this._songCard.songCardParameters.started = false;
+                    this._songCard.songCardParameters.inProgress = false;
+
+                    this._playerCard.playerCardParameters.display = true;
                 }
 
                 if (dataEvent.LevelPaused) {
@@ -47,35 +53,33 @@ export class DataPuller {
                 }
 
                 if (dataEvent.LevelFinished) {
-                    this._songCard.songCardParameters.started = false;
-                    this._songCard.songCardParameters.inProgress = false;
                     this._songCard.songCardParameters.finished = true;
+
                     this._playerCard.playerCardParameters.needUpdate = true;
-                    this._playerCard.playerCardParameters.display = true;
                 }
 
                 if (dataEvent.LevelQuit) {
-                    this._songCard.songCardParameters.started = false;
-                    this._songCard.songCardParameters.inProgress = false;
                     this._songCard.songCardParameters.finished = false;
-                    this._playerCard.playerCardParameters.display = true;
                 }
 
                 if (this.helloEvent) {
                     console.log("%cBeat Saber " + dataEvent.GameVersion + " | DataPuller " + dataEvent.PluginVersion, "background-color: green;");
                     console.log("\n\n");
 
-                    this._playerCard.playerCardParameters.needUpdate = true;
-                    this._playerCard.playerCardParameters.display = true;
                     this._songCard.songCardParameters.finished = true;
+
+                    this._playerCard.playerCardParameters.needUpdate = true;
+
                     this.helloEvent = false;
                 }
                 break;
+
             case "LiveData":
                 this.scoreParser(dataEvent);
 
                 if (this.timeResolve) {
                     this._songCard.songCardData.time = dataEvent.TimeElapsed * 1000;
+
                     this.timeResolve = false;
 
                     if (this._songCard.songCardParameters.paused) {
@@ -137,7 +141,7 @@ export class DataPuller {
         }
     }
 
-    public dataParser(data: any, endPoint: string) {
+    public dataParser(data: any, endPoint: string): void {
         let dataParsed = JSON.parse(data.data);
         this.eHandler(dataParsed, endPoint);
     }

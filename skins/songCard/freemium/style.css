@@ -1,3 +1,7 @@
+/*  ==================
+    == GENERAL TAGS ==
+    ==================
+*/
 .hidden {
     transition: opacity 2s;
     opacity: 0;
@@ -138,9 +142,9 @@
 }
 
 #songData {
-    width: 400px;
-    height: 25px;
-    bottom: -25px;
+    min-width: 150px;
+    height: 50px;
+    margin-top: -25px;
 
     position: absolute;
 
@@ -149,54 +153,14 @@
     opacity: 0;
 }
 
-#songNameSubName {
-    width: 400px;
-    padding: 0 20px 0 20px;
-
-    position: absolute;
-
-    display: flex;
-    flex-direction: row;
-
-    line-height: 25px;
-
-    font-size: 23px;
+#songDataInfo {
     text-overflow: ellipsis;
     white-space: nowrap;
-    -webkit-text-stroke: 0.5px rgb(30, 30, 30);
-
-    animation: textSliding 15s linear infinite, textShowFirst 30s infinite;
-}
-
-#songAuthorMapper {
-    width: 400px;
-    padding: 0 20px 0 20px;
-
-    position: absolute;
-
-    display: flex;
-    flex-direction: row;
-
-    line-height: 25px;
-
-    font-size: 23px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    -webkit-text-stroke: 0.5px rgb(30, 30, 30);
-
-    animation: textSliding 15s linear infinite, textShowSecond 30s infinite;
-}
-
-#title {
-    margin-right: 10px;
-}
-
-#mapper {
-    margin-right: 10px;
+    animation: slide 20s infinite linear;
 }
 
 #mapper::before {
-    content: "[";
+    content: " - [";
 }
 
 #mapper::after {
@@ -257,6 +221,16 @@
     font-size: 20px;
 }
 
+@keyframes slide {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-150%);
+    }
+}
+
 @keyframes showElementCoverBarLeft {
     0% {
         transform: translate(-100%);
@@ -302,59 +276,5 @@
 
     100% {
         transform: translate(100%);
-    }
-}
-
-@keyframes textSliding {
-    0% {
-        transform: translateX(-150%);
-    }
-
-    100% {
-        transform: translateX(120%);
-    }
-}
-
-@keyframes textShowFirst {
-    0% {
-        opacity: 0;
-    }
-
-    5% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 1;
-    }
-
-    55% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 0;
-    }
-}
-
-@keyframes textShowSecond {
-    0% {
-        opacity: 1;
-    }
-
-    5% {
-        opacity: 0;
-    }
-
-    50% {
-        opacity: 0;
-    }
-
-    55% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 1;
     }
 }

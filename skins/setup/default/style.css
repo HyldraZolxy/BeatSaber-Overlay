@@ -1,104 +1,312 @@
+/*  ===================
+    == GENERAL SETUP ==
+    ===================
+*/
 #setup {
+    width: 400px;
+    height: 550px;
+    padding: 25px;
+
     top: 50vh;
     left: 50vw;
-    width: 500px;
-    height: 660px;
-    margin-top: -330px;
-    margin-left: -250px;
-    padding: 20px;
-
-    border-radius: 5px;
-
-    overflow: hidden;
+    margin-top: -275px;
+    margin-left: -200px;
 
     position: absolute;
 
-    background-color: rgba(46, 46, 46);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
 
+    background: linear-gradient(#879fd2, #b990d9);
+    box-shadow: 0 15px 50px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+
+    font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
     color: white;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
-#setup #closeButton {
-    position: absolute;
+.closeButton {
     width: 20px;
     height: 20px;
+
     right: 20px;
     top: 10px;
-    color: white;
+
+    position: absolute;
+
+    background: none;
+    border: none;
+
     font-size: 35px;
     font-weight: bold;
+
+    color: #e3e3e3;
+
     z-index: 1;
 }
 
-#setup #closeButton:hover,
-#setup #closeButton:focus {
-    color: red;
+.closeButton:hover {
+    color: #e03535;
+
     cursor: pointer;
 }
 
-#setup p {
+#headerSetup {
+    width: 100%;
+
     margin-top: 10px;
+
+    text-align: center;
+}
+
+#setup h1 {
+    font-weight: 100;
+    font-size: 2.5em;
+}
+
+#setup p {
+    font-weight: 300;
+    font-size: 0.9em;
 }
 
 #setup hr {
+    width: 100%;
+    height: 1px;
+
+    margin-top: 30px;
+    margin-bottom: 15px;
+
+    border: none;
+    background-color: rgba(227, 227, 227, 0.5);
+}
+
+.setupMenuButton {
+    width: 100%;
     margin-top: 10px;
     margin-bottom: 10px;
+
+    background: none;
+    border: 1px solid #e3e3e3;
+    border-radius: 50px;
+
+    color: #e3e3e3;
+
+    font-weight: 300;
+    font-size: 1.2em;
+    line-height: 2.5em;
+
+    cursor: pointer;
 }
-#setup label {
+
+.setupMenuButton:hover {
+    border: 1px solid #a8e7b3;
+
+    color: #a8e7b3;
+
+    cursor: pointer;
+}
+
+#urlTextSetup {
+    margin-top: 10px;
+    padding: 15px;
+
+    font-size: 1.2em;
+    font-weight: 500;
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 5px;
+}
+
+#urlTextSetup textarea {
     width: 100%;
-    display: inline-block;
-}
+    height: 24px;
 
-#setup input[type=text] {
-    width: 80%;
-    padding: 5px 10px;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    border-radius: 3px;
-}
-
-#setup input[type=button] {
-    width: 15%;
-    margin-left: 10px;
-    padding: 5px 10px;
-    display: inline-block;
+    background: none;
     border: none;
-    box-sizing: border-box;
+    border-bottom: 1px solid rgba(227, 227, 227, 0.5);
     border-radius: 3px;
-    background-color: #4949c7;
-    color: white;
+    outline: none;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    font-size: 0.7em;
+    color: #e3e3e3;
+
+    resize: none;
 }
 
-#setup input[type=button]:hover {
-    background-color: #5454cc;
+#footerMenuSetup {
+    width: 100%;
+
+    padding-top: 10px;
 }
 
-#setup select {
-    width: 80%;
+#footerMenuSetup p {
+    float: left;
+
+    font-weight: 100;
+    font-size: 0.8em;
+}
+
+#footerMenuSetup a {
+    color: #a8e7b3;
+
+    font-weight: 500;
+    text-decoration: none;
+}
+
+#ko_fi {
+    width: 110px;
+    height: 40px;
+
+    float: right;
+
+    text-align: center;
+    line-height: 40px;
+    border-left: 1px solid rgba(227, 227, 227, 0.5);
+}
+
+#ko_fi img {
+    width: 95px;
+    height: 35px;
+
+    margin-top: 2px;
+}
+
+.returnButton {
+    padding: 5px;
+
+    left: 20px;
+    top: 15px;
+
+    position: absolute;
+
+    background: none;
+    border: 1px solid rgba(227, 227, 227, 0.5);
+    border-radius: 5px;
+
+    font-size: 0.8em;
+    font-weight: 100;
+
+    color: #e3e3e3;
+
+    z-index: 1;
+}
+
+.returnButton:hover {
+    color: #a8e7b3;
+
+    border: 1px solid rgba(168, 231, 179, 0.5);
+
+    cursor: pointer;
+}
+
+/*  ===============================
+    == GENERAL SETUP OTHER PAGES ==
+    ===============================
+*/
+#parametersSetup {
+    width: 100%;
+}
+
+#moreSpaceSetup {
+    width: 100%;
+    height: 100px;
+}
+
+#parametersSetup p {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    padding: 15px;
+
+    font-size: 1.2em;
+    font-weight: 500;
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 5px;
+}
+
+#parametersSetup label {
+    width: 100%;
+
+    font-weight: 400;
+    font-style: italic;
+
+    display: inline-block;
+}
+
+#parametersSetup input[type="text"] {
+    width: 70%;
+
+    background: none;
+    border: none;
+    border-bottom: 1px solid rgba(227, 227, 227, 0.5);
+
+    line-height: 2em;
+
+    color: #e3e3e3;
+}
+
+#parametersSetup input[type="text"]:focus {
+    background: none;
+    border: none;
+    border-bottom: 1px solid rgba(227, 227, 227, 0.5);
+    outline: none;
+}
+
+#parametersSetup input[type="text"]::placeholder {
+    color: #e3e3e3;
+}
+
+#parametersSetup input[type="button"] {
+    width: 25%;
+    padding: 5px;
+
+    float: right;
+
+    background: none;
+    border: 1px solid rgba(227, 227, 227, 0.5);
+    border-radius: 5px;
+
+    line-height: 1.5em;
+
+    color: #e3e3e3;
+
+    cursor: pointer;
+}
+
+#parametersSetup input[type="button"]:hover {
+    color: #a8e7b3;
+    background-color: rgba(168, 231, 179, 0.08);
+
+    border: 1px solid rgba(168, 231, 179, 0.5);
+}
+
+#parametersSetup select {
+    width: 100%;
+
     margin-bottom: 10px;
     padding: 5px 10px;
+
+    background: none;
     border: none;
-    border-radius: 3px;
-    background-color: #f1f1f1;
+    border-bottom: 1px solid rgba(227, 227, 227, 0.5);
+    outline: none;
+
+    color: #e3e3e3;
 }
 
-#setup input[type=range] {
+#parametersSetup select:focus {
+    color: #484848;
+}
+
+#parametersSetup input[type="range"] {
     width: 100%;
     height: 10px;
-    background-color: #8d8d8d;
+    background-color: #c0c0c0;
     outline: none;
     border-radius: 3px;
-}
-
-#setup textarea {
-    width: 100%;
-    height: 90px;
-    margin-bottom: 10px;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 3px;
-    background-color: #f1f1f1;
-    resize: none;
 }

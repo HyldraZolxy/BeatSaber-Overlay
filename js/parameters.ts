@@ -14,7 +14,6 @@ export class Parameters {
     ////////////////////////////
     // PRIVATE CLASS VARIABLE //
     ////////////////////////////
-    // private _tools: Tools;
     private _playerCard: PlayerCard;
     private _songCard: SongCard;
     private _plugins: Plugins;
@@ -24,10 +23,8 @@ export class Parameters {
     //////////////////////
     private _urlParameters: URLSearchParams;
     private _isParametersExist!: boolean;
-    // private _token!: string;
 
     constructor() {
-        // this._tools = new Tools();
         this._playerCard = PlayerCard.Instance;
         this._songCard = SongCard.Instance;
         this._plugins = Plugins.Instance;
@@ -35,16 +32,12 @@ export class Parameters {
         this._urlParameters = new URLSearchParams(GlobalVariable.URL_NAV);
         this.findParameters();
         this.findParameters(GlobalVariable.URL_PARAMS_ALLOWED);
-
-        // (async () => {
-        //     await this.setTokenParameters();
-        // })();
     }
 
     //////////////////////
     // PRIVATE FUNCTION //
     //////////////////////
-    private findParameters(parameter?: Array<string>): void {
+    private findParameters(parameter?: Array<string>) {
         if (parameter == undefined) {
             (GlobalVariable.URL_NAV) ? this._isParametersExist = true : this._isParametersExist = false;
         } else {
@@ -69,21 +62,13 @@ export class Parameters {
     /////////////////////
     public parseParameters(parametersName: string, parametersValue: string): boolean {
         switch(parametersName) {
-            // case "token":
-            //     if (parametersValue.length === GlobalVariable.TOKEN_LENGTH) {
-            //         if (!RegExp(/[^-~._\w]/).test(parametersValue)) {
-            //             return true;
-            //         }
-            //     }
-            //     return false;
-
             case "ip":
                 return RegExp(/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/).test(parametersValue);
 
             case "pid":
                 return RegExp(/^-?\d+$/).test(parametersValue);
 
-            // case "playerCardSkin":
+            // case "pcsk":
             //     return GlobalVariable.SKIN_PLAYER_CARD.hasOwnProperty(parametersValue);
 
             case "scsk":
@@ -104,10 +89,6 @@ export class Parameters {
 
     public addParameters(parametersName: string, parametersValue: string): void {
         switch(parametersName) {
-            // case "token":
-            //     this.token = parametersValue;
-            //     break;
-
             case "ip":
                 this.ip = parametersValue;
                 break;
@@ -142,133 +123,6 @@ export class Parameters {
         }
     }
 
-    /*private async setTokenParameters() {
-        if ((this._token !== null) && (this._token.length === GlobalVariable.TOKEN_LENGTH)) {
-            const formData = {
-                token: this._token,
-                function: "search"
-            };
-
-            let dataJson = await this._tools.postMethod(GlobalVariable.URL_TOKEN_SCRIPT, formData);
-
-            if ("errorMessage" in dataJson) {
-                /// TODO: USE DEBUG CLASS FOR SAVE THE MESSAGE LATER
-            }
-
-            if ("successMessage" in dataJson) {
-                /// TODO: USE DEBUG CLASS FOR SAVE THE MESSAGE LATER
-
-                Object.entries(dataJson).forEach(entry => {
-                    const [key, value] = entry;
-                    
-                    switch(key) {
-                        case "playerCard":
-                            Object.entries<string>(value).forEach(entry => {
-                                const [key, value] = entry;
-
-                                if (key in this._playerCard.playerCardParameters) {
-                                    switch(key) {
-                                        // case "disabled":
-                                        // case "alwaysShown":
-                                        //     this._playerCard.playerCardParameters[key] = (value === "true");
-                                        //     break;
-
-                                        case "position":
-                                        case "skin":
-                                        case "playerId":
-                                            this._playerCard.playerCardParameters[key] = value;
-                                            break;
-                                        case "scale":
-                                            this._playerCard.playerCardParameters[key] = +(value);
-                                            break;
-                                    }
-                                }
-                            });
-                            break;
-                        case "songCard":
-                            Object.entries<string>(value).forEach(entry => {
-                                const [key, value] = entry;
-        
-                                if (key in this._songCard.songCardParameters) {
-                                    switch(key) {
-                                        // case "disabled":
-                                        // case "alwaysShown":
-                                        //     this._songCard.songCardParameters[key] = (value === "true");
-                                        //     break;
-
-                                        case "position":
-                                        case "skin":
-                                            this._playerCard.playerCardParameters[key] = value;
-                                            break;
-                                        case "scale":
-                                            this._playerCard.playerCardParameters[key] = +(value);
-                                            break;
-                                    }
-                                }
-                            });
-                            break;
-                    }
-                });
-            }
-        }
-    }*/
-
-    /*private async saveTokenParameters() {
-        const dataObject = {
-            playerCard: this._playerCard.playerCardParameters,
-            songCard: this._songCard.songCardParameters
-        };
-
-        const formData = {
-            token: this._token,
-            function: "save",
-            data: dataObject
-        };
-
-        let dataJson = await this._tools.postMethod(GlobalVariable.URL_TOKEN_SCRIPT, formData);
-
-        if ("errorMessage" in dataJson) {
-            /// TODO: USE DEBUG CLASS FOR SAVE THE MESSAGE LATER
-        }
-
-        if ("successMessage" in dataJson) {
-            /// TODO: USE DEBUG CLASS FOR SAVE THE MESSAGE LATER
-
-            Object.entries(dataJson).forEach(entry => {
-                const [key, value] = entry;
-
-                if (key === "token") {
-                    this.token = value;
-                }
-            });
-        }
-    }*/
-
-    /*private async updateTokenParameters() {
-        if ((this._token !== null) && (this._token.length === GlobalVariable.TOKEN_LENGTH)) {
-            const dataObject = {
-                playerCard: this._playerCard.playerCardParameters,
-                songCard: this._songCard.songCardParameters
-            };
-
-            const formData = {
-                token: this._token,
-                function: "update",
-                data: dataObject
-            };
-
-            let dataJson = await this._tools.postMethod(GlobalVariable.URL_TOKEN_SCRIPT, formData);
-
-            if ("errorMessage" in dataJson) {
-                /// TODO: USE DEBUG CLASS FOR SAVE THE MESSAGE LATER
-            }
-
-            if ("successMessage" in dataJson) {
-                /// TODO: USE DEBUG CLASS FOR SAVE THE MESSAGE LATER
-            }
-        }
-    }*/
-
     /////////////
     // GETTERS //
     /////////////
@@ -279,10 +133,6 @@ export class Parameters {
     /////////////
     // SETTERS //
     /////////////
-    // private set token(tokenValue: string) {
-    //     this._token = tokenValue;
-    // }
-
     private set ip(ipValue: string) {
         this._plugins.pluginsParameters.ip = ipValue;
     }

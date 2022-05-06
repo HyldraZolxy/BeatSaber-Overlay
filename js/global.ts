@@ -7,6 +7,12 @@ export namespace GlobalVariable {
     export const URL_TOKEN_SCRIPT = "./php/token.php";
     export const BEATSAVER_API_URL = "https://api.beatsaver.com/";
     export const SCORESABER_API_PROXY_URL = "./php/scoreSaberProxy.php";
+    export enum DISPLAY_POSITION_NAME {
+        TOP_LEFT,
+        TOP_RIGHT,
+        BOTTOM_LEFT,
+        BOTTOM_RIGHT
+    }
     export const DISPLAY_POSITION = [
         "top-left",
         "top-right",
@@ -41,6 +47,9 @@ export namespace GlobalVariable {
     /////////////////////////////////
     // PLAYER CARD GLOBAL VARIABLE //
     /////////////////////////////////
+    export enum SKIN_NAME_PLAYER_CARD {
+        DEFAULT
+    }
     export const SKIN_PLAYER_CARD = [
         "default"
     ];
@@ -52,6 +61,10 @@ export namespace GlobalVariable {
     // SONGCARD GLOBAL VARIABLE //
     //////////////////////////////
     export const MS_TIMER = 100;
+    export enum SKIN_NAME_SONG_CARD {
+        DEFAULT,
+        FREEMIUM
+    }
     export const SKIN_SONG_CARD = [
         "default",
         "freemium"
@@ -64,7 +77,7 @@ export namespace GlobalVariable {
     /////////////////////////////
     // PLUGINS GLOBAL VARIABLE //
     /////////////////////////////
-    export const TIMEOUT_MS = 1000;
+    export const TIMEOUT_MS = 2000;
     export const TIME_BEFORE_RETRY = 10000;
     export const RETRY_NUMBER = 2;
 
@@ -96,12 +109,18 @@ export namespace GlobalVariable {
     ///////////////////////////
     // SETUP GLOBAL VARIABLE //
     ///////////////////////////
+    export const WAIT_TIME = 500;
+    export enum SKIN_NAME_SETUP {
+        DEFAULT
+    }
     export const SKIN_SETUP = [
         "default"
     ];
     export const SkinFilesSetup = {
         home: ["home.html", "style.css"],
-        setup: ["setup.html", "style.css"],
+        general: ["general.html", "style.css"],
+        playerCard: ["playerCard.html", "style.css"],
+        songCard: ["songCard.html", "style.css"],
         empty: []
     };
 

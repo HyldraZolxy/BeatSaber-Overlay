@@ -41,8 +41,8 @@ export class PlayerCard {
         display: false,
         needUpdate: false,
 
-        position: GlobalVariable.DISPLAY_POSITION[0],
-        skin: GlobalVariable.SKIN_PLAYER_CARD[0],
+        position: GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_LEFT],
+        skin: GlobalVariable.SKIN_PLAYER_CARD[GlobalVariable.SKIN_NAME_PLAYER_CARD.DEFAULT],
         playerId: "0",
         scale: 1
     };
@@ -103,8 +103,9 @@ export class PlayerCard {
     /////////////////////
     // PUBLIC FUNCTION //
     /////////////////////
-    public async loadSkin(skin: string) {
+    public async loadSkin(skin: string): Promise<void> {
         const skinPath = this.skinUrl + skin + "/";
+
         if (skin in GlobalVariable.SkinFilesPlayerCard) {
             for (const entries of Object.entries(GlobalVariable.SkinFilesPlayerCard)) {
                 const [key, value] = entries;
@@ -116,13 +117,13 @@ export class PlayerCard {
         }
     }
 
-    public refreshPlayerCard(data: object) {
+    public refreshPlayerCard(data: object): void {
         this._template.refreshUI(data, "playerCard");
     }
 
-    public toggleDisplay() {
+    public toggleDisplay(): void {
         switch(this.playerCardParameters.skin) {
-            case GlobalVariable.SKIN_PLAYER_CARD[0]:
+            case GlobalVariable.SKIN_PLAYER_CARD[GlobalVariable.SKIN_NAME_PLAYER_CARD.DEFAULT]:
                 let tasks = {};
 
                 if (this.playerCardParameters.display && (this.playerCardParameters.playerId !== "0")) {
@@ -136,8 +137,8 @@ export class PlayerCard {
                             element: $("#playerData"),
                             removeClass: "hiddenFirstLeft hiddenFirstRight",
                             addClass: (
-                                (this.playerCardParameters.position === GlobalVariable.DISPLAY_POSITION[1])
-                                || (this.playerCardParameters.position === GlobalVariable.DISPLAY_POSITION[3])
+                                (this.playerCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT])
+                                || (this.playerCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT])
                             ) ? "showSecondRight" : "showSecondLeft"
                         }
                     };
@@ -152,8 +153,8 @@ export class PlayerCard {
                             element: $("#playerData"),
                             removeClass: "showSecondLeft showSecondRight",
                             addClass: (
-                                (this.playerCardParameters.position === GlobalVariable.DISPLAY_POSITION[1])
-                                || (this.playerCardParameters.position === GlobalVariable.DISPLAY_POSITION[3])
+                                (this.playerCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT])
+                                || (this.playerCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT])
                             ) ? "hiddenFirstRight" : "hiddenFirstLeft"
                         }
                     };
@@ -178,7 +179,7 @@ export class PlayerCard {
         this._template.refreshUITemplate(tasks);
     }
 
-    public cornerSwitch() {
+    public cornerSwitch(): void {
         let tasks = {};
 
         tasks = {
@@ -192,10 +193,10 @@ export class PlayerCard {
         this._template.refreshUITemplate(tasks);
 
         switch(this.playerCardParameters.skin) {
-            case GlobalVariable.SKIN_PLAYER_CARD[0]:
+            case GlobalVariable.SKIN_PLAYER_CARD[GlobalVariable.SKIN_NAME_PLAYER_CARD.DEFAULT]:
                 switch(this.playerCardParameters.position) {
-                    case GlobalVariable.DISPLAY_POSITION[1]:
-                    case GlobalVariable.DISPLAY_POSITION[3]:
+                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT]:
+                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT]:
                         tasks = {
                             task_1: {
                                 element: $("#playerCard"),

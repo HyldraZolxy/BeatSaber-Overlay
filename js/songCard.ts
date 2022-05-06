@@ -39,8 +39,8 @@ export class SongCard {
         // disabled: false,
         // alwaysShown: false,
 
-        position: GlobalVariable.DISPLAY_POSITION[0],
-        skin: GlobalVariable.SKIN_PLAYER_CARD[0],
+        position: GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_LEFT],
+        skin: GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.DEFAULT],
         scale: 1,
 
         started: false,
@@ -145,11 +145,11 @@ export class SongCard {
 
             default:
                 accuracyLetterToClass =  "sClass";
-                break;
+                break
         }
 
         switch(this.songCardParameters.skin) {
-            case GlobalVariable.SKIN_SONG_CARD[1]:
+            case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.FREEMIUM]:
                 tasks = {
                     task_1: {
                         element: $("#accuracyToLetters"),
@@ -167,7 +167,7 @@ export class SongCard {
         let tasks = {};
 
         switch(this.songCardParameters.skin) {
-            case GlobalVariable.SKIN_SONG_CARD[1]:
+            case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.FREEMIUM]:
                 tasks = {
                     task_1: {
                         element: $("#songCard"),
@@ -195,15 +195,16 @@ export class SongCard {
         }, GlobalVariable.MS_TIMER);
     }
 
-    public timerToBar() {
-        this.songCardData.timeToBarLength = ((100 * this.songCardData.time) / this.songCardData.totalTime) * this.songCardData.speedModifier;
-    }
-
     /////////////////////
     // PUBLIC FUNCTION //
     /////////////////////
-    public async loadSkin(skin: string) {
+    public timerToBar(): void {
+        this.songCardData.timeToBarLength = ((100 * this.songCardData.time) / this.songCardData.totalTime) * this.songCardData.speedModifier;
+    }
+
+    public async loadSkin(skin: string): Promise<void> {
         const skinPath = this.skinUrl + skin + "/";
+
         if (skin in GlobalVariable.SkinFilesSongCard) {
             for (const entries of Object.entries(GlobalVariable.SkinFilesSongCard)) {
                 const [key, value] = entries;
@@ -215,15 +216,15 @@ export class SongCard {
         }
     }
     
-    public refreshSongCard(data: object) {
+    public refreshSongCard(data: object): void {
         this._template.refreshUI(data, "songCard");
     }
 
-    public toggleDisplay() {
+    public toggleDisplay(): void {
         let tasks = {};
 
         switch(this.songCardParameters.skin) {
-            case GlobalVariable.SKIN_SONG_CARD[1]:
+            case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.FREEMIUM]:
                 if (this.songCardParameters.started) {
                     tasks = {
                         task_1: {
@@ -235,8 +236,8 @@ export class SongCard {
                             element: $("#songDataCover"),
                             removeClass: "hiddenDescBarLeft hiddenDescBarRight",
                             addClass: (
-                                (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[1])
-                                || (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[3])
+                                (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT])
+                                || (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT])
                             ) ? "showDescBarRight" : "showDescBarLeft"
                         },
                         task_3: {
@@ -256,8 +257,8 @@ export class SongCard {
                             element: $("#songDataCover"),
                             removeClass: "showDescBarLeft showDescBarRight",
                             addClass: (
-                                (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[1])
-                                || (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[3])
+                                (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT])
+                                || (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT])
                             ) ? "hiddenDescBarRight" : "hiddenDescBarLeft"
                         },
                         task_3: {
@@ -273,7 +274,7 @@ export class SongCard {
                 this._template.refreshUITemplate(tasks);
                 break;
 
-            case GlobalVariable.SKIN_SONG_CARD[0]:
+            case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.DEFAULT]:
                 if (this.songCardParameters.started) {
                     tasks = {
                         task_1: {
@@ -285,8 +286,8 @@ export class SongCard {
                             element: $("#songData"),
                             removeClass: "hiddenFirstLeft hiddenFirstRight",
                             addClass: (
-                                (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[1])
-                                || (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[3])
+                                (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT])
+                                || (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT])
                             ) ? "showSecondRight" : "showSecondLeft"
                         }
                     };
@@ -301,8 +302,8 @@ export class SongCard {
                             element: $("#songData"),
                             removeClass: "showSecondLeft showSecondRight",
                             addClass: (
-                                (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[1])
-                                || (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[3])
+                                (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT])
+                                || (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT])
                             ) ? "hiddenFirstRight" : "hiddenFirstLeft"
                         }
                     };
@@ -313,7 +314,7 @@ export class SongCard {
         }
     }
 
-    public displayScale() {
+    public displayScale(): void {
         let tasks = {
             task_1: {
                 element: $("#songCard"),
@@ -327,7 +328,7 @@ export class SongCard {
         this._template.refreshUITemplate(tasks);
     }
 
-    public cornerSwitch() {
+    public cornerSwitch(): void {
         let tasks = {};
 
         tasks = {
@@ -341,61 +342,9 @@ export class SongCard {
         this._template.refreshUITemplate(tasks);
 
         switch(this.songCardParameters.skin) {
-            case GlobalVariable.SKIN_SONG_CARD[1]:
+            case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.FREEMIUM]:
                 switch(this.songCardParameters.position) {
-                    case GlobalVariable.DISPLAY_POSITION[1]:
-                    case GlobalVariable.DISPLAY_POSITION[3]:
-                        tasks = {
-                            task_1: {
-                                element: $("#songCard"),
-                                modify: {
-                                    flex_direction: "row-reverse",
-                                    text_align: "right"
-                                }
-                            },
-                            task_2: {
-                                element: $(".descBar"),
-                                modify: {
-                                    float: "right",
-                                    clear: "right",
-                                    padding: "3px 5px 2px 15px",
-                                    clip_path: "polygon(0 0, 100% 0, 100% 100%, 10% 100%)"
-                                }
-                            },
-                            task_3: {
-                                element: $("#songAccuracyDiv"),
-                                modify: {
-                                    clip_path: "polygon(0 0, 100% 0, 100% 100%, 100% 100%)",
-                                    border_top_left_radius: "",
-                                    border_top_right_radius: "5px"
-                                }
-                            },
-                            task_4: {
-                                element: $("#accuracy"),
-                                modify: {
-                                    transform: "rotate(45deg)",
-                                    margin_left: "0",
-                                    margin_right: "-15px"
-                                }
-                            },
-                            task_5: {
-                                element: $("#songAccuracyLetterDiv"),
-                                modify: {
-                                    margin_top: "-20px",
-                                    margin_left: "0",
-                                    margin_right: "-20px"
-                                }
-                            },
-                            task_6: {
-                                element: $("#accuracyToLetters"),
-                                modify: {
-                                    transform: "rotate(45deg)"
-                                }
-                            }
-                        }
-                        break;
-
-                    default:
+                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_LEFT]:
                         tasks = {
                             task_1: {
                                 element: $("#songCard"),
@@ -442,16 +391,193 @@ export class SongCard {
                                 modify: {
                                     transform: "rotate(-45deg)"
                                 }
+                            },
+                            task_7: {
+                                element: $("#songData"),
+                                modify: {
+                                    margin_top: "-25px",
+                                }
+                            }
+                        }
+                        break;
+
+                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT]:
+                        tasks = {
+                            task_1: {
+                                element: $("#songCard"),
+                                modify: {
+                                    flex_direction: "row-reverse",
+                                    text_align: "right"
+                                }
+                            },
+                            task_2: {
+                                element: $(".descBar"),
+                                modify: {
+                                    float: "right",
+                                    clear: "right",
+                                    padding: "3px 5px 2px 15px",
+                                    clip_path: "polygon(0 0, 100% 0, 100% 100%, 10% 100%)"
+                                }
+                            },
+                            task_3: {
+                                element: $("#songAccuracyDiv"),
+                                modify: {
+                                    clip_path: "polygon(0 0, 100% 0, 100% 100%, 100% 100%)",
+                                    border_top_left_radius: "",
+                                    border_top_right_radius: "5px"
+                                }
+                            },
+                            task_4: {
+                                element: $("#accuracy"),
+                                modify: {
+                                    transform: "rotate(45deg)",
+                                    margin_left: "0",
+                                    margin_right: "-15px"
+                                }
+                            },
+                            task_5: {
+                                element: $("#songAccuracyLetterDiv"),
+                                modify: {
+                                    margin_top: "-20px",
+                                    margin_left: "0",
+                                    margin_right: "-20px"
+                                }
+                            },
+                            task_6: {
+                                element: $("#accuracyToLetters"),
+                                modify: {
+                                    transform: "rotate(45deg)"
+                                }
+                            },
+                            task_7: {
+                                element: $("#songData"),
+                                modify: {
+                                    margin_top: "-25px",
+                                }
+                            }
+                        }
+                        break;
+
+                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_LEFT]:
+                        tasks = {
+                            task_1: {
+                                element: $("#songCard"),
+                                modify: {
+                                    flex_direction: "row",
+                                    text_align: "left"
+                                }
+                            },
+                            task_2: {
+                                element: $(".descBar"),
+                                modify: {
+                                    float: "left",
+                                    clear: "left",
+                                    padding: "3px 15px 2px 5px",
+                                    clip_path: "polygon(0 0, 100% 0, 90% 100%, 0% 100%)"
+                                }
+                            },
+                            task_3: {
+                                element: $("#songAccuracyDiv"),
+                                modify: {
+                                    clip_path: "polygon(0 0, 100% 0, 0 100%, 0% 100%)",
+                                    border_top_left_radius: "5px",
+                                    border_top_right_radius: ""
+                                }
+                            },
+                            task_4: {
+                                element: $("#accuracy"),
+                                modify: {
+                                    transform: "rotate(-45deg)",
+                                    margin_left: "-15px",
+                                    margin_right: ""
+                                }
+                            },
+                            task_5: {
+                                element: $("#songAccuracyLetterDiv"),
+                                modify: {
+                                    margin_top: "-20px",
+                                    margin_left: "-20px",
+                                    margin_right: "0"
+                                }
+                            },
+                            task_6: {
+                                element: $("#accuracyToLetters"),
+                                modify: {
+                                    transform: "rotate(-45deg)"
+                                }
+                            },
+                            task_7: {
+                                element: $("#songData"),
+                                modify: {
+                                    margin_top: "145px",
+                                }
+                            }
+                        }
+                        break;
+
+                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT]:
+                        tasks = {
+                            task_1: {
+                                element: $("#songCard"),
+                                modify: {
+                                    flex_direction: "row-reverse",
+                                    text_align: "right"
+                                }
+                            },
+                            task_2: {
+                                element: $(".descBar"),
+                                modify: {
+                                    float: "right",
+                                    clear: "right",
+                                    padding: "3px 5px 2px 15px",
+                                    clip_path: "polygon(0 0, 100% 0, 100% 100%, 10% 100%)"
+                                }
+                            },
+                            task_3: {
+                                element: $("#songAccuracyDiv"),
+                                modify: {
+                                    clip_path: "polygon(0 0, 100% 0, 100% 100%, 100% 100%)",
+                                    border_top_left_radius: "",
+                                    border_top_right_radius: "5px"
+                                }
+                            },
+                            task_4: {
+                                element: $("#accuracy"),
+                                modify: {
+                                    transform: "rotate(45deg)",
+                                    margin_left: "0",
+                                    margin_right: "-15px"
+                                }
+                            },
+                            task_5: {
+                                element: $("#songAccuracyLetterDiv"),
+                                modify: {
+                                    margin_top: "-20px",
+                                    margin_left: "0",
+                                    margin_right: "-20px"
+                                }
+                            },
+                            task_6: {
+                                element: $("#accuracyToLetters"),
+                                modify: {
+                                    transform: "rotate(45deg)"
+                                }
+                            },
+                            task_7: {
+                                element: $("#songData"),
+                                modify: {
+                                    margin_top: "145px",
+                                }
                             }
                         }
                         break;
                 }
                 break;
 
-            case GlobalVariable.SKIN_SONG_CARD[0]:
+            case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.DEFAULT]:
                 switch(this.songCardParameters.position) {
-                    case GlobalVariable.DISPLAY_POSITION[1]:
-                    case GlobalVariable.DISPLAY_POSITION[3]:
+                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT]:
+                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT]:
                         tasks = {
                             task_1: {
                                 element: $("#songCard"),
@@ -481,7 +607,7 @@ export class SongCard {
         this._template.refreshUITemplate(tasks);
     }
 
-    public async beatSaverInfo(levelId: string) {
+    public async beatSaverInfo(levelId: string): Promise<void> {
         if (levelId.length === 40) {
             let dataJson: any = await this._tools.getMethod(GlobalVariable.BEATSAVER_API_URL + "maps/hash/" + levelId);
 

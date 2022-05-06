@@ -37,8 +37,8 @@ class Init {
     // PUBLIC FUNCTION //
     /////////////////////
     public async appInit() {
-        await this._playerCard.loadSkin(this._playerCard.playerCardParameters.skin);
         await this._songCard.loadSkin(this._songCard.songCardParameters.skin);
+        await this._playerCard.loadSkin(this._playerCard.playerCardParameters.skin);
 
         this._ui.refreshUI();
         this._plugins.beatSaberConnection();

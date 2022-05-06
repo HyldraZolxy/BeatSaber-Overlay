@@ -32,26 +32,33 @@ export class BSPlus {
                         this._songCard.songCardParameters.started = false;
                         this._songCard.songCardParameters.inProgress = false;
                         this._songCard.songCardParameters.finished = true;
+
                         this._playerCard.playerCardParameters.needUpdate = true;
                         this._playerCard.playerCardParameters.display = true;
                         break;
+
                     case "Playing":
                         this._songCard.songCardParameters.started = true;
                         this._songCard.songCardParameters.finished = false;
+
                         this._playerCard.playerCardParameters.display = false;
                         break;
                 }
                 break;
+
             case "mapInfo":
                 this.mapInfoParser(dataEvent.mapInfoChanged);
                 break;
+
             case "score":
                 this.scoreParser(dataEvent.scoreEvent);
                 break;
+
             case "pause":
                 this._songCard.songCardParameters.paused = true;
                 this._songCard.songCardParameters.inProgress = false;
                 break;
+
             case "resume":
                 this._songCard.songCardParameters.paused = false;
                 this._songCard.songCardParameters.inProgress = true;
@@ -69,7 +76,7 @@ export class BSPlus {
         this._songCard.songCardData.bsrKey = mapInfoData.BSRKey;
         this._songCard.songCardData.bpm = mapInfoData.BPM;
 
-        this._songCard.songCardData.difficulty = (mapInfoData.difficulty === "ExpertPlus") ? "Expert +" : mapInfoData.difficulty;;
+        this._songCard.songCardData.difficulty = (mapInfoData.difficulty === "ExpertPlus") ? "Expert +" : mapInfoData.difficulty;
         this._songCard.songCardData.difficultyClass = mapInfoData.difficulty;
 
         this._songCard.songCardData.ranked = false;
@@ -98,7 +105,7 @@ export class BSPlus {
     //     /// TODO: IMPLEMENT SPEED MULTIPLIER IN BSPLUS_MOD
     // }
 
-    public dataParser(data: any) {
+    public dataParser(data: any): void {
         let dataParsed = JSON.parse(data.data);
 
         if (dataParsed._type === "handshake") {
