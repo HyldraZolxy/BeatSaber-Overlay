@@ -77,7 +77,7 @@ export namespace GlobalVariable {
     /////////////////////////////
     // PLUGINS GLOBAL VARIABLE //
     /////////////////////////////
-    export const TIMEOUT_MS = 2000;
+    export const TIMEOUT_MS = 3500;
     export const TIME_BEFORE_RETRY = 10000;
     export const RETRY_NUMBER = 2;
 
