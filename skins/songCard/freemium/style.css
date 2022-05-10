@@ -55,7 +55,6 @@
     position: absolute;
 
     display: flex;
-    flex-direction: row;
 
     font-family: "walkway", Arial, serif;
     color: white;

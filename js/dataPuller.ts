@@ -99,8 +99,8 @@ export class DataPuller {
 
         this._songCard.songCardData.bpm = mapInfoData.BPM;
 
-        this._songCard.songCardData.difficulty = mapInfoData.Difficulty;
-        this._songCard.songCardData.difficultyClass = (mapInfoData.Difficulty === "Expert +") ? "ExpertPlus" : mapInfoData.Difficulty;
+        this._songCard.songCardData.difficulty = (mapInfoData.Difficulty === "ExpertPlus") ? "Expert +" : mapInfoData.Difficulty;
+        this._songCard.songCardData.difficultyClass = mapInfoData.Difficulty;
 
         this._songCard.songCardData.time = 0;
         this._songCard.songCardData.totalTime = mapInfoData.Length * 1000;
@@ -121,6 +121,8 @@ export class DataPuller {
 
     private scoreParser(scoreInfo: any) {
         this._songCard.songCardData.accuracy = +((scoreInfo.Accuracy).toFixed(2));
+        this._songCard.songCardData.score = scoreInfo.Score;
+        this._songCard.songCardData.combo = scoreInfo.Combo;
     }
 
     private speedParser(speedInfo: any) {

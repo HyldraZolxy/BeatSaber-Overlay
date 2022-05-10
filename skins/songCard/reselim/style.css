@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
+
+#songCard {
+    margin: 3% 3% 3% 3%;
+
+    display: flex;
+    flex-direction: column-reverse;
+
+    position: absolute;
+
+    font-family: "Montserrat", sans-serif;
+
+    color: white;
+
+    transition: all .5s;
+}
+
+/* Beatmap */
+
+#beatmap {
+    display: flex;
+}
+
+#cover {
+    width: 90px;
+    height: 90px;
+
+    overflow: hidden;
+    border-radius: 6px;
+    position: relative;
+}
+
+#meta {
+    display: flex;
+    flex-direction: column;
+
+    flex-grow: 1;
+    padding: 0 16px;
+}
+
+#text {
+    flex-grow: 1;
+
+    /* Fix text offset */
+    transform: translate(0, -5px);
+}
+
+#titles {
+    display: flex;
+    align-items: flex-end;
+}
+
+#title {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+#subTitle {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 4px 2px 4px;
+}
+
+#author {
+    display: block;
+    font-size: 16px;
+    font-weight: 400;
+    margin: 2px 0 0 0;
+}
+
+#difficulty, #bpm, #njs {
+    display: inline-block;
+
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+#difficulty {
+    padding: 4px 5px 4px 8px;
+
+    color: black;
+    background: white;
+    border-radius: 4px;
+}
+
+#bpm {
+    margin: 0 8px;
+}
+
+#bpm:after {
+    content: " BPM";
+}
+
+/* Progress */
+
+#cover svg {
+    transform: rotate(-90deg);
+}
+
+#cover div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 90px;
+    height: 90px;
+}
+
+#cover svg, #cover div {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#darken {
+    fill: black;
+    opacity: 0.5;
+}
+
+#remaining, #progress {
+    fill: transparent;
+    stroke: white;
+    stroke-width: 4px;
+}
+
+#remaining {
+    opacity: 0.25;
+}
+
+#progress {
+    stroke-dasharray: 188.495px, 188.495px;
+    stroke-dashoffset: 188.495px;
+}
+
+#timeToLetters {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Performance */
+
+#performance {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 20px 0;
+}
+
+.performance-group {
+    margin: 4px 0 0 0;
+}
+
+.performance-group .text {
+    display: inline-block;
+
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.performance-group .subtext {
+    display: inline-block;
+
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    opacity: 0.75;
+}
+
+#score {
+    display: block;
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+/* Animations and state */
+
+#songCard {
+    --show: cubic-bezier(0.19, 1, 0.22, 1) 300ms;
+    --hide: cubic-bezier(0.55, 0.085, 0.68, 0.53) 200ms;
+}
+
+#songCard #beatmap, #songCard #performance > * {
+    transition:
+            opacity var(--show),
+            transform var(--show);
+}
+
+#songCard.hidden #beatmap, #songCard.hidden #performance > * {
+    opacity: 0;
+    transform: translate(0, 15px);
+    transition:
+            opacity var(--hide),
+            transform var(--hide);
+}
+
+#songCard #performance > *:nth-child(3) {
+    transition-delay: 100ms !important;
+}
+
+#songCard #performance > *:nth-child(2) {
+    transition-delay: 200ms !important;
+}
+
+#songCard #performance > *:nth-child(1) {
+    transition-delay: 300ms !important;
+}

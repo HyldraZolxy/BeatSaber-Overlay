@@ -120,6 +120,8 @@ export class HTTPStatus {
 
     private scoreParser(scoreInfo: any) {
         this._songCard.songCardData.accuracy = +(((scoreInfo.score * 100) / scoreInfo.currentMaxScore).toFixed(2));
+        this._songCard.songCardData.score = scoreInfo.score;
+        this._songCard.songCardData.combo = scoreInfo.combo;
     }
 
     public dataParser(data: any): void {

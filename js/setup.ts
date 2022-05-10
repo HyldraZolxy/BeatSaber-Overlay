@@ -216,6 +216,10 @@ export class Setup {
                         case "freemium":
                             this._songCard.songCardParameters.skin = GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.FREEMIUM];
                             break;
+
+                        case "reselim":
+                            this._songCard.songCardParameters.skin = GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.RESELIM];
+                            break;
                     }
 
                     (async () => {

@@ -99,6 +99,8 @@ export class BSPlus {
 
     private scoreParser(scoreInfo: any) {
         this._songCard.songCardData.accuracy = +((scoreInfo.accuracy * 100).toFixed(2));
+        this._songCard.songCardData.score = scoreInfo.score;
+        this._songCard.songCardData.combo = scoreInfo.combo;
     }
 
     // private speedParser(speedInfo: any) {

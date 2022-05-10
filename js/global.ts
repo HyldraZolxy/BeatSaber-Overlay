@@ -63,15 +63,18 @@ export namespace GlobalVariable {
     export const MS_TIMER = 100;
     export enum SKIN_NAME_SONG_CARD {
         DEFAULT,
-        FREEMIUM
+        FREEMIUM,
+        RESELIM
     }
     export const SKIN_SONG_CARD = [
         "default",
-        "freemium"
+        "freemium",
+        "reselim"
     ];
     export const SkinFilesSongCard = {
         default: ["index.html", "style.css"],
-        freemium: ["index.html", "style.css"]
+        freemium: ["index.html", "style.css"],
+        reselim: ["index.html", "style.css"]
     };
 
     /////////////////////////////

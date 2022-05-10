@@ -73,6 +73,8 @@ export class Template {
                         case "timeToLetters":
                         case "accuracy":
                         case "accuracyToLetters":
+                        case "score":
+                        case "combo":
                             $("#" + key).text(value);
                             break;
                         

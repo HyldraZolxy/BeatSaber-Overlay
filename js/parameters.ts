@@ -1,5 +1,4 @@
 import { GlobalVariable } from "./global.js";
-// import { Tools } from "./tools.js";
 import { PlayerCard } from "./playerCard.js";
 import { SongCard } from "./songCard.js";
 import { Plugins } from "./plugins.js";

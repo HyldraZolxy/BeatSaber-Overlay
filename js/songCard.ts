@@ -73,6 +73,9 @@ export class SongCard {
         accuracy: number;
         accuracyToLetters: string;
 
+        score: number;
+        combo: number;
+
         speedModifier: number;
     } = {
         cover: "./pictures/default/defaultSong.jpg",
@@ -97,6 +100,9 @@ export class SongCard {
 
         accuracy: 98.56,
         accuracyToLetters: "SS",
+
+        score: 351,
+        combo: 3,
 
         speedModifier: 1
     };
@@ -186,7 +192,18 @@ export class SongCard {
             if (this.songCardParameters.started) {
                 if (this.songCardParameters.inProgress) {
                     this.songCardData.time += 100;
-                    this.timerToBar();
+                    if (
+                        this.songCardParameters.skin === GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.DEFAULT]
+                        || this.songCardParameters.skin === GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.FREEMIUM]
+                    ) {
+                        this.timerToBar();
+                    }
+
+                    if (this.songCardParameters.skin === GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.RESELIM]) {
+                        this.timerToBarRound();
+                    }
+
+                    this.timeToLetters();
                 }
             } else {
                 this.songCardData.time = 0;
@@ -200,6 +217,35 @@ export class SongCard {
     /////////////////////
     public timerToBar(): void {
         this.songCardData.timeToBarLength = ((100 * this.songCardData.time) / this.songCardData.totalTime) * this.songCardData.speedModifier;
+    }
+
+    public timerToBarRound(): void {
+        const radius = 30;
+        const circumference = radius * Math.PI * 2;
+
+        let percentage = Math.min(this.songCardData.time / this.songCardData.totalTime, 1);
+
+        let tasks = {
+            task_1: {
+                element: $("#progress"),
+                modify: {
+                    stroke_dashoffset: (1 - percentage) * circumference + "px"
+                }
+            }
+        }
+
+        this._template.refreshUITemplate(tasks);
+    }
+
+    public timeToLetters() {
+            let minutes = +(Math.floor((this.songCardData.time / 1000) / 60).toFixed(0));
+            let seconds: string|number = +(((this.songCardData.time / 1000) % 60).toFixed(0));
+
+            if (seconds < 10) {
+                seconds = "0" + seconds;
+            }
+
+            this.songCardData.timeToLetters = minutes + ":" + seconds;
     }
 
     public async loadSkin(skin: string): Promise<void> {
@@ -224,6 +270,25 @@ export class SongCard {
         let tasks = {};
 
         switch(this.songCardParameters.skin) {
+            case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.RESELIM]:
+                if (this.songCardParameters.started) {
+                    tasks = {
+                        task_1: {
+                            element: $("#songCard"),
+                            removeClass: "hidden"
+                        }
+                    }
+                } else {
+                    tasks = {
+                        task_1: {
+                            element: $("#songCard"),
+                            addClass: "hidden"
+                        }
+                    }
+                }
+
+                this._template.refreshUITemplate(tasks);
+                break;
             case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.FREEMIUM]:
                 if (this.songCardParameters.started) {
                     tasks = {
@@ -342,6 +407,82 @@ export class SongCard {
         this._template.refreshUITemplate(tasks);
 
         switch(this.songCardParameters.skin) {
+            case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.RESELIM]:
+                switch(this.songCardParameters.position) {
+                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_LEFT]:
+                        tasks = {
+                            task_1: {
+                                element: $("#songCard"),
+                                modify: {
+                                    flex_direction: "column-reverse",
+                                    text_align: "left"
+                                }
+                            },
+                            task_2: {
+                                element: $("#beatmap"),
+                                modify: {
+                                    flex_direction: "row"
+                                }
+                            }
+                        }
+                        break;
+
+                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT]:
+                        tasks = {
+                            task_1: {
+                                element: $("#songCard"),
+                                modify: {
+                                    flex_direction: "column-reverse",
+                                    text_align: "right"
+                                }
+                            },
+                            task_2: {
+                                element: $("#beatmap"),
+                                modify: {
+                                    flex_direction: "row-reverse"
+                                }
+                            }
+                        }
+                        break;
+
+                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_LEFT]:
+                        tasks = {
+                            task_1: {
+                                element: $("#songCard"),
+                                modify: {
+                                    flex_direction: "column",
+                                    text_align: "left"
+                                }
+                            },
+                            task_2: {
+                                element: $("#beatmap"),
+                                modify: {
+                                    flex_direction: "row"
+                                }
+                            }
+                        }
+                        break;
+
+                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT]:
+                        tasks = {
+                            task_1: {
+                                element: $("#songCard"),
+                                modify: {
+                                    flex_direction: "column",
+                                    text_align: "right"
+                                }
+                            },
+                            task_2: {
+                                element: $("#beatmap"),
+                                modify: {
+                                    flex_direction: "row-reverse"
+                                }
+                            }
+                        }
+                        break;
+                }
+                break;
+
             case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.FREEMIUM]:
                 switch(this.songCardParameters.position) {
                     case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_LEFT]:
