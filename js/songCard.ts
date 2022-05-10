@@ -287,6 +287,7 @@ export class SongCard {
                     }
                 }
 
+                this.songAccuracyLetterToClass();
                 this._template.refreshUITemplate(tasks);
                 break;
             case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.FREEMIUM]:
