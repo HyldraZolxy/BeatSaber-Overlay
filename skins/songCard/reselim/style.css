@@ -61,6 +61,11 @@
     margin: 0 4px 2px 4px;
 }
 
+#makers {
+    display: flex;
+    align-items: flex-end;
+}
+
 #author {
     display: block;
     font-size: 16px;
@@ -68,7 +73,21 @@
     margin: 2px 0 0 0;
 }
 
-#difficulty, #bpm, #njs {
+#mapper {
+    display: block;
+    font-size: 16px;
+    font-weight: 400;
+    margin: 2px 0 0 10px;
+}
+
+#mapper:before {
+    content: "[";
+}
+#mapper:after {
+    content: "]";
+}
+
+#difficulty, #bpm, #bsrKey {
     display: inline-block;
 
     font-size: 10px;
@@ -91,6 +110,10 @@
 
 #bpm:after {
     content: " BPM";
+}
+
+#bsrKey:before {
+    content: "!bsr ";
 }
 
 /* Progress */
