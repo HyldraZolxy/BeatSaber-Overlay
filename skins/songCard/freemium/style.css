@@ -1,0 +1,279 @@
+/*  ==================
+    == GENERAL TAGS ==
+    ==================
+*/
+.hidden {
+    transition: opacity 2s;
+    opacity: 0;
+}
+
+.show {
+    transition: opacity 2s;
+    opacity: 1 !important;
+}
+
+.showDescBarLeft {
+    animation: showElementCoverBarLeft forwards 3s;
+    transition: opacity 2s;
+    opacity: 1 !important;
+}
+
+.showDescBarRight {
+    animation: showElementCoverBarRight forwards 3s;
+    transition: opacity 2s;
+    opacity: 1 !important;
+}
+
+.hiddenDescBarLeft {
+    animation: hiddenElementCoverBarLeft forwards 3s;
+    transition: opacity 2s;
+    opacity: 0;
+}
+
+.hiddenDescBarRight {
+    animation: hiddenElementCoverBarRight forwards 3s;
+    transition: opacity 2s;
+    opacity: 0;
+}
+
+.stop {
+    filter: grayscale(100%);
+}
+
+.start {
+    filter: grayscale(0%);
+}
+
+/*  =======================
+    == SONG INFO ELEMENT ==
+    =======================
+*/
+#songCard {
+    height: 140px;
+    margin: 3% 3% 3% 3%;
+
+    position: absolute;
+
+    display: flex;
+
+    font-family: "walkway", Arial, serif;
+    color: white;
+
+    transition: all .5s;
+
+    opacity: 0;
+}
+
+/*  ===============================
+    == SONG INFO / COVER ELEMENT ==
+    ===============================
+*/
+#cover {
+    width: 140px;
+    height: 140px;
+
+    border-radius: 5px;
+    overflow: hidden;
+
+    background-image: url("../../../pictures/default/defaultSong.jpg");
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    z-index: 1;
+}
+
+#songBarLength {
+    width: 100%;
+    height: 10px;
+    margin-top: 130px;
+
+    background-color: rgba(44, 44, 44, 0.70);
+
+    overflow: hidden;
+}
+
+#timeToBarLength {
+    background-color: rgba(0, 199, 161, 0.73);
+
+    width: 0;
+    height: 100%;
+
+    display: block;
+}
+
+#songDataCover {
+    height: 130px;
+    margin-top: 10px;
+
+    font-size: 25px;
+}
+
+.descBar {
+    padding: 3px 15px 2px 5px;
+    display: inline-block;
+    float: left;
+    clear: left;
+    
+    margin-bottom: 5px;
+
+    font-size: 16px;
+    line-height: 16px;
+
+    clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
+}
+
+#qualified {
+    background-color: #646464;
+    display: inline-block;
+}
+
+#ranked {
+    background-color: #c4a335;
+    display: inline-block;
+}
+
+#bsrKey::before {
+    content: "bsr ";
+}
+
+#bpm::after {
+    content: " bpm";
+}
+
+#songData {
+    min-width: 150px;
+    height: 50px;
+    margin-top: -25px;
+
+    position: absolute;
+
+    overflow: hidden;
+
+    opacity: 0;
+}
+
+#songDataInfo {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    animation: slide 20s infinite linear;
+}
+
+#mapper::before {
+    content: " - [";
+}
+
+#mapper::after {
+    content: "]";
+}
+
+#songAccuracyDiv {
+    width: 70px;
+    height: 70px;
+    position: absolute;
+
+    background-color: azure;
+    clip-path: polygon(0 0, 100% 0, 0 100%, 0% 100%);
+
+    border-top-left-radius: 5px;
+
+    text-align: center;
+
+    z-index: 2;
+}
+
+#songAccuracyLetterDiv {
+    width: 70px;
+    height: 70px;
+    margin-top: -20px;
+    margin-left: -20px;
+    position: absolute;
+
+    text-align: center;
+
+    z-index: 2;
+}
+
+#accuracyToLetters {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    display: inline-block;
+
+    transform: rotate(-45deg);
+    color: rgb(44, 44, 44);
+    -webkit-text-stroke: 0.5px rgb(30, 30, 30);
+    font-size: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    text-align: center;
+
+    z-index: 3;
+}
+
+#accuracy {
+    display: inline-block;
+    margin-top: 18px;
+    margin-left: -15px;
+    transform: rotate(-45deg);
+
+    color: rgb(44, 44, 44);
+    font-size: 20px;
+}
+
+@keyframes slide {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-150%);
+    }
+}
+
+@keyframes showElementCoverBarLeft {
+    0% {
+        transform: translate(-100%);
+    }
+
+    100% {
+        transform: translate(0%);
+    }
+}
+
+@keyframes showElementCoverBarRight {
+    0% {
+        transform: translate(100%);
+    }
+
+    100% {
+        transform: translate(0%);
+    }
+}
+
+@keyframes hiddenElementCoverBarLeft {
+    0% {
+        transform: translate(0%);
+    }
+
+    99% {
+        transform: translate(-100%);
+    }
+
+    100% {
+        transform: translate(-100%);
+    }
+}
+
+@keyframes hiddenElementCoverBarRight {
+    0% {
+        transform: translate(0%);
+    }
+
+    99% {
+        transform: translate(100%);
+    }
+
+    100% {
+        transform: translate(100%);
+    }
+}

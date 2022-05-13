@@ -1,0 +1,323 @@
+/*  =================
+    == REUSED TAGS ==
+    =================
+*/
+.hiddenFirstLeft {
+    animation: hiddenElementFirstLeft 3s;
+    transition: opacity 3s;
+    opacity: 0;
+}
+
+.hiddenFirstRight {
+    animation: hiddenElementFirstRight 3s;
+    transition: opacity 3s;
+    opacity: 0;
+}
+
+.hiddenSecond {
+    transition: opacity 2s;
+    opacity: 0;
+}
+
+.showFirst {
+    transition: opacity 2s;
+    opacity: 1 !important;
+}
+
+.showSecondLeft {
+    animation: showElementFirstLeft 3s;
+    transition: opacity 3s;
+    opacity: 1;
+}
+
+.showSecondRight {
+    animation: showElementFirstRight 3s;
+    transition: opacity 3s;
+    opacity: 1;
+}
+
+/*  =========================
+    == PLAYER CARD ELEMENT ==
+    =========================
+*/
+#playerCard {
+    width: 300px;
+    height: 140px;
+    margin: 3% 3% 3% 3%;
+
+    position: absolute;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    overflow: hidden;
+
+    font-family: "walkway", Arial, serif;
+    color: white;
+
+    transition: all .5s;
+
+    opacity: 0;
+}
+
+/*  ==================================
+    == PLAYER CARD / AVATAR ELEMENT ==
+    ==================================
+*/
+#avatar {
+    width: 140px;
+    height: 140px;
+
+    border-radius: 5px;
+    overflow: hidden;
+
+    background-image: url("../../../pictures/default/playerNotFound.jpg");
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    z-index: 1;
+}
+
+#playerFlag {
+    animation: rotateCountryLeft 20s ease infinite;
+    transform-origin: right;
+
+    background-image: url("../../../pictures/country/FR.svg");
+
+    float: right;
+}
+
+/*  ================================
+    == PLAYER CARD / INFO ELEMENT ==
+    ================================
+*/
+#playerData {
+    width: 150px;
+    height: 140px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    font-size: 25px;
+    -webkit-text-stroke: 0.5px black;
+}
+
+#performancePoint::after {
+    content: " pp";
+}
+
+/*  =============================
+    == PLAYER CARD / LEFT MODE ==
+    =============================
+*/
+.topCountryLeft::before, .topWorldLeft::before {
+    content: "# ";
+    background: none;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.topCountryLeft::after {
+    content: "";
+}
+
+.topWorldLeft::after {
+    content: "";
+
+    width: 18px;
+    height: 18px;
+    margin-left: 5px;
+
+    background-image: url("../../../pictures/World-icon.svg");
+    background-size: 18px 18px;
+
+    display: inline-block;
+}
+
+/*  ==============================
+    == PLAYER CARD / RIGHT MODE ==
+    ==============================
+*/
+.topCountryRight::after, .topWorldRight::after {
+    content: " #";
+
+    background: none;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.topCountryRight::before {
+    content: "";
+}
+
+.topWorldRight::before {
+    content: "";
+
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+
+    background-image: url("../../../pictures/World-icon.svg");
+    background-size: 18px 18px;
+
+    display: inline-block;
+}
+
+/*  ========================
+    == KEYFRAME ANIMATION ==
+    ========================
+*/
+
+/*  ==============================
+    == COUNTRY ROTATE LEFT MODE ==
+    ==============================
+*/
+@keyframes rotateCountryLeft {
+    0% {
+        width: 90px;
+        height: 90px;
+        margin: -5% -20% 0 0;
+
+        transform: rotate(45deg);
+    }
+
+    5% {
+        width: 30px;
+        height: 30px;
+        margin: 5px 10px 0 0;
+
+        transform: rotate(0deg);
+    }
+
+    30% {
+        width: 30px;
+        height: 30px;
+        margin: 5px 10px 0 0;
+
+        transform: rotate(0deg);
+    }
+
+    35% {
+        width: 90px;
+        height: 90px;
+        margin: -5% -20% 0 0;
+
+        transform: rotate(45deg);
+    }
+
+    100% {
+        width: 90px;
+        height: 90px;
+        margin: -5% -20% 0 0;
+
+        transform: rotate(45deg);
+    }
+}
+
+/*  ===============================
+    == COUNTRY ROTATE RIGHT MODE ==
+    ===============================
+*/
+@keyframes rotateCountryRight {
+    0% {
+        width: 90px;
+        height: 90px;
+        margin: -5% 0 0 -18%;
+
+        transform: rotate(-45deg);
+    }
+
+    5% {
+        width: 30px;
+        height: 30px;
+        margin: 5px 0 0 10px;
+
+        transform: rotate(0deg);
+    }
+
+    30% {
+        width: 30px;
+        height: 30px;
+        margin: 5px 0 0 10px;
+
+        transform: rotate(0deg);
+    }
+
+    35% {
+        width: 90px;
+        height: 90px;
+        margin: -5% 0 0 -18%;
+
+        transform: rotate(-45deg);
+    }
+
+    100% {
+        width: 90px;
+        height: 90px;
+        margin: -5% 0 0 -18%;
+
+        transform: rotate(-45deg);
+    }
+}
+
+/*  =========================================
+    == PLAYER CARD - SONG INFO / HIDE LEFT ==
+    =========================================
+*/
+@keyframes hiddenElementFirstLeft {
+    0% {
+        transform: none;
+    }
+
+    100% {
+        transform: translate(-100%);
+    }
+}
+
+/*  =========================================
+    == PLAYER CARD - SONG INFO / SHOW LEFT ==
+    =========================================
+*/
+@keyframes showElementFirstLeft {
+    0% {
+        transform: translate(-100%);
+    }
+
+    100% {
+        transform: translate(0%);
+    }
+}
+
+/*  ==========================================
+    == PLAYER CARD - SONG INFO / HIDE RIGHT ==
+    ==========================================
+*/
+@keyframes hiddenElementFirstRight {
+    0% {
+        transform: none;
+    }
+
+    100% {
+        transform: translate(100%);
+    }
+}
+
+/*  ==========================================
+    == PLAYER CARD - SONG INFO / SHOW RIGHT ==
+    ==========================================
+*/
+@keyframes showElementFirstRight {
+    0% {
+        transform: translate(100%);
+    }
+
+    100% {
+        transform: translate(0%);
+    }
+}

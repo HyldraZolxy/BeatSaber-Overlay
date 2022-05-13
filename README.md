@@ -1,19 +1,22 @@
 <div id="top"></div>
 <div align="center">
     <h3 align="center">
-        BeatSaber-Overlay | Work with
-        <a href="https://github.com/hardcpp/BeatSaberPlus"><strong>BeatSaberPlus</strong></a> & <a href="https://github.com/opl-/beatsaber-http-status/releases"><strong>HTTPStatus</strong></a> & <a href="https://github.com/kOFReadie/BSDataPuller/releases"><strong>DataPuller</strong></a> !
+        BeatSaber-Overlay v2.0 | Work with
+        <a href="https://github.com/hardcpp/BeatSaberPlus"><strong>BeatSaberPlus</strong></a> & <a href="https://github.com/opl-/beatsaber-http-status/releases"><strong>HTTPStatus</strong></a> & <a href="https://github.com/kOFReadie/BSDataPuller/releases"><strong>DataPuller</strong></a> !<br />
+         3 Skins availables !
     </h3>
     <p align="center">
         <br />
-        <img src="https://overlay.hyldrazolxy.fr/preview/Overlay_BS_New_Light.gif" alt="liveDemo" />
+        <a href="https://overlay.hyldrazolxy.fr">
+            <img src="https://overlay.hyldrazolxy.fr/preview/Overlay_BS_New_Light.gif" alt="liveDemo" />
+        </a>
         <br />
         <br />
-        <a href="https://overlay.hyldrazolxy.fr/?setup=true">View Demo</a>
-        -
         <a href="https://github.com/HyldraZolxy/BeatSaber-Overlay/issues">Report Bug</a>
         -
         <a href="https://github.com/HyldraZolxy/BeatSaber-Overlay/issues">Request Feature</a>
+        -
+        <a href="https://ko-fi.com/hyldrazolxy">Support me on Ko-fi! <3</a>
     </p>
 </div>
 
@@ -31,10 +34,10 @@
       <a href="#options">Options</a>
     </li>
     <li>
-      <a href="#roadmap">Roadmap</a>
+      <a href="#contact">Contact</a>
     </li>
     <li>
-      <a href="#contact">Contact</a>
+      <a href="#credit">Credit</a>
     </li>
   </ol>
 </details>
@@ -69,127 +72,63 @@ To use the Overlay, it is necessary to follow the instructions below to ensure t
     Or
     Beat Saber\Plugins\DataPuller.dll
     ```
-3. You can create a new source "Browser" in your stream software and put this url in it
+
+3. Open your web browser and write
     ```sh
     https://overlay.hyldrazolxy.fr/
     ```
-4. Finally, you can put additional options to the url, refer to the chapter options, by default, the overlay displays only the current map
-For the first option in the url, you must use ?, for the others &
-    ```sh
-    Exemple:
-    https://overlay.hyldrazolxy.fr/?FirstOption=value&SecondOption=value&ThirdOption=value&etc.....
-    ```
+
+4. You have to double-click on the overlay for displaying the setup panel<br />
+   <img src="https://overlay.hyldrazolxy.fr/preview/setup.png" alt="Setup Panel" />
+
+5. After setting up your overlay, copy past the `URL Customized with your settings` into your Browser sources in your stream software
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Options
 
-### `playerId`
+### `General Settings`
+<img src="https://overlay.hyldrazolxy.fr/preview/general_settings.png" alt="General Settings Panel" />
 
-If you want to display the player card, you must add an option the player ID
+`IP`<br />
+If your use a second pc for stream, you can specify the ip of the gaming pc, like: `192.168.1.15`, it's not necessary if you don't use a second pc to write `127.0.0.1` just let it empty<br />
 
-```sh
-playerId=YOUR_SCORESABER_ID
+`ScoreSaber link`<br />
+If you want to display the Player Card, you can add your scoresaber link here, if you don't want it, let it blank
 
-Exemple:
-playerId=76561198235823594
+### `Player Card Settings`
+**(Obsviously, if you are not add the ScoreSaber link in General Settings, it doesn't work)**<br />
 
-Full link exemple:
-https://overlay.hyldrazolxy.fr/?playerId=76561198235823594
-```
+<img src="https://overlay.hyldrazolxy.fr/preview/playercard_settings.png" alt="Player Card Settings Panel" />
 
-### `scale`
+`Position`<br />
+You can change the position of the Player Card with the drop-down list<br />
 
-If you want to increase or decrease the size of the overlay, you can use the scale option for that
+`Scale`<br />
+You can change the scale of the Player Card with the slider<br />
 
-```sh
-scale=VALUE
+### `Song Card Settings`
+<img src="https://overlay.hyldrazolxy.fr/preview/songcard_settings.png" alt="Song Card Settings Panel" />
 
-Exemple:
-scale=1.5
+`Skin`<br />
+You can change the skin of the Song Card with the drop-down list<br />
 
-Full link exemple:
-https://overlay.hyldrazolxy.fr/?scale=1.5
-```
+`Position`<br />
+You can change the position of the Song Card with the drop-down list<br />
 
-### `setup`
-
-If you want to see how the overlay will look on your stream
-
-**DO NOT USE IN PRODUCTION**
-
-```sh
-setup=VALUE
-
-Exemple:
-setup=true
-
-Full link exemple:
-https://overlay.hyldrazolxy.fr/?setup=true
-```
-
-### `ip`
-
-If you use a dual setup for stream, you can set the ip of the machine where Beat Saber is running so that the overlay of the stream machine can access the plugin data
-
-```sh
-ip=VALUE
-
-Exemple:
-ip=192.168.1.6
-
-Full link exemple:
-https://overlay.hyldrazolxy.fr/?ip=192.168.1.6
-```
-
-### `debug`
-
-If you have problems, you can use the Overlay on a web browser with the console open to see the debug messages and find the cause of the problem
-
-**DO NOT USE IN PRODUCTION**
-
-```sh
-debug=VALUE
-
-Exemple:
-debug=true
-
-Full link exemple:
-https://overlay.hyldrazolxy.fr/?debug=true
-```
-
-### `skin`
-
-For future use ;3
-
-```sh
-skin=VALUE
-
-Exemple:
-skin=NameOfSkin
-
-Full link exemple:
-https://overlay.hyldrazolxy.fr/?skin=NameOfSkin
-```
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-## Roadmap
-
-- [x] Optimising the code
-- [ ] Adding more data for futur skin
-- [ ] Add OBS Support
-- [ ] Add more skin
-    - [ ] Youtube Video skin (OBS Related)
-    - [ ] Friday Night Funkin'
-    - [ ] more ....
-- [ ] *Twitch support ? (For custom things when channel point is used)*
-    - [ ] *Create a PHP support to upload files for twitch by the overlay users*
+`Scale`<br />
+You can change the scale of the Song Card with the slider<br />
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Contact
 You can contact me on Discord `Hyldra Zolxy#1910` to ask for various changes, improvements or even special requests!
 
+## Credit
+Thanks to:
+- @hardcpp for the Cache system!
+- @reselim for giving me the permission to copy the skin of his Beat Saber Overlay <3
+
 ##### Thanks all and cya <3
+If you like the overlay, you can support me on <a href="https://ko-fi.com/hyldrazolxy"><strong>Ko-fi</strong></a>! I really appreciate :3<br />
 <p align="right">(<a href="#top">back to top</a>)</p>

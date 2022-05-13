@@ -2,20 +2,29 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:site_name" content="Beat Saber Overlay | By Hyldra Zolxy | For BSPlus, HTTPStatus and DataPuller plugins !" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Beat Saber Overlay | By Hyldra Zolxy" />
-        <meta property="og:description" content="A Beat Saber Overlay for HTTPStatus and DataPuller mods" />
+        <meta property="og:title" content="Beat Saber Overlay | By Hyldra Zolxy | For BSPlus, HTTPStatus and DataPuller plugins !" />
+        <meta property="og:description" content="Beat Saber Overlay for BSPlus, HTTPStatus and DataPuller plugins" />
         <meta property="og:url" content="https://overlay.hyldrazolxy.fr/" />
         <meta property="og:image" content="https://overlay.hyldrazolxy.fr/preview/Overlay_BS_New_Light.gif" />
 
-        <title>Beat Saber Overlay | By Hyldra Zolxy</title>
-        <link rel="icon" href="./images/favicon.png" type="image/png" />
+        <title>Beat Saber Overlay | By Hyldra Zolxy | For BSPlus, HTTPStatus and DataPuller plugins !</title>
+        <link rel="icon" href="./pictures/favicon.png" type="image/png" />
+        <link rel="stylesheet" href="./style.global.css" type="text/css" />
 
-        <script type="text/javascript" src="./js/jquery-3.6.0.min.js"></script>
-        <script type="text/javascript" src="./js/global.js"></script>
-        <script type="module" src="./js/app.js"></script>
+        <script type="text/javascript" src="./js/libs/jquery-3.6.0.min.js"></script>
+        <script type="module" src="./js/init.js"></script>
     </head>
     <body>
+        <main>
+            <section id="overlay">
+                <div id="playerCard"></div>
+                <div id="songCard"></div>
+            </section>
+            <section id="setup"></section>
+        </main>
     </body>
 </html>
