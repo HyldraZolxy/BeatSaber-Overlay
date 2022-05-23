@@ -120,8 +120,8 @@ export class DataPuller {
     }
 
     private scoreParser(scoreInfo: any) {
-        this._songCard.songCardData.accuracy = +((scoreInfo.Accuracy).toFixed(2));
-        this._songCard.songCardData.score = scoreInfo.Score;
+        this._songCard.songCardData.accuracy = +((scoreInfo.Accuracy).toFixed(1));
+        this._songCard.songCardData.score = scoreInfo.Score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         this._songCard.songCardData.combo = scoreInfo.Combo;
     }
 

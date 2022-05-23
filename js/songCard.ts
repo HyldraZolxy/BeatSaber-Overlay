@@ -73,7 +73,7 @@ export class SongCard {
         accuracy: number;
         accuracyToLetters: string;
 
-        score: number;
+        score: string; // FOR SUPPORT COMMAS
         combo: number;
 
         speedModifier: number;
@@ -98,10 +98,10 @@ export class SongCard {
         timeToLetters: "2:25",
         timeToBarLength: 24.09,
 
-        accuracy: 98.56,
+        accuracy: 98.6,
         accuracyToLetters: "SS",
 
-        score: 351,
+        score: "351",
         combo: 3,
 
         speedModifier: 1
@@ -424,6 +424,12 @@ export class SongCard {
                                 modify: {
                                     flex_direction: "row"
                                 }
+                            },
+                            task_3: {
+                                element: $("#performance"),
+                                modify: {
+                                    flex_direction: "column-reverse"
+                                }
                             }
                         }
                         break;
@@ -441,6 +447,12 @@ export class SongCard {
                                 element: $("#beatmap"),
                                 modify: {
                                     flex_direction: "row-reverse"
+                                }
+                            },
+                            task_3: {
+                                element: $("#performance"),
+                                modify: {
+                                    flex_direction: "column-reverse"
                                 }
                             }
                         }
@@ -460,6 +472,12 @@ export class SongCard {
                                 modify: {
                                     flex_direction: "row"
                                 }
+                            },
+                            task_3: {
+                                element: $("#performance"),
+                                modify: {
+                                    flex_direction: "column"
+                                }
                             }
                         }
                         break;
@@ -477,6 +495,12 @@ export class SongCard {
                                 element: $("#beatmap"),
                                 modify: {
                                     flex_direction: "row-reverse"
+                                }
+                            },
+                            task_3: {
+                                element: $("#performance"),
+                                modify: {
+                                    flex_direction: "column"
                                 }
                             }
                         }

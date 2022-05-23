@@ -192,6 +192,10 @@
     opacity: 0.75;
 }
 
+#accuracy:after {
+    content: "%";
+}
+
 #score {
     display: block;
     font-size: 34px;

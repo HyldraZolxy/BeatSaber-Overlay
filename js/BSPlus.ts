@@ -98,8 +98,8 @@ export class BSPlus {
     }
 
     private scoreParser(scoreInfo: any) {
-        this._songCard.songCardData.accuracy = +((scoreInfo.accuracy * 100).toFixed(2));
-        this._songCard.songCardData.score = scoreInfo.score;
+        this._songCard.songCardData.accuracy = +((scoreInfo.accuracy * 100).toFixed(1));
+        this._songCard.songCardData.score = scoreInfo.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         this._songCard.songCardData.combo = scoreInfo.combo;
     }
 
