@@ -268,7 +268,7 @@ export class Setup {
     }
 
     private urlTextBuilder() {
-        let url = "https://testoverlay.hyldrazolxy.fr/";
+        let url = "https://overlay.hyldrazolxy.fr/";
         let parameters = [];
         let firstParameter = true;
         let toggled = true;
