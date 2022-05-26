@@ -779,9 +779,15 @@ export class SongCard {
 
             if (!("error" in dataJson)) {
                 this.songCardData.bsrKey = dataJson.id;
-                this.songCardData.ranked = dataJson.ranked;
-                this.songCardData.qualified = dataJson.qualified;
                 this.songCardData.cover = dataJson.versions[0].coverURL;
+
+                if (dataJson.qualified) {
+                    this.songCardData.qualified = dataJson.qualified;
+                } else {
+                    if (dataJson.ranked) {
+                        this.songCardData.ranked = dataJson.ranked;
+                    }
+                }
             } else {
                 this.songCardData.bsrKey = "NotFound";
             }
