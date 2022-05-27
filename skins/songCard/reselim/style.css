@@ -28,6 +28,9 @@
     overflow: hidden;
     border-radius: 6px;
     position: relative;
+
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 #meta {
