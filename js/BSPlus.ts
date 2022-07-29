@@ -82,7 +82,7 @@ export class BSPlus {
         this._songCard.songCardData.ranked = false;
         this._songCard.songCardData.qualified = false;
 
-        this._songCard.songCardData.time = 0; /// TODO: IMPLEMENT TIME ELAPSED IN BSPLUS_MOD
+        this._songCard.songCardData.time = mapInfoData.time * 1000;
         this._songCard.songCardData.totalTime = mapInfoData.duration;
         this._songCard.songCardData.timeToLetters = "0:00";
         this._songCard.songCardData.timeToBarLength = 0;
@@ -90,7 +90,7 @@ export class BSPlus {
         this._songCard.songCardData.accuracy = 100;
         this._songCard.songCardData.accuracyToLetters = "SS";
 
-        this._songCard.songCardData.speedModifier = 1; /// TODO: SEE this.speedParser()
+        this._songCard.songCardData.speedModifier = mapInfoData.timeMultiplier;
 
         if ((mapInfoData.level_id.indexOf("custom_level") === 0) && (mapInfoData.level_id.substring(13).length === 40)) {
             this._songCard.beatSaverInfo(mapInfoData.level_id.substring(13));
@@ -101,11 +101,9 @@ export class BSPlus {
         this._songCard.songCardData.accuracy = +((scoreInfo.accuracy * 100).toFixed(1));
         this._songCard.songCardData.score = scoreInfo.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         this._songCard.songCardData.combo = scoreInfo.combo;
-    }
 
-    // private speedParser(speedInfo: any) {
-    //     /// TODO: IMPLEMENT SPEED MULTIPLIER IN BSPLUS_MOD
-    // }
+        this._songCard.songCardData.health = scoreInfo.currentHealth;
+    }
 
     public dataParser(data: any): void {
         let dataParsed = JSON.parse(data.data);

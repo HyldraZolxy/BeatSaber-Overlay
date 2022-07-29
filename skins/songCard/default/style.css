@@ -109,7 +109,7 @@
     justify-content: space-evenly;
 
     font-size: 25px;
-    -webkit-text-stroke: 0.5px black;
+    -webkit-text-stroke: 0.1px black;
 }
 
 #songData p {

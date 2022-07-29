@@ -76,6 +76,8 @@ export class SongCard {
         score: string; // FOR SUPPORT COMMAS
         combo: number;
 
+        health: number;
+
         speedModifier: number;
     } = {
         cover: "./pictures/default/defaultSong.jpg",
@@ -103,6 +105,8 @@ export class SongCard {
 
         score: "351",
         combo: 3,
+
+        health: 0.50,
 
         speedModifier: 1
     };
