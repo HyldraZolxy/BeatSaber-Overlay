@@ -1,70 +1,33 @@
-/*  =================
-    == REUSED TAGS ==
-    =================
-*/
-.hiddenFirstLeft {
-    animation: hiddenElementFirstLeft 3s;
-    transition: opacity 3s;
-    opacity: 0;
-}
-
-.hiddenFirstRight {
-    animation: hiddenElementFirstRight 3s;
-    transition: opacity 3s;
-    opacity: 0;
-}
-
-.hiddenSecond {
-    transition: opacity 2s;
-    opacity: 0;
-}
-
-.showFirst {
-    transition: opacity 2s;
-    opacity: 1 !important;
-}
-
-.showSecondLeft {
-    animation: showElementFirstLeft 3s;
-    transition: opacity 3s;
-    opacity: 1;
-}
-
-.showSecondRight {
-    animation: showElementFirstRight 3s;
-    transition: opacity 3s;
-    opacity: 1;
-}
-
-/*  =========================
-    == PLAYER CARD ELEMENT ==
-    =========================
-*/
+/* ======================
+   = PLAYER TAGS start =
+   ====================== */
 #playerCard {
     width: 300px;
     height: 140px;
-    margin: 3% 3% 3% 3%;
+    margin: 3% 3%;
 
     position: absolute;
 
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
 
     overflow: hidden;
 
-    font-family: "walkway", Arial, serif;
+    font-family: "Walkway", Arial, serif;
     color: white;
-
-    transition: all .5s;
-
-    opacity: 0;
 }
 
-/*  ==================================
-    == PLAYER CARD / AVATAR ELEMENT ==
-    ==================================
-*/
+#playerCard.top-left, #playerCard.bottom-left {
+    flex-direction: row;
+}
+
+#playerCard.top-right, #playerCard.bottom-right {
+    flex-direction: row-reverse;
+}
+
+/* =============================
+   = PLAYER TAGS/ Avatar start =
+   ============================= */
 #avatar {
     width: 140px;
     height: 140px;
@@ -72,7 +35,7 @@
     border-radius: 5px;
     overflow: hidden;
 
-    background-image: url("../../../pictures/default/playerNotFound.jpg");
+    background-image: url("../../../pictures/default/notFound.jpg");
     background-repeat: no-repeat;
     background-size: contain;
 
@@ -80,18 +43,29 @@
 }
 
 #playerFlag {
-    animation: rotateCountryLeft 20s ease infinite;
-    transform-origin: right;
+    width: 30px;
+    height: 30px;
+    margin: 3% 5%;
 
     background-image: url("../../../pictures/country/FR.svg");
+}
 
+#playerCard.top-left #playerFlag, #playerCard.bottom-left #playerFlag {
+    transform-origin: right;
     float: right;
 }
 
-/*  ================================
-    == PLAYER CARD / INFO ELEMENT ==
-    ================================
-*/
+#playerCard.top-right #playerFlag, #playerCard.bottom-right #playerFlag {
+    transform-origin: left;
+    float: left;
+}
+/* ===========================
+   = PLAYER TAGS/ Avatar end =
+   =========================== */
+
+/* ===========================
+   = PLAYER TAGS/ Info start =
+   =========================== */
 #playerData {
     width: 150px;
     height: 140px;
@@ -101,31 +75,31 @@
     justify-content: space-evenly;
 
     font-size: 25px;
-    -webkit-text-stroke: 0.5px black;
 }
 
-#performancePoint::after {
-    content: " pp";
+#playerCard.top-left #playerData,
+#playerCard.bottom-left #playerData {
+    text-align: left;
 }
 
-/*  =============================
-    == PLAYER CARD / LEFT MODE ==
-    =============================
-*/
-.topCountryLeft::before, .topWorldLeft::before {
+#playerCard.top-right #playerData,
+#playerCard.bottom-right #playerData {
+    text-align: right;
+}
+
+#playerCard.top-left #topCountry::before,
+#playerCard.bottom-left #topCountry::before,
+#playerCard.top-left #topWorld::before,
+#playerCard.bottom-left #topWorld::before {
     content: "# ";
-    background: none;
 
     font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
     font-weight: 800;
 }
 
-.topCountryLeft::after {
-    content: "";
-}
-
-.topWorldLeft::after {
+#playerCard.top-left #topWorld::after,
+#playerCard.bottom-left #topWorld::after {
     content: "";
 
     width: 18px;
@@ -138,25 +112,19 @@
     display: inline-block;
 }
 
-/*  ==============================
-    == PLAYER CARD / RIGHT MODE ==
-    ==============================
-*/
-.topCountryRight::after, .topWorldRight::after {
+#playerCard.top-right #topCountry::after,
+#playerCard.bottom-right #topCountry::after,
+#playerCard.top-right #topWorld::after,
+#playerCard.bottom-right #topWorld::after {
     content: " #";
-
-    background: none;
 
     font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
     font-weight: 800;
 }
 
-.topCountryRight::before {
-    content: "";
-}
-
-.topWorldRight::before {
+#playerCard.top-right #topWorld::before,
+#playerCard.bottom-right #topWorld::before {
     content: "";
 
     width: 18px;
@@ -169,28 +137,108 @@
     display: inline-block;
 }
 
-/*  ========================
-    == KEYFRAME ANIMATION ==
-    ========================
-*/
+#performancePoint::after {
+    content: " pp";
+}
+/* =========================
+   = PLAYER TAGS/ Info end =
+   ========================= */
+
+/* =============================
+   = ANIMATION AND STATE Start =
+   ============================= */
+
+/* Player Card Variables */
+#playerCard {
+    --show: 500ms;
+    --hide: 500ms;
+}
+
+#playerCard.top-right, #playerCard.bottom-right {
+    --transitionSide: 50px;
+}
+
+#playerCard.top-left, #playerCard.bottom-left {
+    --transitionSide: -50px;
+}
+
+/* Avatar */
+#playerCard #avatar  {
+    transition:
+            opacity var(--show);
+}
+
+#playerCard.hidden #avatar  {
+    transition-delay: 500ms !important;
+    opacity: 0;
+    transition:
+            opacity var(--hide);
+}
+
+/* Player Flag */
+#playerCard.top-left #playerFlag, #playerCard.bottom-left #playerFlag {
+    --marginBase: -5% -20% 0 0;
+    --marginModify: 3% 5%;
+    --rotateDegre: 45deg;
+    animation: rotateCountry 20s ease infinite;
+}
+
+#playerCard.top-right #playerFlag, #playerCard.bottom-right #playerFlag {
+    --marginBase: -5% 0 0 -18%;
+    --marginModify: 3% 6%;
+    --rotateDegre: -45deg;
+    animation: rotateCountry 20s ease infinite;
+}
+
+#playerCard.hidden #playerFlag  {
+    animation: none;
+}
+
+/* Player Data */
+#playerCard #playerData > * {
+    transform: translate(0, 0);
+    transition:
+            opacity var(--show),
+            transform var(--show);
+}
+
+#playerCard.hidden #playerData > * {
+    transform: translate(var(--transitionSide), 0);
+    opacity: 0;
+    transition:
+            opacity var(--show),
+            transform var(--show);
+}
+
+#playerCard #playerData > *:nth-child(3) {
+    transition-delay: 300ms;
+}
+
+#playerCard #playerData > *:nth-child(2) {
+    transition-delay: 200ms;
+}
+
+#playerCard #playerData > *:nth-child(1) {
+    transition-delay: 100ms;
+}
 
 /*  ==============================
     == COUNTRY ROTATE LEFT MODE ==
     ==============================
 */
-@keyframes rotateCountryLeft {
+@keyframes rotateCountry {
     0% {
         width: 90px;
         height: 90px;
-        margin: -5% -20% 0 0;
+        margin: var(--marginBase);
 
-        transform: rotate(45deg);
+        transform: rotate(var(--rotateDegre));
     }
 
     5% {
         width: 30px;
         height: 30px;
-        margin: 5px 10px 0 0;
+        margin: var(--marginModify);
 
         transform: rotate(0deg);
     }
@@ -198,7 +246,7 @@
     30% {
         width: 30px;
         height: 30px;
-        margin: 5px 10px 0 0;
+        margin: var(--marginModify);
 
         transform: rotate(0deg);
     }
@@ -206,118 +254,16 @@
     35% {
         width: 90px;
         height: 90px;
-        margin: -5% -20% 0 0;
+        margin: var(--marginBase);
 
-        transform: rotate(45deg);
+        transform: rotate(var(--rotateDegre));
     }
 
     100% {
         width: 90px;
         height: 90px;
-        margin: -5% -20% 0 0;
+        margin: var(--marginBase);
 
-        transform: rotate(45deg);
-    }
-}
-
-/*  ===============================
-    == COUNTRY ROTATE RIGHT MODE ==
-    ===============================
-*/
-@keyframes rotateCountryRight {
-    0% {
-        width: 90px;
-        height: 90px;
-        margin: -5% 0 0 -18%;
-
-        transform: rotate(-45deg);
-    }
-
-    5% {
-        width: 30px;
-        height: 30px;
-        margin: 5px 0 0 10px;
-
-        transform: rotate(0deg);
-    }
-
-    30% {
-        width: 30px;
-        height: 30px;
-        margin: 5px 0 0 10px;
-
-        transform: rotate(0deg);
-    }
-
-    35% {
-        width: 90px;
-        height: 90px;
-        margin: -5% 0 0 -18%;
-
-        transform: rotate(-45deg);
-    }
-
-    100% {
-        width: 90px;
-        height: 90px;
-        margin: -5% 0 0 -18%;
-
-        transform: rotate(-45deg);
-    }
-}
-
-/*  =========================================
-    == PLAYER CARD - SONG INFO / HIDE LEFT ==
-    =========================================
-*/
-@keyframes hiddenElementFirstLeft {
-    0% {
-        transform: none;
-    }
-
-    100% {
-        transform: translate(-100%);
-    }
-}
-
-/*  =========================================
-    == PLAYER CARD - SONG INFO / SHOW LEFT ==
-    =========================================
-*/
-@keyframes showElementFirstLeft {
-    0% {
-        transform: translate(-100%);
-    }
-
-    100% {
-        transform: translate(0%);
-    }
-}
-
-/*  ==========================================
-    == PLAYER CARD - SONG INFO / HIDE RIGHT ==
-    ==========================================
-*/
-@keyframes hiddenElementFirstRight {
-    0% {
-        transform: none;
-    }
-
-    100% {
-        transform: translate(100%);
-    }
-}
-
-/*  ==========================================
-    == PLAYER CARD - SONG INFO / SHOW RIGHT ==
-    ==========================================
-*/
-@keyframes showElementFirstRight {
-    0% {
-        transform: translate(100%);
-    }
-
-    100% {
-        transform: translate(0%);
+        transform: rotate(var(--rotateDegre));
     }
 }

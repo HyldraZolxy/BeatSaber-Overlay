@@ -1,291 +1,178 @@
-/*  ===================
-    == GENERAL SETUP ==
-    ===================
-*/
-#setup {
-    width: 400px;
-    height: 550px;
-    padding: 25px;
+/* ==========================
+   = SETUP PANEL TAGS start =
+   ========================== */
 
-    top: 50vh;
-    left: 50vw;
-    margin-top: -275px;
-    margin-left: -200px;
-
-    position: absolute;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-flow: column;
-
-    background: linear-gradient(#879fd2, #b990d9);
-    box-shadow: 0 15px 50px 10px rgba(0, 0, 0, 0.3);
-    border-radius: 3px;
-
-    font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
-    color: white;
-}
-
-.closeButton {
-    width: 20px;
-    height: 20px;
-
-    right: 20px;
+/* ===================================
+   = SETUP PANEL TAGS / Switch start =
+   =================================== */
+#switchLabel {
     top: 10px;
+    right: calc(30% + 110px);
 
     position: absolute;
 
-    background: none;
-    border: none;
-
-    font-size: 35px;
-    font-weight: bold;
-
-    color: #e3e3e3;
-
-    z-index: 1;
-}
-
-.closeButton:hover {
-    color: #e03535;
-
-    cursor: pointer;
-}
-
-#headerSetup {
-    width: 100%;
-
-    margin-top: 10px;
-
-    text-align: center;
-}
-
-#setup h1 {
-    font-weight: 100;
-    font-size: 2.5em;
-}
-
-#setup p {
-    font-weight: 300;
-    font-size: 0.9em;
-}
-
-#setup hr {
-    width: 100%;
-    height: 1px;
-
-    margin-top: 30px;
-    margin-bottom: 15px;
-
-    border: none;
-    background-color: rgba(227, 227, 227, 0.5);
-}
-
-.setupMenuButton {
-    width: 100%;
-    margin-top: 10px;
-    margin-bottom: 10px;
-
-    background: none;
-    border: 1px solid #e3e3e3;
-    border-radius: 50px;
-
-    color: #e3e3e3;
-
-    font-weight: 300;
-    font-size: 1.2em;
-    line-height: 2.5em;
-
-    cursor: pointer;
-}
-
-.setupMenuButton:hover {
-    border: 1px solid #a8e7b3;
-
-    color: #a8e7b3;
-
-    cursor: pointer;
-}
-
-#urlTextSetup {
-    margin-top: 10px;
-    padding: 15px;
-
-    font-size: 1.2em;
-    font-weight: 500;
-
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    border-radius: 5px;
-}
-
-#urlTextSetup textarea {
-    width: 100%;
-    height: 24px;
-
-    background: none;
-    border: none;
-    border-bottom: 1px solid rgba(227, 227, 227, 0.5);
-    border-radius: 3px;
-    outline: none;
-
-    text-overflow: ellipsis;
-    overflow: hidden;
+    line-height: 24px;
 
     font-size: 0.7em;
-    color: #e3e3e3;
-
-    resize: none;
 }
 
-#footerMenuSetup {
-    width: 100%;
+.switch {
+    width: 50px;
+    height: 24px;
+    top: 10px;
+    right: calc(30% + 50px);
 
-    padding-top: 10px;
-}
-
-#footerMenuSetup p {
-    float: left;
-
-    font-weight: 100;
-    font-size: 0.8em;
-}
-
-#footerMenuSetup a {
-    color: #a8e7b3;
-
-    font-weight: 500;
-    text-decoration: none;
-}
-
-#ko_fi {
-    width: 110px;
-    height: 40px;
-
-    float: right;
-
-    text-align: center;
-    line-height: 40px;
-    border-left: 1px solid rgba(227, 227, 227, 0.5);
-}
-
-#ko_fi img {
-    width: 95px;
-    height: 35px;
-
-    margin-top: 2px;
-}
-
-.returnButton {
-    padding: 5px;
-
-    left: 20px;
-    top: 15px;
+    display: inline-block;
 
     position: absolute;
-
-    background: none;
-    border: 1px solid rgba(227, 227, 227, 0.5);
-    border-radius: 5px;
-
-    font-size: 0.8em;
-    font-weight: 100;
-
-    color: #e3e3e3;
 
     z-index: 1;
 }
 
-.returnButton:hover {
-    color: #a8e7b3;
+.switch input {
+    width: 0;
+    height: 0;
 
-    border: 1px solid rgba(168, 231, 179, 0.5);
+    opacity: 0;
+}
+
+.slider {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    position: absolute;
+
+    background-color: #f59898;
 
     cursor: pointer;
+
+    transition-duration: 200ms;
 }
 
-/*  ===============================
-    == GENERAL SETUP OTHER PAGES ==
-    ===============================
-*/
-#parametersSetup {
+.slider:before {
+    content: "";
+
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+
+    position: absolute;
+
+    background-color: #d36868;
+
+    transition-duration: 200ms;
+}
+
+input:checked + .slider {
+    background-color: #34dbae;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+    background-color: #1ab48b;
+}
+
+.slider.round {
+    border-radius: 26px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+/* =================================
+   = SETUP PANEL TAGS / Switch end =
+   ================================= */
+
+/* ===================================
+   = SETUP PANEL TAGS / Module start =
+   =================================== */
+#module {
+    width: 95%;
+    height: 80%;
+}
+
+#module label {
     width: 100%;
-}
+    padding: 4% 5%;
 
-#moreSpaceSetup {
-    width: 100%;
-    height: 100px;
-}
+    display: inline-block;
 
-#parametersSetup p {
-    margin-top: 10px;
-    margin-bottom: 30px;
-    padding: 15px;
+    position: relative;
 
-    font-size: 1.2em;
-    font-weight: 500;
+    overflow: hidden;
 
-    border: 1px solid rgba(255, 255, 255, 0.10);
     border-radius: 5px;
 }
 
-#parametersSetup label {
+#module label span {
     width: 100%;
-
-    font-weight: 400;
-    font-style: italic;
-
+    padding-bottom: 5px;
     display: inline-block;
+
+    font-weight: bold;
 }
 
-#parametersSetup input[type="text"] {
+#module .ion-ios-help-outline {
+    display: inline-block;
+
+    text-decoration: none;
+    color: #ffffff;
+}
+
+#module input[type="text"] {
     width: 70%;
 
-    background: none;
     border: none;
-    border-bottom: 1px solid rgba(227, 227, 227, 0.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 1);
+
+    background: none;
 
     line-height: 2em;
 
-    color: #e3e3e3;
+    color: rgba(255, 255, 255, 0.7);
 }
 
-#parametersSetup input[type="text"]:focus {
-    background: none;
+#module input[type="text"]:focus {
     border: none;
-    border-bottom: 1px solid rgba(227, 227, 227, 0.5);
+    border-bottom: 1px solid rgba(52, 219, 174, 1);
+
+    background: none;
+
     outline: none;
 }
 
-#parametersSetup input[type="text"]::placeholder {
-    color: #e3e3e3;
+#module input[type="text"]::placeholder {
+    color: rgba(255, 255, 255, 0.7);
 }
 
-#parametersSetup input[type="button"] {
+#module input[type="button"] {
     width: 25%;
     padding: 5px;
 
     float: right;
 
     background: none;
-    border: 1px solid rgba(227, 227, 227, 0.5);
+    border: 1px solid rgba(255, 255, 255, 1);
     border-radius: 5px;
 
     line-height: 1.5em;
 
-    color: #e3e3e3;
+    color: rgba(255, 255, 255, 0.7);
 
     cursor: pointer;
 }
 
-#parametersSetup input[type="button"]:hover {
-    color: #a8e7b3;
-    background-color: rgba(168, 231, 179, 0.08);
+#module input[type="button"]:hover {
+    border: 1px solid rgba(168, 231, 179, 1);
+    background-color: rgb(114, 213, 186);
 
-    border: 1px solid rgba(168, 231, 179, 0.5);
+    color: rgb(91, 91, 91);
 }
 
-#parametersSetup select {
+#module select {
     width: 100%;
 
     margin-bottom: 10px;
@@ -296,17 +183,36 @@
     border-bottom: 1px solid rgba(227, 227, 227, 0.5);
     outline: none;
 
-    color: #e3e3e3;
+    color: rgba(255, 255, 255, 0.7);
 }
 
-#parametersSetup select:focus {
-    color: #484848;
+#module select:focus {
+    color: rgb(91, 91, 91);
 }
 
-#parametersSetup input[type="range"] {
+#module input[type="range"] {
     width: 100%;
-    height: 10px;
-    background-color: #c0c0c0;
-    outline: none;
-    border-radius: 3px;
 }
+
+.blurredBackground {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    position: absolute;
+
+    border-radius: 5px;
+
+    backdrop-filter: blur(3px);
+    background-color: rgba(0, 0, 0, 0.25);
+
+    z-index: -1;
+}
+/* =================================
+   = SETUP PANEL TAGS / Module end =
+   ================================= */
+
+/* ========================
+   = SETUP PANEL TAGS end =
+   ======================== */

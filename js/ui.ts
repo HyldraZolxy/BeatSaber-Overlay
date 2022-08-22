@@ -1,18 +1,21 @@
-import { GlobalVariable } from "./global.js";
+import { Globals } from "./global.js";
 import { PlayerCard } from "./playerCard.js";
 import { SongCard } from "./songCard.js";
+import { Template } from "./template.js";
 
 export class UI {
 
-    ////////////////////////////
-    // PRIVATE CLASS VARIABLE //
-    ////////////////////////////
+    /////////////////////
+    // @CLASS VARIABLE //
+    /////////////////////
     private _playerCard: PlayerCard;
     private _songCard: SongCard;
+    private _template: Template;
 
     constructor() {
         this._playerCard = PlayerCard.Instance;
         this._songCard = SongCard.Instance;
+        this._template = new Template();
     }
 
     /////////////////////
@@ -20,17 +23,9 @@ export class UI {
     /////////////////////
     public refreshUI(): void {
         setInterval(() => {
-            this._playerCard.refreshPlayerCard(this._playerCard.playerCardData);
-            this._songCard.refreshSongCard(this._songCard.songCardData);
-
-            this._playerCard.toggleDisplay();
-            this._songCard.toggleDisplay();
-
-            this._playerCard.displayScale();
-            this._songCard.displayScale();
-
-            this._playerCard.cornerSwitch();
-            this._songCard.cornerSwitch();
-        }, GlobalVariable.FPS_REFRESH_TICK);
+            this._playerCard.refreshPlayerCard();
+            this._songCard.refreshSongCard();
+            this._template.moduleToggleDisplay(this._playerCard.playerCardData, this._songCard.songCardData);
+        }, Globals.FPS_REFRESH);
     }
 }

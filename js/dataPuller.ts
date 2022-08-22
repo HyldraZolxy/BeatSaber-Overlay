@@ -1,13 +1,14 @@
-import { SongCard } from "./songCard.js";
+import { Globals } from "./global.js";
 import { PlayerCard } from "./playerCard.js";
+import { SongCard } from "./songCard.js";
 
 export class DataPuller {
 
-    ////////////////////////////
-    // PRIVATE CLASS VARIABLE //
-    ////////////////////////////
-    private _songCard: SongCard;
+    /////////////////////
+    // @CLASS VARIABLE //
+    /////////////////////
     private _playerCard: PlayerCard;
+    private _songCard: SongCard;
 
     //////////////////////
     // PRIVATE VARIABLE //
@@ -16,135 +17,152 @@ export class DataPuller {
     private timeResolve = false;
 
     constructor() {
-        this._songCard = SongCard.Instance;
         this._playerCard = PlayerCard.Instance;
+        this._songCard = SongCard.Instance;
     }
 
     //////////////////////
     // PRIVATE FUNCTION //
     //////////////////////
-    private eHandler(dataEvent: any, endPoint: string) {
-        switch(endPoint) {
-            case "MapData":
-                if (dataEvent.InLevel) {
-                    if (!this._songCard.songCardParameters.started) {
-                        this.mapInfoParser(dataEvent);
-                    }
+    private eHandshake(dataEvent: Globals.I_dataPullerMapDataObject): void {
+        if (this.helloEvent) {
+            console.log("%cBeat Saber " + dataEvent.GameVersion + " | DataPuller " + dataEvent.PluginVersion, "background-color: green;");
+            console.log("\n\n");
 
-                    this._songCard.songCardParameters.started = true;
-                    this._songCard.songCardParameters.inProgress = true;
-                    this._songCard.songCardParameters.finished = false;
-
-                    this._playerCard.playerCardParameters.display = false;
-
-                    if (this.helloEvent) {
-                        this.timeResolve = true;
-                    }
-                } else { // MENU
-                    this._songCard.songCardParameters.started = false;
-                    this._songCard.songCardParameters.inProgress = false;
-
-                    this._playerCard.playerCardParameters.display = true;
-                }
-
-                if (dataEvent.LevelPaused) {
-                    this._songCard.songCardParameters.paused = true;
-                    this._songCard.songCardParameters.inProgress = false;
-                }
-
-                if (dataEvent.LevelFinished) {
-                    this._songCard.songCardParameters.finished = true;
-
-                    this._playerCard.playerCardParameters.needUpdate = true;
-                }
-
-                if (dataEvent.LevelQuit) {
-                    this._songCard.songCardParameters.finished = false;
-                }
-
-                if (this.helloEvent) {
-                    console.log("%cBeat Saber " + dataEvent.GameVersion + " | DataPuller " + dataEvent.PluginVersion, "background-color: green;");
-                    console.log("\n\n");
-
-                    this._songCard.songCardParameters.finished = true;
-
-                    this._playerCard.playerCardParameters.needUpdate = true;
-
-                    this.helloEvent = false;
-                }
-                break;
-
-            case "LiveData":
-                this.scoreParser(dataEvent);
-
-                if (this.timeResolve) {
-                    this._songCard.songCardData.time = dataEvent.TimeElapsed * 1000;
-
-                    this.timeResolve = false;
-
-                    if (this._songCard.songCardParameters.paused) {
-                        this._songCard.timerToBar();
-                    }
-                }
-                break;
+            this.helloEvent = false;
         }
     }
 
-    private mapInfoParser(mapInfoData: any) {
-        this._songCard.songCardData.cover = mapInfoData.coverImage;
-        this._songCard.songCardData.title = mapInfoData.SongName;
-        this._songCard.songCardData.subTitle = mapInfoData.SongSubName;
-        this._songCard.songCardData.mapper = mapInfoData.Mapper;
-        this._songCard.songCardData.author = mapInfoData.SongAuthor;
+    private eHandlerMapData(dataEvent: Globals.I_dataPullerMapDataObject): void {
+        if (dataEvent.InLevel) {
+            if (!this._songCard.songCardData.started) {
+                this.mapInfoParser(dataEvent);
+            }
 
-        this._songCard.songCardData.bpm = mapInfoData.BPM;
+            this._songCard.songCardData.started = true;
+            this._songCard.songCardData.paused = false;
+            this._songCard.songCardData.inProgress = true;
+            this._songCard.songCardData.finished = false;
 
-        this._songCard.songCardData.difficulty = (mapInfoData.Difficulty === "ExpertPlus") ? "Expert +" : mapInfoData.Difficulty;
-        this._songCard.songCardData.difficultyClass = mapInfoData.Difficulty;
+            if (!this._playerCard.playerCardData.disabled)
+                this._playerCard.playerCardData.display = false;
+
+            if (this.helloEvent) {
+                this.timeResolve = true;
+            }
+        } else {
+            this._songCard.songCardData.started = false;
+            this._songCard.songCardData.paused = false;
+            this._songCard.songCardData.inProgress = false;
+            this._songCard.songCardData.finished = true;
+
+            if (!this._playerCard.playerCardData.disabled) {
+                this._playerCard.playerCardData.needUpdate = true;
+                this._playerCard.playerCardData.display = true;
+            }
+        }
+
+        if (dataEvent.LevelPaused) {
+            this._songCard.songCardData.paused = true;
+            this._songCard.songCardData.inProgress = false;
+        }
+
+        if (dataEvent.LevelFinished) {
+            this._songCard.songCardData.finished = true;
+
+            if (!this._playerCard.playerCardData.disabled)
+                this._playerCard.playerCardData.needUpdate = true;
+        }
+
+        if (dataEvent.LevelQuit) {
+            this._songCard.songCardData.finished = false;
+        }
+
+        this.eHandshake(dataEvent);
+    }
+    private eHandlerLiveData(dataEvent: Globals.I_dataPullerLiveDataObject): void {
+        this.scoreParser(dataEvent);
+
+        if (this.timeResolve) {
+            this._songCard.songCardData.time = dataEvent.TimeElapsed * 1000;
+
+            this.timeResolve = false;
+        }
+    }
+
+    private mapInfoParser(dataEvent: Globals.I_dataPullerMapDataObject): void {
+        if (dataEvent.coverImage !== null)
+            this._songCard.songCardData.cover = "data:image/png;base64," + dataEvent.coverImage;
+        else
+            this._songCard.songCardData.cover = "./pictures/default/notFound.jpg";
+
+        this._songCard.songCardData.title = dataEvent.SongName;
+        this._songCard.songCardData.subTitle = dataEvent.SongSubName;
+        this._songCard.songCardData.mapper = dataEvent.Mapper;
+        this._songCard.songCardData.author = dataEvent.SongAuthor;
+
+        if (dataEvent.BSRKey !== null)
+            this._songCard.songCardData.bsrKey = dataEvent.BSRKey;
+        else
+            this._songCard.songCardData.bsrKey = "";
+
+        this._songCard.songCardData.bpm = dataEvent.BPM;
+
+        this._songCard.songCardData.difficulty = (dataEvent.Difficulty === "ExpertPlus") ? "Expert +" : dataEvent.Difficulty;
+        this._songCard.songCardData.difficultyClass = dataEvent.Difficulty;
 
         this._songCard.songCardData.time = 0;
-        this._songCard.songCardData.totalTime = mapInfoData.Length * 1000;
-        this._songCard.songCardData.timeToLetters = "0:00";
-        this._songCard.songCardData.timeToBarLength = 0;
+        this._songCard.songCardData.totalTime = dataEvent.Length * 1000;
 
         this._songCard.songCardData.accuracy = 100;
-        this._songCard.songCardData.accuracyToLetters = "SS";
 
-        this._songCard.songCardData.speedModifier = 1;
+        this._songCard.songCardData.speedModifier = this.speedParser(dataEvent);
 
-        if (mapInfoData.Hash.length === 40) {
-            this._songCard.beatSaverInfo(mapInfoData.Hash);
-        }
+        this._songCard.songCardData.hashMap = dataEvent.Hash;
 
-        this.speedParser(mapInfoData);
+        this._songCard.songCardData.needUpdate = true;
     }
 
-    private scoreParser(scoreInfo: any) {
-        this._songCard.songCardData.accuracy = +((scoreInfo.Accuracy).toFixed(1));
-        this._songCard.songCardData.score = scoreInfo.Score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        this._songCard.songCardData.combo = scoreInfo.Combo;
+    private speedParser(dataEvent: Globals.I_dataPullerMapDataObject) {
+        if (dataEvent.PracticeMode) {
+            return dataEvent.PracticeModeModifiers.songSpeedMul;
+        }
+
+        if (dataEvent.Modifiers.fasterSong) {
+            return 1.20;
+        }
+
+        if (dataEvent.Modifiers.superFastSong) {
+            return 1.50;
+        }
+
+        if (dataEvent.Modifiers.slowerSong) {
+            return 0.85;
+        }
+
+        return 1;
     }
 
-    private speedParser(speedInfo: any) {
-        if (speedInfo.PracticeMode) {
-            this._songCard.songCardData.speedModifier = speedInfo.PracticeModeModifiers.songSpeedMul;
-        }
+    private scoreParser(dataEvent: Globals.I_dataPullerLiveDataObject): void {
+        this._songCard.songCardData.accuracy = +((dataEvent.Accuracy).toFixed(1));
+        this._songCard.songCardData.score = dataEvent.Score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        this._songCard.songCardData.combo = dataEvent.Combo;
+        this._songCard.songCardData.miss = dataEvent.Misses;
 
-        if (speedInfo.Modifiers.fasterSong) {
-            this._songCard.songCardData.speedModifier = 1.20;
-        }
-
-        if (speedInfo.Modifiers.superFastSong) {
-            this._songCard.songCardData.speedModifier = 1.50;
-        }
-
-        if (speedInfo.Modifiers.slowerSong) {
-            this._songCard.songCardData.speedModifier = 0.85;
-        }
+        this._songCard.songCardData.health = dataEvent.PlayerHealth;
     }
 
-    public dataParser(data: any, endPoint: string): void {
-        let dataParsed = JSON.parse(data.data);
-        this.eHandler(dataParsed, endPoint);
+    public dataParser(data: string, endPoint: string): void {
+        if (endPoint === Globals.PLUGINS_CONNECTIONS.dataPuller.endPoint.mapData) {
+            let dataParsed: Globals.I_dataPullerMapDataObject = JSON.parse(data);
+
+            this.eHandlerMapData(dataParsed);
+        }
+
+        if (endPoint === Globals.PLUGINS_CONNECTIONS.dataPuller.endPoint.liveData) {
+            let dataParsed: Globals.I_dataPullerLiveDataObject = JSON.parse(data);
+
+            this.eHandlerLiveData(dataParsed);
+        }
     }
 }

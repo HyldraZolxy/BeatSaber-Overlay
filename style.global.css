@@ -1,86 +1,111 @@
-/*  ===========
-    == FONTS ==
-    ===========
+/* ====================
+   = @font-face start =
+   ==================== */
+/*  Roboto
+        -thin
+        -light
+        -regular
+        -medium
+    Walkway
 */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap');
 @font-face {
-    font-family: "walkway";
+    font-family: "Roboto-thin";
+    src: url("./fonts/roboto_thin.woff") format('woff');
+    font-weight: 100;
+}
+@font-face {
+    font-family: "Roboto-light";
+    src: url("./fonts/roboto_light.woff") format('woff');
+    font-weight: 300;
+}
+@font-face {
+    font-family: "Roboto-regular";
+    src: url("./fonts/roboto_regular.woff") format('woff');
+    font-weight: 400;
+}
+@font-face {
+    font-family: "Roboto-medium";
+    src: url("./fonts/roboto_medium.woff") format('woff');
+    font-weight: 500;
+}
+@font-face {
+    font-family: "Walkway";
     src: url("./fonts/walkway_black.woff") format('woff');
     font-weight: 900;
 }
+/* ==================
+   = @font-face end =
+   ==================*/
 
-/*  =================
-    == REUSED TAGS ==
-    =================
-*/
+/* =====================
+   = REUSED TAGS start =
+   ===================== */
+/* Corner tags */
 .top-left {
     top: 0;
     left: 0;
 }
-
 .top-right {
     top: 0;
     right: 0;
 }
-
 .bottom-left {
     bottom: 0;
     left: 0;
 }
-
 .bottom-right {
     bottom: 0;
     right: 0;
 }
 
+/* difficulty color */
+.Easy {
+    background-color: #00a279;
+}
+.Normal {
+    background-color: #3498db;
+}
+.Hard {
+    background-color: #da6300;
+}
+.Expert {
+    background-color: #de2d1b;
+}
 .ExpertPlus {
     background-color: #6610f2;
 }
 
-.Expert {
-    background-color: #de2d1b;
-}
-
-.Hard {
-    background-color: #da6300;
-}
-
-.Normal {
-    background-color: #3498db;
-}
-
-.Easy {
-    background-color: #00a279;
-}
-
-.ssClass {
+/* percentage letter color */
+.ss {
     color: #18d7d7 !important;
 }
-
-.sClass {
+.s {
     color: #a7a7a7 !important;
 }
-
-.aClass {
+.a {
     color: #2fcb2f !important;
 }
-
-.bClass {
+.b {
     color: #d9c80b !important;
 }
-
-.cClass {
+.c {
     color: #ea7c0d !important;
 }
-
-.deClass {
+.de {
     color: #e10404 !important;
 }
 
-/*  ==================
-    == GENERAL TAGS ==
-    ==================
-*/
+/* Stop filter */
+.stop {
+    filter: grayscale(100%);
+}
+/* ===================
+   = REUSED TAGS end =
+   =================== */
+
+/* ======================
+   = GENERAL TAGS start =
+   ====================== */
 * {
     margin: 0;
     padding: 0;
@@ -90,7 +115,415 @@
 body {
     min-width: 100vw;
     min-height: 100vh;
+
+    position: fixed;
+    overflow: hidden;
+}
+
+body:hover {
     background-color: rgba(59, 59, 59, 0.7);
+}
+/* ====================
+   = GENERAL TAGS end =
+   ==================== */
+
+/* ====================
+   = SETUP TAGS start =
+   ==================== */
+#setupPanel {
+    width: 735px; /* No mobile version + it's inferior at 800*800 */
+    height: 485px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    display: none;
+    position: absolute;
+
+    background-image: url("./pictures/Logo.png"), linear-gradient(#879fd2, #b990d9);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+
+    border-radius: 3px;
+    box-shadow: 0 15px 50px 10px rgba(0, 0, 0, 0.3);
+
+    font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+    color: white;
 
     overflow: hidden;
 }
+
+/* ==================================
+   = SETUP TAGS / Setup block start =
+   ================================== */
+#setup {
+    width: 65%;
+    height: 100%;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+/* ================================
+   = SETUP TAGS / Setup block end =
+   ================================ */
+
+/* ============================
+   = SETUP TAGS / Media start =
+   ============================ */
+#setupMedia {
+    width: 50%;
+    bottom: 10px;
+    left: 10px;
+
+    position: absolute;
+
+    font-size: 1.1em;
+    color: #919191;
+}
+
+#setupMedia .media {
+    width: 30px;
+
+    display: inline-block;
+
+    background-color: #545454;
+    border-radius: 50%;
+
+    line-height: 30px;
+    text-align: center;
+    text-decoration: none;
+
+    color: white;
+}
+
+#setupMedia .media:hover {
+    background-color: #6c6c6c;
+}
+
+#twitter, #discord, #mail, #github, #koFi {
+    padding: 5px;
+    bottom: 40px;
+    left: 0;
+
+    display: none;
+
+    position: absolute;
+
+    background-color: #545454;
+    border-radius: 3px;
+    border: 1px solid #6c6c6c;
+
+    line-height: 20px;
+    font-size: 0.7em;
+}
+
+#setupMedia .media:hover #twitter,
+#setupMedia .media:hover #discord,
+#setupMedia .media:hover #mail,
+#setupMedia .media:hover #github,
+#setupMedia .media:hover #koFi {
+    display: inline-block;
+    color: white;
+}
+
+#setupMedia .ion-social-twitter:hover  {
+    color: #3498db;
+}
+
+#setupMedia .ion-android-textsms:hover  {
+    color: #344adb;
+}
+
+#setupMedia .ion-android-mail:hover,
+#setupMedia .ion-card:hover {
+    color: #34dbae;
+}
+/* ==========================
+   = SETUP TAGS / Media end =
+   ========================== */
+
+/* ===========================
+   = SETUP TAGS / Menu start =
+   =========================== */
+#setupMenu {
+    width: 35%;
+    height: 100%;
+
+    float: right;
+
+    background-color: #ececec;
+
+    border-left: 1px solid rgba(0, 0, 0, 0.40);
+}
+
+.closeButton {
+    width: 35px;
+    height: 35px;
+    top: 5px;
+    right: 5px;
+
+    position: absolute;
+
+    background: none;
+    border: none;
+
+    font-size: 1.8em;
+    color: #919191;
+}
+
+.closeButton:hover {
+    color: #e03535;
+
+    cursor: pointer;
+}
+
+#setupMenu nav {
+    width: 100%;
+    height: 100%;
+
+    display: inline-flex;
+    align-items: center;
+}
+
+#setupMenu ul {
+    width: 100%;
+    height: 60%;
+
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    list-style-type: none;
+}
+
+#setupMenu li {
+    width: 85%;
+    height: 15%;
+
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+
+    background-color: rgba(211, 211, 211, 0.30);
+    border-radius: 5px;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    transition-duration: 100ms;
+}
+
+#setupMenu li:hover {
+    background-color: rgba(211, 211, 211, 0.50);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+
+    transition-duration: 100ms;
+}
+
+#setupMenu .icon {
+    width: 20%;
+    height: 100%;
+    padding-left: 10px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    clip-path: polygon(0 0, 100% 0, 60% 100%, 0% 100%);
+    background-color: #545454;
+
+    font-size: 1.8em;
+
+    transition-duration: 100ms;
+}
+
+#setupMenu li:hover .icon {
+    width: 20%;
+    height: 100%;
+    padding-left: 0px;
+
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    background-color: #6c6c6c;
+
+    font-size: 1.8em;
+    color: #34dbae;
+
+    transition-duration: 100ms;
+}
+
+#setupMenu .description {
+    padding-left: 10px;
+
+    font-size: 0.9em;
+    color: #646464;
+
+    transition-duration: 100ms;
+}
+
+#setupMenu li:hover .description {
+    font-size: 1em;
+
+    transition-duration: 100ms;
+}
+
+#setupMenu li.active {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+    background-color: rgba(211, 211, 211, 0.50);
+}
+
+#setupMenu li.active .icon {
+    padding-left: 0px;
+
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    background-color: #6c6c6c;
+
+    font-size: 1.8em;
+    color: #34dbae;
+}
+
+#setupMenu li.active .description {
+    font-size: 1em;
+}
+/* =========================
+   = SETUP TAGS / Menu end =
+   ========================= */
+
+/* ====================================
+   = SETUP TAGS / URL CLipboard start =
+   ==================================== */
+#setupURL {
+    width: 29%;
+    bottom: 10px;
+    left: 67%;
+
+    position: absolute;
+
+    font-size: 1.1em;
+    color: #919191;
+}
+
+#setupURL .media {
+    width: 30px;
+
+    display: inline-block;
+
+    background-color: #545454;
+    border-radius: 50%;
+
+    line-height: 30px;
+    text-align: center;
+    text-decoration: none;
+
+    color: white;
+
+    cursor: pointer;
+}
+
+#setupURL .media:hover {
+    background-color: #6c6c6c;
+}
+
+#Urldescription {
+    padding: 5px;
+    bottom: 40px;
+    left: 0;
+
+    display: none;
+
+    position: absolute;
+
+    background-color: #545454;
+    border-radius: 3px;
+    border: 1px solid #6c6c6c;
+
+    line-height: 20px;
+    font-size: 0.7em;
+}
+
+#setupURL .media:hover #Urldescription {
+    display: inline-block;
+    color: white;
+}
+
+#setupURL .ion-link:hover {
+    color: #34dbae;
+}
+/* ==================================
+   = SETUP TAGS / URL CLipboard end =
+   ================================== */
+
+/* ==============================
+   = SETUP TAGS / Version start =
+   ============================== */
+#BSOVersion {
+    bottom: 5px;
+    right: 5px;
+
+    position: absolute;
+
+    font-size: 0.7em;
+    color: #919191;
+}
+/* ============================
+   = SETUP TAGS / Version end =
+   ============================ */
+
+/* =============================
+   = SETUP TAGS / Button start =
+   ============================= */
+#setupButton {
+    bottom: 25px;
+    right: 25px;
+
+    width: 50px;
+    height: 50px;
+
+    display: none;
+    position: absolute;
+
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgb(7, 25, 38);
+    border-radius: 5px;
+    border: 1px solid rgb(147, 148, 151);
+
+    font-size: 2em;
+    color: rgb(147, 148, 151);
+
+    cursor: pointer;
+}
+
+#setupButton:hover {
+    color: rgb(160, 113, 239);
+}
+
+body:hover #setupButton {
+    display: inline-flex;
+}
+/* ===========================
+   = SETUP TAGS / Button end =
+   =========================== */
+
+#setup {
+    --show: 300ms;
+    --hide: 300ms;
+}
+
+#setup {
+    transition:
+            opacity var(--show);
+}
+
+#setup.hidden  {
+    opacity: 0;
+    transition:
+            opacity var(--hide);
+}
+/* ==================
+   = SETUP TAGS end =
+   ================== */

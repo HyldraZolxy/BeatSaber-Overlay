@@ -9,14 +9,15 @@ import { Setup } from "./setup.js";
 
 class Init {
 
-    ////////////////////////////
-    // PRIVATE CLASS VARIABLE //
-    ////////////////////////////
+    /////////////////////
+    // @CLASS VARIABLE //
+    /////////////////////
     private _parameters: Parameters;
     private _playerCard: PlayerCard;
     private _songCard: SongCard;
     private _ui: UI;
     private _plugins: Plugins;
+    private _setup: Setup;
 
     constructor() {
         this._parameters = Parameters.Instance;
@@ -24,12 +25,10 @@ class Init {
         this._songCard = SongCard.Instance;
         this._ui = new UI();
         this._plugins = Plugins.Instance;
-        new Setup();
+        this._setup = new Setup();
 
         (async () => {
             await this.appInit();
-
-            console.timeEnd("Load time");
         })();
     }
 
@@ -37,11 +36,14 @@ class Init {
     // PUBLIC FUNCTION //
     /////////////////////
     public async appInit() {
-        await this._songCard.loadSkin(this._songCard.songCardParameters.skin);
-        await this._playerCard.loadSkin(this._playerCard.playerCardParameters.skin);
+        await this._playerCard.loadSkin(this._playerCard.playerCardData.skin);
+        await this._songCard.loadSkin(this._songCard.songCardData.skin);
 
         this._ui.refreshUI();
-        this._plugins.beatSaberConnection();
+
+        console.timeEnd("Load time");
+
+        await this._plugins.beatSaberConnection();
     }
 }
 

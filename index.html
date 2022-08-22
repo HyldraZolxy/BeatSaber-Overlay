@@ -4,15 +4,20 @@
         <meta charset="UTF-8" />
 
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:site_name" content="Beat Saber Overlay | By Hyldra Zolxy | For BSPlus, HTTPStatus and DataPuller plugins !" />
+        <meta name="description" content="This is an overlay that can be used with an plugin (mod) for BeatSaber.
+            It takes the data produced by the plugin(s) in order to display them, so that you can display them through a record or a stream">
+
+        <meta property="og:site_name" content="Beat Saber Overlay | By Hyldra Zolxy | For BSPlus, HTTPStatus, HTTPSiraStatus and DataPuller plugins !" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Beat Saber Overlay | By Hyldra Zolxy | For BSPlus, HTTPStatus and DataPuller plugins !" />
-        <meta property="og:description" content="Beat Saber Overlay for BSPlus, HTTPStatus and DataPuller plugins" />
+        <meta property="og:title" content="Beat Saber Overlay | By Hyldra Zolxy | For BSPlus, HTTPStatus, HTTPSiraStatus and DataPuller plugins !" />
+        <meta property="og:description" content="This is an overlay that can be used with an plugin (mod) for BeatSaber.
+            It takes the data produced by the plugin(s) in order to display them, so that you can display them through a record or a stream" />
         <meta property="og:url" content="https://overlay.hyldrazolxy.fr/" />
         <meta property="og:image" content="https://overlay.hyldrazolxy.fr/preview/Overlay_BS_New_Light.gif" />
 
-        <title>Beat Saber Overlay | By Hyldra Zolxy | For BSPlus, HTTPStatus and DataPuller plugins !</title>
+        <title>Beat Saber Overlay | By Hyldra Zolxy | For BSPlus, HTTPStatus, HTTPSiraStatus and DataPuller plugins !</title>
         <link rel="icon" href="./pictures/favicon.png" type="image/png" />
+        <link rel="stylesheet" href="./ionicons.min.css" type="text/css" />
         <link rel="stylesheet" href="./style.global.css" type="text/css" />
 
         <script type="text/javascript" src="./js/libs/jquery-3.6.0.min.js"></script>
@@ -20,11 +25,66 @@
     </head>
     <body>
         <main>
+
             <section id="overlay">
-                <div id="playerCard"></div>
-                <div id="songCard"></div>
+                <div id="playerCard" class="hidden"></div>
+                <div id="songCard" class="hidden"></div>
             </section>
-            <section id="setup"></section>
+
+            <section id="setupPanel">
+                <div id="setup"></div> <!-- filled with TypeScript elements -->
+
+                <div id="setupMedia">
+                    <a href="https://twitter.com/HyldraZolxyOff" class="media ion-social-twitter">
+                        <p id="twitter">My Twitter account !</p>
+                    </a>
+                    <a href="https://discordapp.com/users/481533074249875486" class="media ion-android-textsms"> <!-- No discord icon smh -->
+                        <p id="discord">My Discord account !</p>
+                    </a>
+                    <a href="mailto:contact@hyldrazolxy.fr" class="media ion-android-mail">
+                        <p id="mail">My Email !</p>
+                    </a>
+                    <a href="https://github.com/HyldraZolxy" class="media ion-social-github">
+                        <p id="github">My GitHub account !</p>
+                    </a>
+                    <a href="https://ko-fi.com/hyldrazolxy" class="media ion-card">
+                        <p id="koFi">If you want to support me 💖</p>
+                    </a>
+                </div>
+
+                <div id="setupMenu">
+                    <button type="button" class="closeButton ion-android-close" title="Close"></button>
+
+                    <nav>
+                        <ul>
+                            <li class="generalSettings">
+                                <div class="icon ion-android-settings"></div>
+                                <p class="description">General Settings</p>
+                            </li>
+                            <li class="playerSettings">
+                                <div class="icon ion-android-person"></div>
+                                <p class="description">Player Card Settings</p>
+                            </li>
+                            <li class="songSettings">
+                                <div class="icon ion-music-note"></div>
+                                <p class="description">Song Card Settings</p>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div id="setupURL">
+                        <div class="media ion-link">
+                            <p id="Urldescription" data-clipboardtext="https://overlay.hyldrazolxy.fr/">
+                                Click to copy the link !
+                            </p>
+                        </div>
+                    </div>
+
+                    <div id="BSOVersion">v2.1.0</div>
+                </div>
+            </section>
+
+            <button type="button" id="setupButton" class="ion-android-settings" title="Open settings"></button>
         </main>
     </body>
 </html>

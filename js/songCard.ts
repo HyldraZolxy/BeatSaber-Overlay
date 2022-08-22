@@ -1,119 +1,76 @@
-import { GlobalVariable } from "./global.js";
+import { Globals } from "./global.js";
 import { Template } from "./template.js";
-import { Tools } from "./tools.js";
+import { BeatSaver } from "./beatSaver.js";
 
 export class SongCard {
 
-    //////////////
-    // INSTANCE //
-    //////////////
+    ///////////////
+    // @INSTANCE //
+    ///////////////
     private static _instance: SongCard;
 
-    ////////////////////////////
-    // PRIVATE CLASS VARIABLE //
-    ////////////////////////////
+    /////////////////////
+    // @CLASS VARIABLE //
+    /////////////////////
     private _template: Template;
-    private _tools: Tools;
-
-    ////////////////////////
-    // PROTECTED VARIABLE //
-    ////////////////////////
-    protected skinUrl: string = "./skins/songCard/";
+    private _beatSaver: BeatSaver;
 
     /////////////////////
     // PUBLIC VARIABLE //
     /////////////////////
-    public songCardParameters: {
-        // disabled: boolean,
-        // alwaysShown: boolean,
-
-        position: string,
-        skin: string,
-        scale: number
-
-        started: boolean;
-        inProgress: boolean;
-        paused: boolean;
-        finished: boolean;
-    } = {
-        // disabled: false,
-        // alwaysShown: false,
-
-        position: GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_LEFT],
-        skin: GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.DEFAULT],
-        scale: 1,
+    public songCardData: Globals.I_songCard = {
+        disabled: false,
+        alwaysDisplayed: false,
+        needUpdate: false,
+        position: "bottom-left",
+        skin: "default",
+        scale: 1.0,
 
         started: false,
         inProgress: false,
         paused: false,
-        finished: false
-    };
+        finished: false,
 
-    public songCardData: {
-        cover: string;
-        title: string;
-        subTitle: string;
-        mapper: string;
-        author: string;
+        displayMiss: false,
 
-        bsrKey: string;
-        bpm: number;
-
-        difficulty: string;
-        difficultyClass: string;
-
-        ranked: boolean;
-        qualified: boolean;
-
-        time: number;
-        totalTime: number;
-        timeToLetters: string;
-        timeToBarLength: number;
-
-        accuracy: number;
-        accuracyToLetters: string;
-
-        score: string; // FOR SUPPORT COMMAS
-        combo: number;
-
-        health: number;
-
-        speedModifier: number;
-    } = {
-        cover: "./pictures/default/defaultSong.jpg",
-        title: "[BLEED BLOOD]",
-        subTitle: "SubNameTest",
-        mapper: "Jabob",
+        cover: "https://eu.cdn.beatsaver.com/280378d7157542f5b160e8a464f0dcfdc3a1de56.jpg",
+        title: "Love yiff!",
+        subTitle: "Subtitle",
+        mapper: "Yasu",
         author: "Camellia",
 
-        bsrKey: "10217",
-        bpm: 325.758,
+        bsrKey: "2319e",
+        hashMap: "280378d7157542f5b160e8a464f0dcfdc3a1de56",
+        bpm: 272,
 
-        difficulty: "Easy",
-        difficultyClass: "Easy",
+        difficulty: "Expert+",
+        difficultyClass: "ExpertPlus",
 
-        ranked: true,
+        ranked: false,
         qualified: false,
+        pp: 0,
 
-        time: 60000,
-        totalTime: 249000,
-        timeToLetters: "2:25",
-        timeToBarLength: 24.09,
+        time: 137000,
+        totalTime: 274000,
+        timeToLetters: "2:17",
+        timeToPercentage: 50,
 
-        accuracy: 98.6,
-        accuracyToLetters: "SS",
+        accuracy: 69.69,
+        accuracyToLetters: "A",
+        accuracyToLetterClass: "a",
 
-        score: "351",
-        combo: 3,
+        score: "124,256",
+        combo: 234,
+        miss: 2,
 
-        health: 0.50,
+        health: 100,
 
         speedModifier: 1
     };
 
     constructor() {
         this._template = new Template();
-        this._tools = new Tools();
+        this._beatSaver = new BeatSaver();
 
         this.timerSong();
     }
@@ -121,681 +78,146 @@ export class SongCard {
     //////////////////////
     // PRIVATE FUNCTION //
     //////////////////////
-    private songAccuracyLetterToClass() {
-        let accuracyLetterToClass: string;
-        let tasks = {};
-
-        this.songCardData.accuracyToLetters = this._template.accuracyToLetter(this.songCardData.accuracy);
-
-        switch(this.songCardData.accuracyToLetters) {
-            case "SS":
-                accuracyLetterToClass = "ssClass";
-                break;
-
-            case "S":
-                accuracyLetterToClass =  "sClass";
-                break;
-
-            case "A":
-                accuracyLetterToClass =  "aClass";
-                break;
-
-            case "B":
-                accuracyLetterToClass =  "bClass";
-                break;
-
-            case "C":
-                accuracyLetterToClass =  "cClass";
-                break;
-
-            case "D":
-            case "E":
-                accuracyLetterToClass =  "deClass";
-                break
-
-            default:
-                accuracyLetterToClass =  "sClass";
-                break
-        }
-
-        switch(this.songCardParameters.skin) {
-            case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.FREEMIUM]:
-                tasks = {
-                    task_1: {
-                        element: $("#accuracyToLetters"),
-                        removeClass: "ssClass sClass aClass bClass cClass deClass",
-                        addClass: accuracyLetterToClass
-                    }
-                };
-                break;
-        }
-
-        this._template.refreshUITemplate(tasks);
-    }
-
-    private stopOrStartClass() {
-        let tasks = {};
-
-        switch(this.songCardParameters.skin) {
-            case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.FREEMIUM]:
-                tasks = {
-                    task_1: {
-                        element: $("#songCard"),
-                        removeClass: "stop start",
-                        addClass: (this.songCardParameters.inProgress) ? "start" : "stop"
-                    }
-                }
-                break;
-        }
-
-        this._template.refreshUITemplate(tasks);
-    }
-
-    private timerSong() {
+    private timerSong(): void {
         setInterval(() => {
-            if (this.songCardParameters.started) {
-                if (this.songCardParameters.inProgress) {
-                    this.songCardData.time += 100;
-                    if (
-                        this.songCardParameters.skin === GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.DEFAULT]
-                        || this.songCardParameters.skin === GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.FREEMIUM]
-                    ) {
-                        this.timerToBar();
-                    }
+            if (this.songCardData.disabled
+                || this.songCardData.paused
+                || !this.songCardData.inProgress)
+                return;
 
-                    if (this.songCardParameters.skin === GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.RESELIM]) {
-                        this.timerToBarRound();
-                    }
-
-                    this.timeToLetters();
-                }
-            } else {
+            if (!this.songCardData.started) {
                 this.songCardData.time = 0;
-                this.songCardData.timeToBarLength = 0;
+                this.songCardData.totalTime = 0;
+                this.songCardData.timeToLetters = "0:00";
+                this.songCardData.timeToPercentage = 0;
+                return;
             }
-        }, GlobalVariable.MS_TIMER);
+
+            if (this.songCardData.finished) {
+                this.songCardData.time = this.songCardData.totalTime;
+                this.songCardData.timeToLetters = this.timeToLetters();
+                this.songCardData.timeToPercentage = 100;
+                return;
+            }
+
+            if (this.songCardData.inProgress) {
+                this.songCardData.time += (100 * this.songCardData.speedModifier);
+                this.songCardData.timeToLetters = this.timeToLetters();
+                this.songCardData.timeToPercentage = this.timeToPercentage();
+            }
+        }, Globals.MS_TIMER);
+    }
+
+    private accuracyToLetter(): "A" | "SS" | "S" | "B" | "C" | "D" | "E" {
+        if (this.songCardData.accuracy >= 90)
+            return "SS";
+
+        if (this.songCardData.accuracy < 90 && this.songCardData.accuracy >= 80)
+            return "S";
+
+        if (this.songCardData.accuracy < 80 && this.songCardData.accuracy >= 65)
+            return "A";
+
+        if (this.songCardData.accuracy < 65 && this.songCardData.accuracy >= 50)
+            return "B";
+
+        if (this.songCardData.accuracy < 50 && this.songCardData.accuracy >= 35)
+            return "C";
+
+        if (this.songCardData.accuracy < 35 && this.songCardData.accuracy >= 20)
+            return "D";
+
+        if (this.songCardData.accuracy < 20)
+            return "E";
+
+        return "E";
+    }
+
+    private accuracyToLetterClass(): "a" | "ss" | "s" | "b" | "c" | "de" {
+        if (["SS"].includes(this.songCardData.accuracyToLetters))
+            return "ss";
+
+        if (["S"].includes(this.songCardData.accuracyToLetters))
+            return "s";
+
+        if (["A"].includes(this.songCardData.accuracyToLetters))
+            return "a";
+
+        if (["B"].includes(this.songCardData.accuracyToLetters))
+            return "b";
+
+        if (["C"].includes(this.songCardData.accuracyToLetters))
+            return "c";
+
+        if (["D", "E"].includes(this.songCardData.accuracyToLetters))
+            return "de";
+
+        return "de";
+    }
+
+    private timeToLetters(): string {
+            let minutes = Math.floor((this.songCardData.time / 1000) / 60).toFixed(0);
+            let seconds = ((this.songCardData.time / 1000) % 60).toFixed(0);
+
+            if (+(seconds) < 10) {
+                seconds = "0" + seconds;
+            }
+
+            return minutes + ":" + seconds;
+    }
+
+    private timeToPercentage(): number {
+        return Math.min(this.songCardData.time / this.songCardData.totalTime) * 100;
+    }
+
+    private async updateSongInfo(): Promise<void> {
+        if (this.songCardData.disabled
+            || !this.songCardData.needUpdate)
+            return;
+
+        this.songCardData.needUpdate = false;
+        const data = await this._beatSaver.getSongInfo(this.songCardData.hashMap);
+
+        if (data.error !== undefined) {
+            this.songCardData.ranked = false;
+            this.songCardData.qualified = false;
+            this.songCardData.bsrKey = "NotFound";
+            return;
+        }
+
+        this.songCardData.cover = data.versions[0].coverURL;
+        this.songCardData.ranked = data.ranked;
+        this.songCardData.qualified = (data.ranked) ? false : data.qualified;
+        this.songCardData.bsrKey = data.id;
     }
 
     /////////////////////
     // PUBLIC FUNCTION //
     /////////////////////
-    public timerToBar(): void {
-        this.songCardData.timeToBarLength = ((100 * this.songCardData.time) / this.songCardData.totalTime) * this.songCardData.speedModifier;
+    public async loadSkin(skinName: string): Promise<void> {
+        if (this.songCardData.disabled)
+            return;
+
+        if (skinName !== undefined)
+            await this._template.loadSkin(Globals.E_MODULES.SONGCARD, skinName);
     }
 
-    public timerToBarRound(): void {
-        const radius = 30;
-        const circumference = radius * Math.PI * 2;
+    public refreshSongCard(): void {
+        this.updateSongInfo().then(() => {
+            this.songCardData.accuracyToLetters = this.accuracyToLetter();
+            this.songCardData.accuracyToLetterClass = this.accuracyToLetterClass();
 
-        let percentage = Math.min(this.songCardData.time / this.songCardData.totalTime, 1);
+            this._template.refreshUI(this.songCardData, Globals.E_MODULES.SONGCARD);
+            this._template.moduleScale(Globals.E_MODULES.SONGCARD, this.songCardData.position, this.songCardData.scale);
+            this._template.moduleCorners(Globals.E_MODULES.SONGCARD, this.songCardData.position);
 
-        let tasks = {
-            task_1: {
-                element: $("#progress"),
-                modify: {
-                    stroke_dashoffset: (1 - percentage) * circumference + "px"
-                }
-            }
-        }
+            this._template.stopOrStart(this.songCardData.started, this.songCardData.paused);
+            this._template.missDisplay(this.songCardData.displayMiss);
 
-        this._template.refreshUITemplate(tasks);
-    }
-
-    public timeToLetters() {
-            let minutes = +(Math.floor((this.songCardData.time / 1000) / 60).toFixed(0));
-            let seconds: string|number = +(((this.songCardData.time / 1000) % 60).toFixed(0));
-
-            if (seconds < 10) {
-                seconds = "0" + seconds;
-            }
-
-            this.songCardData.timeToLetters = minutes + ":" + seconds;
-    }
-
-    public async loadSkin(skin: string): Promise<void> {
-        const skinPath = this.skinUrl + skin + "/";
-
-        if (skin in GlobalVariable.SkinFilesSongCard) {
-            for (const entries of Object.entries(GlobalVariable.SkinFilesSongCard)) {
-                const [key, value] = entries;
-
-                if (key === skin) {
-                    await this._template.loadFile(skinPath, value, "songCard");
-                }
-            }
-        }
-    }
-    
-    public refreshSongCard(data: object): void {
-        this._template.refreshUI(data, "songCard");
-    }
-
-    public toggleDisplay(): void {
-        let tasks = {};
-
-        switch(this.songCardParameters.skin) {
-            case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.RESELIM]:
-                if (this.songCardParameters.started) {
-                    tasks = {
-                        task_1: {
-                            element: $("#songCard"),
-                            removeClass: "hidden"
-                        }
-                    }
-                } else {
-                    tasks = {
-                        task_1: {
-                            element: $("#songCard"),
-                            addClass: "hidden"
-                        }
-                    }
-                }
-
-                this.songAccuracyLetterToClass();
-                this._template.refreshUITemplate(tasks);
-                break;
-            case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.FREEMIUM]:
-                if (this.songCardParameters.started) {
-                    tasks = {
-                        task_1: {
-                            element: $("#songCard"),
-                            removeClass: "hidden",
-                            addClass: "show"
-                        },
-                        task_2: {
-                            element: $("#songDataCover"),
-                            removeClass: "hiddenDescBarLeft hiddenDescBarRight",
-                            addClass: (
-                                (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT])
-                                || (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT])
-                            ) ? "showDescBarRight" : "showDescBarLeft"
-                        },
-                        task_3: {
-                            element: $("#songData"),
-                            removeClass: "hidden",
-                            addClass: "show"
-                        }
-                    }
-                } else {
-                    tasks = {
-                        task_1: {
-                            element: $("#songCard"),
-                            removeClass: "show",
-                            addClass: "hidden"
-                        },
-                        task_2: {
-                            element: $("#songDataCover"),
-                            removeClass: "showDescBarLeft showDescBarRight",
-                            addClass: (
-                                (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT])
-                                || (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT])
-                            ) ? "hiddenDescBarRight" : "hiddenDescBarLeft"
-                        },
-                        task_3: {
-                            element: $("#songData"),
-                            removeClass: "show",
-                            addClass: "hidden"
-                        }
-                    }
-                }
-
-                this.songAccuracyLetterToClass();
-                this.stopOrStartClass();
-                this._template.refreshUITemplate(tasks);
-                break;
-
-            case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.DEFAULT]:
-                if (this.songCardParameters.started) {
-                    tasks = {
-                        task_1: {
-                            element: $("#songCard"),
-                            removeClass: "hiddenSecond",
-                            addClass: "showFirst"
-                        },
-                        task_2: {
-                            element: $("#songData"),
-                            removeClass: "hiddenFirstLeft hiddenFirstRight",
-                            addClass: (
-                                (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT])
-                                || (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT])
-                            ) ? "showSecondRight" : "showSecondLeft"
-                        }
-                    };
-                } else {
-                    tasks = {
-                        task_1: {
-                            element: $("#songCard"),
-                            removeClass: "showFirst",
-                            addClass: "hiddenSecond"
-                        },
-                        task_2: {
-                            element: $("#songData"),
-                            removeClass: "showSecondLeft showSecondRight",
-                            addClass: (
-                                (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT])
-                                || (this.songCardParameters.position === GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT])
-                            ) ? "hiddenFirstRight" : "hiddenFirstLeft"
-                        }
-                    };
-                }
-
-                this._template.refreshUITemplate(tasks);
-                break;
-        }
-    }
-
-    public displayScale(): void {
-        let tasks = {
-            task_1: {
-                element: $("#songCard"),
-                modify: {
-                    transform_origin: this.songCardParameters.position.replace(/(-)/g, " "),
-                    transform: "scale(" + this.songCardParameters.scale + ")"
-                }
-            }
-        }
-
-        this._template.refreshUITemplate(tasks);
-    }
-
-    public cornerSwitch(): void {
-        let tasks = {};
-
-        tasks = {
-            task_1: {
-                element: $("#songCard"),
-                removeClass: "top-left top-right bottom-left bottom-right",
-                addClass: this.songCardParameters.position
-            }
-        }
-
-        this._template.refreshUITemplate(tasks);
-
-        switch(this.songCardParameters.skin) {
-            case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.RESELIM]:
-                switch(this.songCardParameters.position) {
-                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_LEFT]:
-                        tasks = {
-                            task_1: {
-                                element: $("#songCard"),
-                                modify: {
-                                    flex_direction: "column-reverse",
-                                    text_align: "left"
-                                }
-                            },
-                            task_2: {
-                                element: $("#beatmap"),
-                                modify: {
-                                    flex_direction: "row"
-                                }
-                            },
-                            task_3: {
-                                element: $("#performance"),
-                                modify: {
-                                    flex_direction: "column-reverse"
-                                }
-                            }
-                        }
-                        break;
-
-                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT]:
-                        tasks = {
-                            task_1: {
-                                element: $("#songCard"),
-                                modify: {
-                                    flex_direction: "column-reverse",
-                                    text_align: "right"
-                                }
-                            },
-                            task_2: {
-                                element: $("#beatmap"),
-                                modify: {
-                                    flex_direction: "row-reverse"
-                                }
-                            },
-                            task_3: {
-                                element: $("#performance"),
-                                modify: {
-                                    flex_direction: "column-reverse"
-                                }
-                            }
-                        }
-                        break;
-
-                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_LEFT]:
-                        tasks = {
-                            task_1: {
-                                element: $("#songCard"),
-                                modify: {
-                                    flex_direction: "column",
-                                    text_align: "left"
-                                }
-                            },
-                            task_2: {
-                                element: $("#beatmap"),
-                                modify: {
-                                    flex_direction: "row"
-                                }
-                            },
-                            task_3: {
-                                element: $("#performance"),
-                                modify: {
-                                    flex_direction: "column"
-                                }
-                            }
-                        }
-                        break;
-
-                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT]:
-                        tasks = {
-                            task_1: {
-                                element: $("#songCard"),
-                                modify: {
-                                    flex_direction: "column",
-                                    text_align: "right"
-                                }
-                            },
-                            task_2: {
-                                element: $("#beatmap"),
-                                modify: {
-                                    flex_direction: "row-reverse"
-                                }
-                            },
-                            task_3: {
-                                element: $("#performance"),
-                                modify: {
-                                    flex_direction: "column"
-                                }
-                            }
-                        }
-                        break;
-                }
-                break;
-
-            case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.FREEMIUM]:
-                switch(this.songCardParameters.position) {
-                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_LEFT]:
-                        tasks = {
-                            task_1: {
-                                element: $("#songCard"),
-                                modify: {
-                                    flex_direction: "row",
-                                    text_align: "left"
-                                }
-                            },
-                            task_2: {
-                                element: $(".descBar"),
-                                modify: {
-                                    float: "left",
-                                    clear: "left",
-                                    padding: "3px 15px 2px 5px",
-                                    clip_path: "polygon(0 0, 100% 0, 90% 100%, 0% 100%)"
-                                }
-                            },
-                            task_3: {
-                                element: $("#songAccuracyDiv"),
-                                modify: {
-                                    clip_path: "polygon(0 0, 100% 0, 0 100%, 0% 100%)",
-                                    border_top_left_radius: "5px",
-                                    border_top_right_radius: ""
-                                }
-                            },
-                            task_4: {
-                                element: $("#accuracy"),
-                                modify: {
-                                    transform: "rotate(-45deg)",
-                                    margin_left: "-15px",
-                                    margin_right: ""
-                                }
-                            },
-                            task_5: {
-                                element: $("#songAccuracyLetterDiv"),
-                                modify: {
-                                    margin_top: "-20px",
-                                    margin_left: "-20px",
-                                    margin_right: "0"
-                                }
-                            },
-                            task_6: {
-                                element: $("#accuracyToLetters"),
-                                modify: {
-                                    transform: "rotate(-45deg)"
-                                }
-                            },
-                            task_7: {
-                                element: $("#songData"),
-                                modify: {
-                                    margin_top: "-25px",
-                                }
-                            }
-                        }
-                        break;
-
-                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT]:
-                        tasks = {
-                            task_1: {
-                                element: $("#songCard"),
-                                modify: {
-                                    flex_direction: "row-reverse",
-                                    text_align: "right"
-                                }
-                            },
-                            task_2: {
-                                element: $(".descBar"),
-                                modify: {
-                                    float: "right",
-                                    clear: "right",
-                                    padding: "3px 5px 2px 15px",
-                                    clip_path: "polygon(0 0, 100% 0, 100% 100%, 10% 100%)"
-                                }
-                            },
-                            task_3: {
-                                element: $("#songAccuracyDiv"),
-                                modify: {
-                                    clip_path: "polygon(0 0, 100% 0, 100% 100%, 100% 100%)",
-                                    border_top_left_radius: "",
-                                    border_top_right_radius: "5px"
-                                }
-                            },
-                            task_4: {
-                                element: $("#accuracy"),
-                                modify: {
-                                    transform: "rotate(45deg)",
-                                    margin_left: "0",
-                                    margin_right: "-15px"
-                                }
-                            },
-                            task_5: {
-                                element: $("#songAccuracyLetterDiv"),
-                                modify: {
-                                    margin_top: "-20px",
-                                    margin_left: "0",
-                                    margin_right: "-20px"
-                                }
-                            },
-                            task_6: {
-                                element: $("#accuracyToLetters"),
-                                modify: {
-                                    transform: "rotate(45deg)"
-                                }
-                            },
-                            task_7: {
-                                element: $("#songData"),
-                                modify: {
-                                    margin_top: "-25px",
-                                }
-                            }
-                        }
-                        break;
-
-                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_LEFT]:
-                        tasks = {
-                            task_1: {
-                                element: $("#songCard"),
-                                modify: {
-                                    flex_direction: "row",
-                                    text_align: "left"
-                                }
-                            },
-                            task_2: {
-                                element: $(".descBar"),
-                                modify: {
-                                    float: "left",
-                                    clear: "left",
-                                    padding: "3px 15px 2px 5px",
-                                    clip_path: "polygon(0 0, 100% 0, 90% 100%, 0% 100%)"
-                                }
-                            },
-                            task_3: {
-                                element: $("#songAccuracyDiv"),
-                                modify: {
-                                    clip_path: "polygon(0 0, 100% 0, 0 100%, 0% 100%)",
-                                    border_top_left_radius: "5px",
-                                    border_top_right_radius: ""
-                                }
-                            },
-                            task_4: {
-                                element: $("#accuracy"),
-                                modify: {
-                                    transform: "rotate(-45deg)",
-                                    margin_left: "-15px",
-                                    margin_right: ""
-                                }
-                            },
-                            task_5: {
-                                element: $("#songAccuracyLetterDiv"),
-                                modify: {
-                                    margin_top: "-20px",
-                                    margin_left: "-20px",
-                                    margin_right: "0"
-                                }
-                            },
-                            task_6: {
-                                element: $("#accuracyToLetters"),
-                                modify: {
-                                    transform: "rotate(-45deg)"
-                                }
-                            },
-                            task_7: {
-                                element: $("#songData"),
-                                modify: {
-                                    margin_top: "145px",
-                                }
-                            }
-                        }
-                        break;
-
-                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT]:
-                        tasks = {
-                            task_1: {
-                                element: $("#songCard"),
-                                modify: {
-                                    flex_direction: "row-reverse",
-                                    text_align: "right"
-                                }
-                            },
-                            task_2: {
-                                element: $(".descBar"),
-                                modify: {
-                                    float: "right",
-                                    clear: "right",
-                                    padding: "3px 5px 2px 15px",
-                                    clip_path: "polygon(0 0, 100% 0, 100% 100%, 10% 100%)"
-                                }
-                            },
-                            task_3: {
-                                element: $("#songAccuracyDiv"),
-                                modify: {
-                                    clip_path: "polygon(0 0, 100% 0, 100% 100%, 100% 100%)",
-                                    border_top_left_radius: "",
-                                    border_top_right_radius: "5px"
-                                }
-                            },
-                            task_4: {
-                                element: $("#accuracy"),
-                                modify: {
-                                    transform: "rotate(45deg)",
-                                    margin_left: "0",
-                                    margin_right: "-15px"
-                                }
-                            },
-                            task_5: {
-                                element: $("#songAccuracyLetterDiv"),
-                                modify: {
-                                    margin_top: "-20px",
-                                    margin_left: "0",
-                                    margin_right: "-20px"
-                                }
-                            },
-                            task_6: {
-                                element: $("#accuracyToLetters"),
-                                modify: {
-                                    transform: "rotate(45deg)"
-                                }
-                            },
-                            task_7: {
-                                element: $("#songData"),
-                                modify: {
-                                    margin_top: "145px",
-                                }
-                            }
-                        }
-                        break;
-                }
-                break;
-
-            case GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.DEFAULT]:
-                switch(this.songCardParameters.position) {
-                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT]:
-                    case GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT]:
-                        tasks = {
-                            task_1: {
-                                element: $("#songCard"),
-                                modify: {
-                                    flex_direction: "row-reverse",
-                                    text_align: "right"
-                                }
-                            }
-                        }
-                        break;
-
-                    default:
-                        tasks = {
-                            task_1: {
-                                element: $("#songCard"),
-                                modify: {
-                                    flex_direction: "row",
-                                    text_align: "left"
-                                }
-                            }
-                        }
-                        break;
-                }
-                break;
-        }
-
-        this._template.refreshUITemplate(tasks);
-    }
-
-    public async beatSaverInfo(levelId: string): Promise<void> {
-        if (levelId.length === 40) {
-            let dataJson: any = await this._tools.getMethod(GlobalVariable.BEATSAVER_API_URL + "maps/hash/" + levelId);
-
-            if (!("error" in dataJson)) {
-                this.songCardData.bsrKey = dataJson.id;
-                this.songCardData.cover = dataJson.versions[0].coverURL;
-
-                if (dataJson.qualified) {
-                    this.songCardData.qualified = dataJson.qualified;
-                } else {
-                    if (dataJson.ranked) {
-                        this.songCardData.ranked = dataJson.ranked;
-                    }
-                }
-            } else {
-                this.songCardData.bsrKey = "NotFound";
-            }
-        }
+            /* Plugin details */
+            if (this.songCardData.skin === "reselim")
+                this._template.timerToCircleBar(this.songCardData.timeToPercentage);
+        });
     }
 
     /////////////

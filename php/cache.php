@@ -1,17 +1,49 @@
 <?php
-/// Cache system
-/// Thanks to HardCPP for that Class
-class Cache_System
-{
-    private $CACHE_FOLDER = "Cache";
+/**
+ * Cache System
+ * Description: That system cache the data from php result, it allows to avoid API calls that are not useful especially when the API have rate limits
+ *
+ * Thanks: @HardCPP | https://github.com/hardcpp
+ * Adapted for PHP 8
+ */
+class Cache_System {
+    private string $CACHE_FOLDER = "Cache";
 
-    //////////////////////////////////////
-    /// Set cache
-    /// @p_ID               : Cache name
-    /// @p_Data             : Cache data
-    /// @p_ExpireSeconds    : Expiracy in seconds
-    public function Set($p_ID, $p_Data)
-    {
+    ////////////////////////
+    /// PRIVATE FUNCTIONS //
+    ////////////////////////
+
+    /**
+     * Get cache filename by hashing the ID
+     */
+    private function GetCacheHash(string $p_ID): string {
+        return sha1("Hyldraverlay_" . $p_ID);
+    }
+
+    /**
+     * Get cache file path from hash
+     */
+    private function GetCachePath(string $p_Hash): string {
+        return substr($p_Hash, 0, 2) . "/" . substr($p_Hash, 2, 2) . "/";
+    }
+
+    /**
+     * Create recursively directories
+     */
+    private function CreateDirectories(string $p_DirectoryName): void {
+        if (!is_dir($p_DirectoryName)) {
+            mkdir($p_DirectoryName, 0775, true);
+        }
+    }
+
+    ///////////////////////
+    /// PUBLIC FUNCTIONS //
+    ///////////////////////
+
+    /**
+     * Set the cache
+     */
+    public function Set(string $p_ID, string $p_Data): void {
         $l_CacheID = $this->GetCacheHash($p_ID);
 
         $l_FilePath = $this->CACHE_FOLDER . "/" . $this->GetCachePath($l_CacheID);
@@ -23,9 +55,9 @@ class Cache_System
             unlink($l_FilePath . $l_FileName);
 
         $l_Content = str_replace("'", "\'", serialize($p_Data));
-        $l_Content = '<?php' . "\n" . '$' . 'Cache = unserialize(\'' .  $l_Content . '\');' . "\n" . '?>';
+        $l_Content = "<?php" . "\n" . "$" . "cache = unserialize('" . $l_Content . "')" . ";";
 
-        $l_FileInstance = fopen($l_FilePath . $l_FileName, 'w');
+        $l_FileInstance = fopen($l_FilePath . $l_FileName, "w");
 
         flock($l_FileInstance, LOCK_EX);
         fwrite($l_FileInstance, $l_Content);
@@ -34,19 +66,16 @@ class Cache_System
         fclose($l_FileInstance);
     }
 
-    /// Get cache
-    /// @p_ID               : Cache name
-    /// @p_ExpireSeconds    : Expiracy in seconds
-    /// @p_NoExpire         : Ignore expiration
-    public function Get($p_ID)
-    {
+    /**
+     * Get the cache
+     */
+    public function Get(string $p_ID): null|string {
         $l_CacheID = $this->GetCacheHash($p_ID);
 
         $l_FilePath = $this->CACHE_FOLDER . "/" . $this->GetCachePath($l_CacheID);
         $l_FileName = $l_CacheID . ".php";
 
-        if (!file_exists($l_FilePath . $l_FileName))
-        {
+        if (!file_exists($l_FilePath . $l_FileName)) {
             if (is_file($l_FilePath . $l_FileName))
                 unlink($l_FilePath . $l_FileName);
 
@@ -54,14 +83,13 @@ class Cache_System
         }
 
         @include($l_FilePath . $l_FileName);
-        return @$Cache;
+        return @$cache;
     }
 
-    /// Does the cache need a rebuild ?
-    /// @p_ID               : Cache name
-    /// @p_ExpireSeconds    : Expiracy in seconds
-    public function NeedRebuild($p_ID, $p_ExpireSeconds)
-    {
+    /**
+     * Does the cache need a rebuild ?
+     */
+    public function NeedRebuild(string $p_ID, float|int $p_ExpireSeconds): bool {
         $l_CacheID = $this->GetCacheHash($p_ID);
 
         $l_FilePath = $this->CACHE_FOLDER . "/" . $this->GetCachePath($l_CacheID);
@@ -75,35 +103,4 @@ class Cache_System
 
         return false;
     }
-
-    //////////////////////////////////////
-    /// Get cache filename by hashing the ID
-    /// @p_ID : Cache ID
-    private function GetCacheHash($p_ID)
-    {
-        return sha1("Hyldraverlay_" . $p_ID);
-    }
-
-    /// Get cache file path from hash
-    /// @p_Hash : Cache hash
-    private function GetCachePath($p_Hash)
-    {
-        return substr($p_Hash, 0, 2) . "/" . substr($p_Hash, 2, 2) . "/";
-    }
-
-    /// Create recursively directories
-    /// @p_DirectoryName : Path to create
-    private function CreateDirectories($p_DirectoryName)
-    {
-        if (!is_dir($p_DirectoryName))
-        {
-            mkdir($p_DirectoryName, 0775, true);
-            return true;
-        }
-
-        return false;
-    }
 }
-
-/// Init
-$cache_system = new Cache_System();

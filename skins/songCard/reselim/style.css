@@ -11,14 +11,42 @@
     font-family: "Montserrat", sans-serif;
 
     color: white;
+}
 
-    transition: all .5s;
+#songCard.top-left,
+#songCard.bottom-left {
+    text-align: left;
+}
+
+#songCard.top-right,
+#songCard.bottom-right {
+    text-align: right;
+}
+
+#songCard.top-left,
+#songCard.top-right {
+    flex-direction: column-reverse;
+}
+
+#songCard.bottom-left,
+#songCard.bottom-right {
+    flex-direction: column;
 }
 
 /* Beatmap */
 
 #beatmap {
     display: flex;
+}
+
+#songCard.top-left #beatmap,
+#songCard.bottom-left #beatmap {
+    flex-direction: row;
+}
+
+#songCard.top-right #beatmap,
+#songCard.bottom-right #beatmap {
+    flex-direction: row-reverse;
 }
 
 #cover {
@@ -169,8 +197,17 @@
 
 #performance {
     display: flex;
-    flex-direction: column;
     margin: 0 0 20px 0;
+}
+
+#songCard.top-left #performance,
+#songCard.top-right #performance {
+    flex-direction: column-reverse;
+}
+
+#songCard.bottom-left #performance,
+#songCard.bottom-right #performance {
+    flex-direction: column;
 }
 
 .performance-group {
@@ -204,6 +241,10 @@
     font-size: 34px;
     font-weight: 700;
     letter-spacing: 2px;
+}
+
+#missGroup {
+    display: none;
 }
 
 /* Animations and state */

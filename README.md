@@ -1,59 +1,87 @@
 <div id="top"></div>
+
+# BeatSaber-Overlay
+<hr />
+
 <div align="center">
-    <h3 align="center">
-        BeatSaber-Overlay v2.0 | Work with
-        <a href="https://github.com/hardcpp/BeatSaberPlus"><strong>BeatSaberPlus</strong></a> & <a href="https://github.com/opl-/beatsaber-http-status/releases"><strong>HTTPStatus</strong></a> & <a href="https://github.com/kOFReadie/BSDataPuller/releases"><strong>DataPuller</strong></a> !<br />
-         3 Skins availables !
-    </h3>
-    <p align="center">
-        <br />
-        <a href="https://overlay.hyldrazolxy.fr">
-            <img src="https://overlay.hyldrazolxy.fr/preview/Overlay_BS_New_Light.gif" alt="liveDemo" />
-        </a>
-        <br />
-        <br />
-        <a href="https://github.com/HyldraZolxy/BeatSaber-Overlay/issues">Report Bug</a>
-        -
-        <a href="https://github.com/HyldraZolxy/BeatSaber-Overlay/issues">Request Feature</a>
-        -
-        <a href="https://ko-fi.com/hyldrazolxy">Support me on Ko-fi! <3</a>
-    </p>
+   <a href="https://overlay.hyldrazolxy.fr">
+      <img src="https://overlay.hyldrazolxy.fr/preview/Overlay_BS_New_Light.gif" alt="liveDemo" />
+   </a>
+   <p>
+      <a href="https://github.com/HyldraZolxy/BeatSaber-Overlay/issues">Report Bug</a>
+      -
+      <a href="https://github.com/HyldraZolxy/BeatSaber-Overlay/issues">Request Feature</a>
+      -
+      <a href="https://ko-fi.com/hyldrazolxy">Support me on Ko-fi! <3</a>
+   </p>
 </div>
 
 <details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#options">Options</a>
-    </li>
-    <li>
-      <a href="#contact">Contact</a>
-    </li>
-    <li>
-      <a href="#credit">Credit</a>
-    </li>
-  </ol>
+   <summary>Table of Contents</summary>
+   <ol>
+      <li>
+         <a href="#What-is-this?">What is this?</a>
+      </li>
+      <li>
+         <a href="#getting-started">Getting Started</a>
+         <ul>
+            <li>
+               <a href="#prerequisites">Prerequisites</a>
+            </li>
+            <li>
+               <a href="#installation">Installation</a>
+            </li>
+         </ul>
+      </li>
+      <li>
+         <a href="#options">Options</a>
+      </li>
+      <li>
+         <a href="#contact">Contact</a>
+      </li>
+      <li>
+         <a href="#credit">Credit</a>
+      </li>
+   </ol>
 </details>
+<br />
+
+<div>
+   <strong>Work with:</strong>
+
+- **[BeatSaberPlus](https://github.com/hardcpp/BeatSaberPlus)**: BS ver (1.21.0 & 1.22.0 & 1.22.1 & 1.23.0 & 1.24.0)
+- **[HTTPStatus](https://github.com/opl-/beatsaber-http-status/)**: BS ver (1.17.0 & 1.18.0 & 1.19.0 & 1.20.0)
+- **[HTTPSiraStatus](https://github.com/opl-/beatsaber-http-status/)**: BS ver (1.21.0 & 1.22.0 & 1.22.1 & 1.23.0 & 1.24.0)
+- **[DataPuller](https://github.com/opl-/beatsaber-http-status/)**: BS ver (1.20.0 & more ?)
+</div>
+
+<div>
+   <strong>3 skins:</strong>
+
+- **Default**: Default style
+- **Freemium**: Premium design
+- **Reselim**: Reselim skin
+</div>
+<hr />
+
+## What is this?
+This is an overlay that can be used with a plugin (mod) for BeatSaber.<br />
+It takes the data produced by the plugin(s) in order to display them, so you can display them on a record or a stream
 
 ## Getting Started
-
 To use the Overlay, it is necessary to follow the instructions below to ensure that it will work properly
 
 ### Prerequisites
 
-1. You will need to download **one** of the tree plugins that will be used for the overlay to connect to your game
+1. You will need to download **one** of the four plugins that will be used to connect the overlay to your game
 - [BeatSaberPlus Plugin](https://github.com/hardcpp/BeatSaberPlus#discord--downloadupdate)
 - [HTTPStatus Plugin](https://github.com/opl-/beatsaber-http-status/releases)
+- [HTTPSiraStatus Plugin](https://github.com/denpadokei/HttpSiraStatus/releases)
 - [DataPuller Plugin](https://github.com/kOFReadie/BSDataPuller/releases)
 
-**YOU HAVE TO INSTALL THE DEPENDENCIES OF THE PLUGINS !**
+**Don't forget to install the dependencies of the plugin !**
+<br />
+<br />
 
 2. You will need a Stream software
 - [OBS](https://obsproject.com/)
@@ -64,65 +92,62 @@ To use the Overlay, it is necessary to follow the instructions below to ensure t
 
 1. Install your stream software, I'm not going to show you how, you're a big boy ;3
 
-2. Put the previously downloaded plugin in your Beat Saber folder `Beat Saber\Plugins\`
-    ```sh
+2. Put the previously downloaded plugin in your Beat Saber folder `Beat Saber\Plugins\ `
+    ```
     Beat Saber\Plugins\BeatSaberPlus.dll
     Or
     Beat Saber\Plugins\BeatSaberHTTPStatus.dll
+    Or
+    Saber\Plugins\HttpSiraStatus.dll
     Or
     Beat Saber\Plugins\DataPuller.dll
     ```
 
 3. Open your web browser and write
-    ```sh
+   ```
     https://overlay.hyldrazolxy.fr/
     ```
+4. Click on settings icon to display the setup panel
 
-4. You have to double-click on the overlay for displaying the setup panel<br />
-   <img src="https://overlay.hyldrazolxy.fr/preview/setup.png" alt="Setup Panel" />
+5. After setting up your overlay, copy the URL with a click on the link button
 
-5. After setting up your overlay, copy past the `URL Customized with your settings` into your Browser sources in your stream software
+<img src="https://overlay.hyldrazolxy.fr/preview/settings.png" alt="Setting button" />
+<img src="https://overlay.hyldrazolxy.fr/preview/copyLink.png" alt="Link button" />
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Options
 
 ### `General Settings`
-<img src="https://overlay.hyldrazolxy.fr/preview/general_settings.png" alt="General Settings Panel" />
-
 `IP`<br />
-If your use a second pc for stream, you can specify the ip of the gaming pc, like: `192.168.1.15`, it's not necessary if you don't use a second pc to write `127.0.0.1` just let it empty<br />
-
-`ScoreSaber link`<br />
-If you want to display the Player Card, you can add your scoresaber link here, if you don't want it, let it blank
+If you want to use a second pc to stream, you can write it's ip address to make the overlay connect to your game. If not, leave it blank
 
 ### `Player Card Settings`
-**(Obsviously, if you are not add the ScoreSaber link in General Settings, it doesn't work)**<br />
+**(Obviously, if you don't add the Score Saber link in, it won't work)**<br />
 
-<img src="https://overlay.hyldrazolxy.fr/preview/playercard_settings.png" alt="Player Card Settings Panel" />
+`ScoreSaber link`<br />
+If you want to use the player card, you have to give your ScoreSaber ID or the link of your ScoreSaber profile
 
 `Position`<br />
-You can change the position of the Player Card with the drop-down list<br />
+This is to change the position of the player card
 
 `Scale`<br />
-You can change the scale of the Player Card with the slider<br />
+This is to change the scale of the player card<br />
 
 ### `Song Card Settings`
-<img src="https://overlay.hyldrazolxy.fr/preview/songcard_settings.png" alt="Song Card Settings Panel" />
-
 `Skin`<br />
-You can change the skin of the Song Card with the drop-down list<br />
+This is to change the skin of the song card<br />
 
 `Position`<br />
-You can change the position of the Song Card with the drop-down list<br />
+This is to change the position of the song card<br />
 
 `Scale`<br />
-You can change the scale of the Song Card with the slider<br />
+This is to change the scale of the song card<br />
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Contact
-You can contact me on Discord `Hyldra Zolxy#1910` to ask for various changes, improvements or even special requests!
+You can contact me on Discord `Hyldra Zolxy#1910` to ask for various changes, improvements or even special requests! I'm always open to new ideas and suggestions ;)
 
 ## Credit
 Thanks to:
@@ -130,5 +155,5 @@ Thanks to:
 - @reselim for giving me the permission to copy the skin of his Beat Saber Overlay <3
 
 ##### Thanks all and cya <3
-If you like the overlay, you can support me on <a href="https://ko-fi.com/hyldrazolxy"><strong>Ko-fi</strong></a>! I really appreciate :3<br />
+If you like the overlay, you can support me on <a href="https://ko-fi.com/hyldrazolxy"><strong>Ko-fi</strong></a>! I really appreciate it :3<br />
 <p align="right">(<a href="#top">back to top</a>)</p>

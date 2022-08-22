@@ -1,7 +1,7 @@
 import { Globals } from "./global.js";
 import { Tools } from "./tools.js";
 
-export class ScoreSaber {
+export class BeatSaver {
 
     /////////////////////
     // @CLASS VARIABLE //
@@ -15,7 +15,7 @@ export class ScoreSaber {
     /////////////////////
     // PUBLIC FUNCTION //
     /////////////////////
-    public async getPlayerInfo(playerId: string): Promise<Globals.I_scoreSaberPlayerJSON> {
-        return await this._tools.getMethod(Globals.SCORESABER_API_PROXY_URL + "/?playerId=" + playerId);
+    public async getSongInfo(songHash: string): Promise<Globals.I_beatSaverSongJSON> {
+        return await this._tools.getMethod(Globals.BEATSAVER_API_URL + "/maps/hash/" + songHash);
     }
 }

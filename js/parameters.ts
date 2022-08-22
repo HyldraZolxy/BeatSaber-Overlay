@@ -1,124 +1,103 @@
-import { GlobalVariable } from "./global.js";
+import { Globals } from "./global.js";
 import { PlayerCard } from "./playerCard.js";
 import { SongCard } from "./songCard.js";
-import { Plugins } from "./plugins.js";
 
 export class Parameters {
 
-    //////////////
-    // INSTANCE //
-    //////////////
+    ///////////////
+    // @INSTANCE //
+    ///////////////
     private static _instance: Parameters;
 
-    ////////////////////////////
-    // PRIVATE CLASS VARIABLE //
-    ////////////////////////////
+    /////////////////////
+    // @CLASS VARIABLE //
+    /////////////////////
     private _playerCard: PlayerCard;
     private _songCard: SongCard;
-    private _plugins: Plugins;
 
-    //////////////////////
-    // PRIVATE VARIABLE //
-    //////////////////////
-    private _urlParameters: URLSearchParams;
-    private _isParametersExist!: boolean;
+    /////////////////////
+    // PUBLIC VARIABLE //
+    /////////////////////
+    public _uriParams: Globals.I_uriParamsAllowed = {
+        ip: "localhost",
+        pid: "0",
+
+        pcsk: "default",
+        pcpos: "top-right",
+        pcsc: 1.0,
+
+        scsk: "default",
+        scpos: "bottom-left",
+        scsc: 1.0
+    };
 
     constructor() {
         this._playerCard = PlayerCard.Instance;
         this._songCard = SongCard.Instance;
-        this._plugins = Plugins.Instance;
 
-        this._urlParameters = new URLSearchParams(GlobalVariable.URL_NAV);
-        this.findParameters();
-        this.findParameters(GlobalVariable.URL_PARAMS_ALLOWED);
+        this.findParameters(new URLSearchParams(Globals.URI_NAV_SEARCH));
+        this.giveParametersToClass();
     }
 
     //////////////////////
     // PRIVATE FUNCTION //
     //////////////////////
-    private findParameters(parameter?: Array<string>) {
-        if (parameter == undefined) {
-            (GlobalVariable.URL_NAV) ? this._isParametersExist = true : this._isParametersExist = false;
-        } else {
-            if (this._isParametersExist) {
-                for (let i = 0; i < parameter.length; i++) {
-                    if (this._urlParameters.has(parameter[i])) {
-                        let parameterValue = this._urlParameters.get(parameter[i]);
-
-                        if (parameterValue !== null) {
-                            if (this.parseParameters(parameter[i], parameterValue)) {
-                                this.addParameters(parameter[i], parameterValue);
-                            }
-                        }
-                    }
-                }
-            }
+    private findParameters(uri_search: URLSearchParams): void {
+        for (const [key, value] of uri_search.entries()) {
+            if (decodeURI(key) in this._uriParams)
+                if (this.parseParameters(decodeURI(key), decodeURI(value)))
+                    this._uriParams[decodeURI(key)] = ["pcsc", "scsc"].includes(decodeURI(key)) ? +(decodeURI(value)) : decodeURI(value);
         }
+    }
+
+    private giveParametersToClass(): void {
+        this._playerCard.playerCardData.skin = this._uriParams.pcsk;
+        this._playerCard.playerCardData.position = this._uriParams.pcpos;
+        this._playerCard.playerCardData.scale = this._uriParams.pcsc;
+        this._playerCard.playerCardData.playerId = this._uriParams.pid;
+
+        this._songCard.songCardData.skin = this._uriParams.scsk;
+        this._songCard.songCardData.position = this._uriParams.scpos;
+        this._songCard.songCardData.scale = this._uriParams.scsc;
     }
 
     /////////////////////
     // PUBLIC FUNCTION //
     /////////////////////
-    public parseParameters(parametersName: string, parametersValue: string): boolean {
-        switch(parametersName) {
+    public parseParameters(key: string, value: string): boolean {
+        switch(key) {
             case "ip":
-                return RegExp(/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/).test(parametersValue);
-
-            case "pid":
-                return RegExp(/^-?\d+$/).test(parametersValue);
-
-            // case "pcsk":
-            //     return GlobalVariable.SKIN_PLAYER_CARD.hasOwnProperty(parametersValue);
-
-            case "scsk":
-                return GlobalVariable.SKIN_SONG_CARD.includes(parametersValue);
-
-            case "pcpos":
-            case "scpos":
-                return GlobalVariable.DISPLAY_POSITION.includes(parametersValue);
-
-            case "pcsc":
-            case "scsc":
-                return RegExp(/^[+-]?\d+(\.\d+)?$/).test(parametersValue);
-
-            default:
+                if (RegExp(/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/).test(value) || value === "localhost")
+                    return true;
                 return false;
-        }
-    }
-
-    public addParameters(parametersName: string, parametersValue: string): void {
-        switch(parametersName) {
-            case "ip":
-                this.ip = parametersValue;
-                break;
 
             case "pid":
-                this.playerId = parametersValue;
-                break;
+                if (RegExp(/^-?\d+$/).test(value))
+                    return true;
+                return false;
 
-            // case "pcsk":
-            //     this.playerCardSkin = parametersValue;
-            //     break;
-
+            case "pcsk":
+                if (Globals.SKIN_AVAILABLE[Globals.E_MODULES.PLAYERCARD].hasOwnProperty(value))
+                    return true;
+                return false;
             case "scsk":
-                this.songCardSkin = parametersValue;
-                break;
+                if (Globals.SKIN_AVAILABLE[Globals.E_MODULES.SONGCARD].hasOwnProperty(value))
+                    return true;
+                return false;
 
             case "pcpos":
-                this.playerCardPosition = parametersValue;
-                break;
-
             case "scpos":
-                this.songCardPosition = parametersValue;
-                break;
+                if (Globals.DISPLAY_POSITION.includes(value))
+                    return true;
+                return false;
 
             case "pcsc":
-                this.playerCardScale = +(parametersValue);
-                break;
-
             case "scsc":
-                this.songCardScale = +(parametersValue);
-                break;
+                if (RegExp(/^[+-]?\d+(\.\d+)?$/).test(value))
+                    return true;
+                return false;
+
+            default: return false;
         }
     }
 
@@ -127,40 +106,5 @@ export class Parameters {
     /////////////
     public static get Instance(): Parameters {
         return this._instance || (this._instance = new this());
-    }
-
-    /////////////
-    // SETTERS //
-    /////////////
-    private set ip(ipValue: string) {
-        this._plugins.pluginsParameters.ip = ipValue;
-    }
-
-    private set playerId(playerIdValue: string) {
-        this._playerCard.playerCardParameters.playerId = playerIdValue;
-    }
-
-    // private set playerCardSkin(skinValue: string) {
-    //     this._playerCard.playerCardParameters.skin = skinValue;
-    // }
-
-    private set songCardSkin(skinValue: string) {
-        this._songCard.songCardParameters.skin = skinValue;
-    }
-
-    private set playerCardPosition(positionValue: string) {
-        this._playerCard.playerCardParameters.position = positionValue;
-    }
-
-    private set songCardPosition(positionValue: string) {
-        this._songCard.songCardParameters.position = positionValue;
-    }
-
-    private set playerCardScale(scaleValue: number) {
-        this._playerCard.playerCardParameters.scale = scaleValue;
-    }
-
-    private set songCardScale(scaleValue: number) {
-        this._songCard.songCardParameters.scale = scaleValue;
     }
 }

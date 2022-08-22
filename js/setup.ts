@@ -1,142 +1,135 @@
-import { GlobalVariable } from "./global.js";
+import { Globals } from "./global.js";
 import { Template } from "./template.js";
+import { Parameters } from "./parameters.js";
 import { PlayerCard } from "./playerCard.js";
 import { SongCard } from "./songCard.js";
 import { Plugins } from "./plugins.js";
-import { Parameters } from "./parameters.js";
 
 export class Setup {
 
-    ////////////////////////////
-    // PRIVATE CLASS VARIABLE //
-    ////////////////////////////
+    /////////////////////
+    // @CLASS VARIABLE //
+    /////////////////////
     private _template:  Template;
+    private _parameters: Parameters;
     private _playerCard: PlayerCard;
     private _songCard: SongCard;
     private _plugins: Plugins;
-    private _parameters: Parameters;
 
     //////////////////////
     // PRIVATE VARIABLE //
     //////////////////////
     private isDisplayed = false;
-
-    ////////////////////////
-    // PROTECTED VARIABLE //
-    ////////////////////////
-    protected skinUrl: string = "./skins/setup/";
+    private isPlayerChecked = false;
+    private isSongChecked = false;
 
     constructor() {
         this._template = new Template();
+        this._parameters = Parameters.Instance;
         this._playerCard = PlayerCard.Instance;
         this._songCard = SongCard.Instance;
         this._plugins = Plugins.Instance;
-        this._parameters = Parameters.Instance;
 
-        $("body").on("dblclick", () => {
-            (async () => {
-                if (!this.isDisplayed) {
-                    await this.loadSkin(GlobalVariable.SKIN_SETUP[GlobalVariable.SKIN_NAME_SETUP.DEFAULT], "home");
+        $("#setupButton").on("click", async () => {
+            if (!this.isDisplayed) {
+                this.isDisplayed = true;
 
-                    this._songCard.songCardParameters.started = true;
-                    this._songCard.songCardParameters.inProgress = true;
+                this._template.setupHide(false);
+                await this.loadSkin("default", Globals.SKIN_AVAILABLE.setup.default[Globals.E_SETUP_FILES.INDEX]);
 
-                    this._playerCard.playerCardParameters.display = true;
-
-                    setTimeout(() => {
-                        this.isDisplayed = true;
-                        this.urlTextBuilder();
-                        this.setupAction();
-                    }, GlobalVariable.WAIT_TIME);
-                }
-            })();
+                setTimeout(() => {
+                    this.setupAction();
+                }, Globals.MS_TIMER);
+            }
         });
     }
 
     //////////////////////
     // PRIVATE FUNCTION //
     //////////////////////
-    private async loadSkin(skin: string, file: string) {
-        const skinPath = this.skinUrl + skin + "/";
-
-        if (file in GlobalVariable.SkinFilesSetup) {
-            for (const entries of Object.entries(GlobalVariable.SkinFilesSetup)) {
-                const [key, value] = entries;
-
-                if (key === file) {
-                    await this._template.loadFile(skinPath, value, "setup");
-                }
-            }
-        }
+    private async loadSkin(skinName: string, fileName: string): Promise<void> {
+        if (skinName !== undefined && fileName !== undefined)
+            await this._template.loadSkin(Globals.E_MODULES.SETUP, skinName, fileName);
     }
 
     private setupAction() {
         $(".closeButton").on("click",() => {
             if (this.isDisplayed) {
-                this._songCard.songCardParameters.started = false;
-                this._songCard.songCardParameters.inProgress = false;
+                this.isDisplayed = false;
 
-                this._playerCard.playerCardParameters.display = false;
+                this._template.setupHide(true);
+                $("#setup").empty();
+                this._template.makeActive();
 
-                (async () => {
-                    this.isDisplayed = false;
-                    $("#setup").empty();
-                    await this.loadSkin(GlobalVariable.SKIN_SETUP[GlobalVariable.SKIN_NAME_SETUP.DEFAULT], "empty");
-                })();
+                setTimeout(() => {
+                    this.setupAction();
+                }, Globals.MS_TIMER);
             }
         });
 
-        $(".returnButton").on("click",() => {
+        $(".generalSettings").on("click",async () => {
             if (this.isDisplayed) {
-                (async () => {
-                    $("#setup").empty();
-                    await this.loadSkin(GlobalVariable.SKIN_SETUP[GlobalVariable.SKIN_NAME_SETUP.DEFAULT], "home");
+                if (!$(".generalSettings").hasClass("active")) {
+                    this._template.makeActive($(".generalSettings"));
+                    this._template.makeHidden(true);
 
-                    setTimeout(() => {
-                        this.urlTextBuilder();
-                        this.setupAction();
-                    }, GlobalVariable.WAIT_TIME);
-                })();
+                    setTimeout(async () => {
+                        $("#setup").empty();
+                        await this.loadSkin("default", Globals.SKIN_AVAILABLE.setup.default[Globals.E_SETUP_FILES.GENERAL]);
+                        this._template.makeHidden(false);
+
+                        setTimeout(() => {
+                            this.setupAction();
+                        }, Globals.MS_TIMER);
+                    }, 300);
+                }
             }
         });
 
-        $("#generalSettings").on("click",() => {
+        $(".playerSettings").on("click",async () => {
             if (this.isDisplayed) {
-                (async () => {
-                    $("#setup").empty();
-                    await this.loadSkin(GlobalVariable.SKIN_SETUP[GlobalVariable.SKIN_NAME_SETUP.DEFAULT], "general");
+                if (!$(".playerSettings").hasClass("active")) {
+                    this._template.makeActive($(".playerSettings"));
+                    this._template.makeHidden(true);
 
-                    setTimeout(() => {
-                        this.setupAction();
-                    }, GlobalVariable.WAIT_TIME);
-                })();
+                    setTimeout(async () => {
+                        $("#setup").empty();
+                        await this.loadSkin("default", Globals.SKIN_AVAILABLE.setup.default[Globals.E_SETUP_FILES.PLAYER]);
+                        this._template.makeHidden(false);
+
+                        setTimeout(() => {
+                            this.setupAction();
+                            $("#switchPlayerPreview").prop("checked", this.isPlayerChecked);
+                        }, Globals.MS_TIMER);
+                    }, 300);
+                }
             }
         });
 
-        $("#playerCardSettings").on("click",() => {
+        $(".songSettings").on("click",async () => {
             if (this.isDisplayed) {
-                (async () => {
-                    $("#setup").empty();
-                    await this.loadSkin(GlobalVariable.SKIN_SETUP[GlobalVariable.SKIN_NAME_SETUP.DEFAULT], "playerCard");
+                if (!$(".songSettings").hasClass("active")) {
+                    this._template.makeActive($(".songSettings"));
+                    this._template.makeHidden(true);
 
-                    setTimeout(() => {
-                        this.setupAction();
-                    }, GlobalVariable.WAIT_TIME);
-                })();
+                    setTimeout(async () => {
+                        $("#setup").empty();
+                        await this.loadSkin("default", Globals.SKIN_AVAILABLE.setup.default[Globals.E_SETUP_FILES.SONG]);
+                        this._template.makeHidden(false);
+
+                        setTimeout(() => {
+                            this.setupAction();
+                            $("#switchSongPreview").prop("checked", this.isSongChecked);
+                        }, Globals.MS_TIMER);
+                    }, 300);
+                }
             }
         });
 
-        $("#songCardSettings").on("click",() => {
-            if (this.isDisplayed) {
-                (async () => {
-                    $("#setup").empty();
-                    await this.loadSkin(GlobalVariable.SKIN_SETUP[GlobalVariable.SKIN_NAME_SETUP.DEFAULT], "songCard");
-
-                    setTimeout(() => {
-                        this.setupAction();
-                    }, GlobalVariable.WAIT_TIME);
-                })();
-            }
+        $("#setupURL").on("click", async () => {
+            await this.urlTextBuilder();
+            let value = $("#Urldescription").data("clipboardtext");
+            navigator.clipboard.writeText(value);
         });
 
         $("#ipChanger").on("click", () => {
@@ -144,7 +137,45 @@ export class Setup {
 
             if ((ipValue !== undefined) && (typeof ipValue === "string")) {
                 if (this._parameters.parseParameters("ip", ipValue)) {
-                    this._plugins.pluginsParameters.ip = ipValue;
+                    this._parameters._uriParams.ip = ipValue;
+                }
+            }
+        });
+
+        $("#switchPlayerPreview").on("click", async () => {
+            if ($("#switchPlayerPreview").prop("checked") === true) {
+                if (this._playerCard.playerCardData.playerId === "0") {
+                    $("#switchPlayerPreview").prop("checked", false);
+                    this.isPlayerChecked = false;
+                }
+                else {
+                    if (this._plugins.IsConnected !== Globals.E_WEBSOCKET_STATES.CONNECTED) {
+                        this._playerCard.playerCardData.disabled = false;
+                        await this._playerCard.loadSkin(this._playerCard.playerCardData.skin);
+                        this._playerCard.playerCardData.display = true;
+                        this.isPlayerChecked = true;
+                    }
+                }
+            } else {
+                if (this._plugins.IsConnected !== Globals.E_WEBSOCKET_STATES.CONNECTED) {
+                    this._playerCard.playerCardData.disabled = true;
+                    this._playerCard.playerCardData.display = false;
+                    this.isPlayerChecked = false;
+                }
+            }
+        });
+
+        $("#switchSongPreview").on("click", async () => {
+            if ($("#switchSongPreview").prop("checked") === true) {
+                if (this._plugins.IsConnected !== Globals.E_WEBSOCKET_STATES.CONNECTED) {
+                    await this._songCard.loadSkin(this._songCard.songCardData.skin);
+                    this._songCard.songCardData.started = true;
+                    this.isSongChecked = true;
+                }
+            } else {
+                if (this._plugins.IsConnected !== Globals.E_WEBSOCKET_STATES.CONNECTED) {
+                    this._songCard.songCardData.started = false;
+                    this.isSongChecked = false;
                 }
             }
         });
@@ -154,15 +185,12 @@ export class Setup {
 
             if ((playerIdValue !== undefined) && (typeof playerIdValue === "string")) {
                 if (RegExp(/\bhttps:\/\/scoresaber.com\/u\/\b/).test(playerIdValue)) {
-                    playerIdValue = playerIdValue.slice(25);
-                    playerIdValue = playerIdValue.split("?")[0];
+                    playerIdValue = playerIdValue.replace("https://scoresaber.com/u/", "");
                 }
 
                 if (this._parameters.parseParameters("pid", playerIdValue)) {
-                    this._songCard.songCardParameters.finished = true;
-
-                    this._playerCard.playerCardParameters.playerId = playerIdValue;
-                    this._playerCard.playerCardParameters.needUpdate = true;
+                    this._playerCard.playerCardData.playerId = playerIdValue;
+                    this._playerCard.playerCardData.needUpdate = true;
                 }
             }
         });
@@ -172,23 +200,7 @@ export class Setup {
 
             if ((playerCardPositionValue !== undefined) && (typeof playerCardPositionValue === "string")) {
                 if (this._parameters.parseParameters("pcpos", playerCardPositionValue)) {
-                    switch(playerCardPositionValue) {
-                        case "top-left":
-                            this._playerCard.playerCardParameters.position = GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_LEFT];
-                            break;
-
-                        case "top-right":
-                            this._playerCard.playerCardParameters.position = GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT];
-                            break;
-
-                        case "bottom-left":
-                            this._playerCard.playerCardParameters.position = GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_LEFT];
-                            break;
-
-                        case "bottom-right":
-                            this._playerCard.playerCardParameters.position = GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT];
-                            break;
-                    }
+                    this._playerCard.playerCardData.position = playerCardPositionValue;
                 }
             }
         });
@@ -198,34 +210,19 @@ export class Setup {
 
             if ((playerCardScaleValue !== undefined) && (typeof playerCardScaleValue === "string")) {
                 if (this._parameters.parseParameters("pcsc", playerCardScaleValue)) {
-                    this._playerCard.playerCardParameters.scale = +(playerCardScaleValue);
+                    this._playerCard.playerCardData.scale = +(playerCardScaleValue);
                 }
             }
         });
 
-        $("#songCardSkin").on("change", () => {
+        $("#songCardSkin").on("change", async () => {
             let songCardSkinValue = $("#songCardSkin").val();
 
             if ((songCardSkinValue !== undefined) && (typeof songCardSkinValue === "string")) {
                 if (this._parameters.parseParameters("scsk", songCardSkinValue)) {
-                    switch(songCardSkinValue) {
-                        case "default":
-                            this._songCard.songCardParameters.skin = GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.DEFAULT];
-                            break;
+                    this._songCard.songCardData.skin = songCardSkinValue;
 
-                        case "freemium":
-                            this._songCard.songCardParameters.skin = GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.FREEMIUM];
-                            break;
-
-                        case "reselim":
-                            this._songCard.songCardParameters.skin = GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.RESELIM];
-                            break;
-                    }
-
-                    (async () => {
-                        $("#songCard").removeClass();
-                        await this._songCard.loadSkin(this._songCard.songCardParameters.skin);
-                    })();
+                    await this._songCard.loadSkin(this._songCard.songCardData.skin);
                 }
             }
         });
@@ -235,23 +232,7 @@ export class Setup {
 
             if ((songCardPositionValue !== undefined) && (typeof songCardPositionValue === "string")) {
                 if (this._parameters.parseParameters("scpos", songCardPositionValue)) {
-                    switch(songCardPositionValue) {
-                        case "top-left":
-                            this._songCard.songCardParameters.position = GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_LEFT];
-                            break;
-
-                        case "top-right":
-                            this._songCard.songCardParameters.position = GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_RIGHT];
-                            break;
-
-                        case "bottom-left":
-                            this._songCard.songCardParameters.position = GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_LEFT];
-                            break;
-
-                        case "bottom-right":
-                            this._songCard.songCardParameters.position = GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.BOTTOM_RIGHT];
-                            break;
-                    }
+                    this._songCard.songCardData.position = songCardPositionValue;
                 }
             }
         });
@@ -261,44 +242,44 @@ export class Setup {
 
             if ((songCardScaleValue !== undefined) && (typeof songCardScaleValue === "string")) {
                 if (this._parameters.parseParameters("scsc", songCardScaleValue)) {
-                    this._songCard.songCardParameters.scale = +(songCardScaleValue);
+                    this._songCard.songCardData.scale = +(songCardScaleValue);
                 }
             }
         });
     }
 
-    private urlTextBuilder() {
+    private async urlTextBuilder() {
         let url = "https://overlay.hyldrazolxy.fr/";
         let parameters = [];
         let firstParameter = true;
         let toggled = true;
 
-        if (this._plugins.pluginsParameters.ip !== "127.0.0.1") {
-            parameters.push("ip", this._plugins.pluginsParameters.ip);
+        if (this._parameters._uriParams.ip !== "localhost") {
+            parameters.push("ip", this._parameters._uriParams.ip);
         }
 
-        if (this._playerCard.playerCardParameters.playerId !== "0") {
-            parameters.push("pid", this._playerCard.playerCardParameters.playerId);
+        if (this._playerCard.playerCardData.playerId !== "0") {
+            parameters.push("pid", this._playerCard.playerCardData.playerId);
         }
 
-        if (this._playerCard.playerCardParameters.position !== GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_LEFT]) {
-            parameters.push("pcpos", this._playerCard.playerCardParameters.position);
+        if (this._playerCard.playerCardData.position !== "top-right") {
+            parameters.push("pcpos", this._playerCard.playerCardData.position);
         }
 
-        if (this._playerCard.playerCardParameters.scale !== 1) {
-            parameters.push("pcsc", this._playerCard.playerCardParameters.scale);
+        if (this._playerCard.playerCardData.scale !== 1) {
+            parameters.push("pcsc", this._playerCard.playerCardData.scale);
         }
 
-        if (this._songCard.songCardParameters.skin !== GlobalVariable.SKIN_SONG_CARD[GlobalVariable.SKIN_NAME_SONG_CARD.DEFAULT]) {
-            parameters.push("scsk", this._songCard.songCardParameters.skin);
+        if (this._songCard.songCardData.skin !== "default") {
+            parameters.push("scsk", this._songCard.songCardData.skin);
         }
 
-        if (this._songCard.songCardParameters.position !== GlobalVariable.DISPLAY_POSITION[GlobalVariable.DISPLAY_POSITION_NAME.TOP_LEFT]) {
-            parameters.push("scpos", this._songCard.songCardParameters.position);
+        if (this._songCard.songCardData.position !== "bottom-left") {
+            parameters.push("scpos", this._songCard.songCardData.position);
         }
 
-        if (this._songCard.songCardParameters.scale !== 1) {
-            parameters.push("scsc", this._songCard.songCardParameters.scale);
+        if (this._songCard.songCardData.scale !== 1) {
+            parameters.push("scsc", this._songCard.songCardData.scale);
         }
 
         for (let i = 0; i < parameters.length; i++) {
@@ -324,6 +305,6 @@ export class Setup {
             }
         }
 
-        $("#urlText").text(url);
+        $("#Urldescription").data("clipboardtext", url);
     }
 }

@@ -1,73 +1,34 @@
-/*  ==================
-    == GENERAL TAGS ==
-    ==================
-*/
-.hidden {
-    transition: opacity 2s;
-    opacity: 0;
-}
-
-.show {
-    transition: opacity 2s;
-    opacity: 1 !important;
-}
-
-.showDescBarLeft {
-    animation: showElementCoverBarLeft forwards 3s;
-    transition: opacity 2s;
-    opacity: 1 !important;
-}
-
-.showDescBarRight {
-    animation: showElementCoverBarRight forwards 3s;
-    transition: opacity 2s;
-    opacity: 1 !important;
-}
-
-.hiddenDescBarLeft {
-    animation: hiddenElementCoverBarLeft forwards 3s;
-    transition: opacity 2s;
-    opacity: 0;
-}
-
-.hiddenDescBarRight {
-    animation: hiddenElementCoverBarRight forwards 3s;
-    transition: opacity 2s;
-    opacity: 0;
-}
-
-.stop {
-    filter: grayscale(100%);
-}
-
-.start {
-    filter: grayscale(0%);
-}
-
-/*  =======================
-    == SONG INFO ELEMENT ==
-    =======================
-*/
+/* ===================
+   = SONG TAGS start =
+   =================== */
 #songCard {
+    width: 500px;
     height: 140px;
-    margin: 3% 3% 3% 3%;
+    margin: 3% 3%;
 
     position: absolute;
 
     display: flex;
 
-    font-family: "walkway", Arial, serif;
+    font-family: "Walkway", Arial, serif;
     color: white;
-
-    transition: all .5s;
-
-    opacity: 0;
 }
 
-/*  ===============================
-    == SONG INFO / COVER ELEMENT ==
-    ===============================
-*/
+#songCard.top-left,
+#songCard.bottom-left {
+    flex-direction: row;
+    text-align: left;
+}
+
+#songCard.top-right,
+#songCard.bottom-right {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+/* ==========================
+   = SONG TAGS/ Cover start =
+   ========================== */
 #cover {
     width: 140px;
     height: 140px;
@@ -82,6 +43,99 @@
     z-index: 1;
 }
 
+#songAccuracyDiv {
+    width: 70px;
+    height: 70px;
+    position: absolute;
+
+    background-color: azure;
+
+    text-align: center;
+
+    z-index: 2;
+}
+
+#songCard.top-left #songAccuracyDiv,
+#songCard.bottom-left #songAccuracyDiv {
+    clip-path: polygon(0 0, 100% 0, 0 100%, 0% 100%);
+    border-top-left-radius: 5px;
+}
+
+#songCard.top-right #songAccuracyDiv,
+#songCard.bottom-right #songAccuracyDiv {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%);
+    border-top-right-radius: 5px;
+}
+
+#songAccuracyLetterDiv {
+    width: 70px;
+    height: 70px;
+
+    position: absolute;
+
+    text-align: center;
+
+    z-index: 2;
+}
+
+#songCard.top-left #songAccuracyLetterDiv,
+#songCard.bottom-left #songAccuracyLetterDiv {
+    margin-top: -20px;
+    margin-left: -20px;
+}
+
+#songCard.top-right #songAccuracyLetterDiv,
+#songCard.bottom-right #songAccuracyLetterDiv {
+    margin-top: -20px;
+    margin-right: -20px;
+}
+
+#accuracyToLetters {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    display: inline-block;
+
+    color: rgb(44, 44, 44);
+    -webkit-text-stroke: 0.5px rgb(30, 30, 30);
+    font-size: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    text-align: center;
+
+    z-index: 3;
+}
+
+#songCard.top-left #accuracyToLetters,
+#songCard.bottom-left #accuracyToLetters {
+    transform: rotate(-45deg);
+}
+
+#songCard.top-right #accuracyToLetters,
+#songCard.bottom-right #accuracyToLetters {
+    transform: rotate(45deg);
+}
+
+#accuracy {
+    display: inline-block;
+    margin-top: 18px;
+
+    color: rgb(44, 44, 44);
+    font-size: 20px;
+}
+
+#songCard.top-left #accuracy,
+#songCard.bottom-left #accuracy {
+    margin-left: -15px;
+    transform: rotate(-45deg);
+}
+
+#songCard.top-right #accuracy,
+#songCard.bottom-right #accuracy {
+    margin-right: -15px;
+    transform: rotate(45deg);
+}
+
 #songBarLength {
     width: 100%;
     height: 10px;
@@ -92,7 +146,7 @@
     overflow: hidden;
 }
 
-#timeToBarLength {
+#timeToPercentage {
     background-color: rgba(0, 199, 161, 0.73);
 
     width: 0;
@@ -100,36 +154,54 @@
 
     display: block;
 }
+/* ========================
+   = SONG TAGS/ Cover end =
+   ======================== */
 
+/* =========================
+   = SONG TAGS/ Info start =
+   ========================= */
 #songDataCover {
     height: 130px;
     margin-top: 10px;
 
     font-size: 25px;
+
+    overflow: hidden;
 }
 
 .descBar {
-    padding: 3px 15px 2px 5px;
-    display: inline-block;
-    float: left;
-    clear: left;
-    
     margin-bottom: 5px;
+    display: inline-block;
 
     font-size: 16px;
     line-height: 16px;
+}
 
+#songCard.top-left .descBar,
+#songCard.bottom-left .descBar {
+    float: left;
+    clear: left;
+    padding: 3px 15px 2px 5px;
     clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
+}
+
+#songCard.top-right .descBar,
+#songCard.bottom-right .descBar {
+    float: right;
+    clear: right;
+    padding: 3px 5px 2px 15px;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 10% 100%);
 }
 
 #qualified {
     background-color: #646464;
-    display: inline-block;
+    display: none;
 }
 
 #ranked {
     background-color: #c4a335;
-    display: inline-block;
+    display: none;
 }
 
 #bsrKey::before {
@@ -141,21 +213,33 @@
 }
 
 #songData {
-    min-width: 150px;
+    width: 350px;
     height: 50px;
-    margin-top: -25px;
-
-    position: absolute;
 
     overflow: hidden;
 
-    opacity: 0;
+    position: absolute;
+}
+
+#songCard.top-left #songData,
+#songCard.top-right #songData {
+    margin-top: -25px;
+}
+
+#songCard.bottom-left #songData,
+#songCard.bottom-right #songData {
+    margin-top: 145px;
 }
 
 #songDataInfo {
+    animation: slide 20s infinite linear;
+}
+
+#songDataInfo p {
+    width: 350px;
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    animation: slide 20s infinite linear;
 }
 
 #mapper::before {
@@ -165,115 +249,90 @@
 #mapper::after {
     content: "]";
 }
+/* =======================
+   = SONG TAGS/ Info end =
+   ======================= */
 
-#songAccuracyDiv {
-    width: 70px;
-    height: 70px;
-    position: absolute;
-
-    background-color: azure;
-    clip-path: polygon(0 0, 100% 0, 0 100%, 0% 100%);
-
-    border-top-left-radius: 5px;
-
-    text-align: center;
-
-    z-index: 2;
+/* =============================
+   = ANIMATION AND STATE Start =
+   ============================= */
+/* Song Card Variables */
+#songCard {
+    --show: 500ms;
+    --hide: 500ms;
 }
 
-#songAccuracyLetterDiv {
-    width: 70px;
-    height: 70px;
-    margin-top: -20px;
-    margin-left: -20px;
-    position: absolute;
-
-    text-align: center;
-
-    z-index: 2;
+#songCard.top-right, #songCard.bottom-right {
+    --transitionSide: 300px;
 }
 
-#accuracyToLetters {
-    width: 100%;
-    height: 100%;
-    margin: auto;
-    display: inline-block;
-
-    transform: rotate(-45deg);
-    color: rgb(44, 44, 44);
-    -webkit-text-stroke: 0.5px rgb(30, 30, 30);
-    font-size: 40px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    text-align: center;
-
-    z-index: 3;
+#songCard.top-left, #songCard.bottom-left {
+    --transitionSide: -300px;
 }
 
-#accuracy {
-    display: inline-block;
-    margin-top: 18px;
-    margin-left: -15px;
-    transform: rotate(-45deg);
+/* Cover */
+#songCard #cover,
+#songCard #songAccuracyDiv,
+#songCard #songAccuracyLetterDiv,
+#songCard #songData {
+    transition:
+            opacity var(--show);
+}
 
-    color: rgb(44, 44, 44);
-    font-size: 20px;
+#songCard.hidden #cover,
+#songCard.hidden #songAccuracyDiv,
+#songCard.hidden #songAccuracyLetterDiv,
+#songCard.hidden #songData {
+    transition-delay: 500ms !important;
+    opacity: 0;
+    transition:
+            opacity var(--hide);
+}
+
+/* song Data */
+#songCard #songDataCover > * {
+    transform: translate(0, 0);
+    transition:
+            opacity var(--show),
+            transform var(--show);
+}
+
+#songCard.hidden #songDataCover > * {
+    opacity: 0;
+    transform: translate(var(--transitionSide), 0);
+    transition:
+            opacity var(--hide),
+            transform var(--hide);
+}
+
+#songCard #songDataCover > *:nth-child(5) {
+    transition-delay: 300ms !important;
+}
+
+#songCard #songDataCover > *:nth-child(4) {
+    transition-delay: 300ms !important;
+}
+
+#songCard #songDataCover > *:nth-child(3) {
+    transition-delay: 400ms !important;
+}
+
+#songCard #songDataCover > *:nth-child(2) {
+    transition-delay: 450ms !important;
+}
+
+#songCard #songDataCover > *:nth-child(1) {
+    transition-delay: 500ms !important;
 }
 
 @keyframes slide {
-    0% {
-        transform: translateX(100%);
+    0%{
+        margin-left: 350px;
     }
-
-    100% {
-        transform: translateX(-150%);
+    70%{
+        margin-left: -350px;
     }
-}
-
-@keyframes showElementCoverBarLeft {
-    0% {
-        transform: translate(-100%);
-    }
-
-    100% {
-        transform: translate(0%);
-    }
-}
-
-@keyframes showElementCoverBarRight {
-    0% {
-        transform: translate(100%);
-    }
-
-    100% {
-        transform: translate(0%);
-    }
-}
-
-@keyframes hiddenElementCoverBarLeft {
-    0% {
-        transform: translate(0%);
-    }
-
-    99% {
-        transform: translate(-100%);
-    }
-
-    100% {
-        transform: translate(-100%);
-    }
-}
-
-@keyframes hiddenElementCoverBarRight {
-    0% {
-        transform: translate(0%);
-    }
-
-    99% {
-        transform: translate(100%);
-    }
-
-    100% {
-        transform: translate(100%);
+    100%{
+        margin-left: -350px;
     }
 }

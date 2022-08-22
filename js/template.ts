@@ -1,30 +1,35 @@
-export class Template {
+import { Globals } from "./global.js";
 
+export class Template {
     /////////////////////
     // PUBLIC FUNCTION //
     /////////////////////
-    public loadFile(skinPath: string, skinFiles: string[], classCall: string): Promise<any> {
+    public loadSkin(moduleName: Globals.E_MODULES, skinName: string, fileName?: string): Promise<unknown> {
         return new Promise(resolve => {
-            $(`link[rel=stylesheet][href*="./skins/${classCall}/"]`).remove();
-            $(`script[src*="./skins/${classCall}/"]`).remove();
+            let skin = (Globals.SKIN_AVAILABLE[moduleName].hasOwnProperty(skinName) ? Globals.SKIN_AVAILABLE[moduleName][skinName] : Globals.SKIN_AVAILABLE[moduleName]["default"]);
+            let skinPath = skin[0];
 
-            for (let i = 0; i < skinFiles.length; i++) {
-                if (skinFiles[i] == "style.css") {
-                    $("head").append(`<link rel="stylesheet" href="${skinPath}${skinFiles[i]}" type="text/css" />`);
-                }
-                
-                if (skinFiles[i] == "script.js") {
-                    $("head").append(`<script type="text/javascript" src="${skinPath}${skinFiles[i]}"></script>`);
-                }
+            $("link[rel=stylesheet][href*=\"./skins/" + moduleName + "\"]").remove();
 
-                if (
-                    skinFiles[i] == "index.html"
-                    || skinFiles[i] == "home.html"
-                    || skinFiles[i] == "general.html"
-                    || skinFiles[i] == "playerCard.html"
-                    || skinFiles[i] == "songCard.html"
-                ) {
-                    $(`#${classCall}`).load(`${skinPath}${skinFiles[i]}`);
+            if (fileName !== undefined) {
+                if (skin.includes(fileName)) {
+                    for (let i = 1; i < skin.length; i++) {
+                        if (skin[i] === "style.css") {
+                            $("head").append("<link rel=\"stylesheet\" href=\"" + skinPath + skin[i] + "\" type=\"text/css\" />");
+                            continue;
+                        }
+                    }
+
+                    $("#" + moduleName).load(skinPath + fileName);
+                }
+            } else {
+                for (let i = 1; i < skin.length; i++) {
+                    if (skin[i] === "style.css") {
+                        $("head").append("<link rel=\"stylesheet\" href=\"" + skinPath + skin[i] + "\" type=\"text/css\" />");
+                        continue;
+                    }
+
+                    $("#" + moduleName).load(skinPath + skin[i]);
                 }
             }
 
@@ -32,35 +37,26 @@ export class Template {
         });
     }
 
-    public refreshUI(data: object, classCall: string): void {
-        Object.entries(data).forEach(entry => {
-            const [key, value] = entry;
-
-            switch(classCall) {
-                case "playerCard":
-                    switch(key) {
-                        // PLAYER TEXT
+    public refreshUI(data: Globals.I_playerCard|Globals.I_songCard, moduleName: Globals.E_MODULES): void {
+        for (let[key, value] of Object.entries(data)) {
+            switch (moduleName) {
+                case Globals.E_MODULES.PLAYERCARD:
+                    switch (key) {
                         case "topCountry":
                         case "topWorld":
                         case "performancePoint":
                             $("#" + key).text(value);
-                        break;
-
-                        // PLAYER PICTURE
-                        case "playerFlag":
-                            $("#" + key).css("background-image", "url('./pictures/country/" + value + ".svg')");
                             break;
 
+                        case "playerFlag":
                         case "avatar":
                             $("#" + key).css("background-image", "url('" + value + "')");
                             break;
-                        
                     }
                     break;
-                
-                case "songCard":
-                    switch(key) {
-                        // SONG TEXT
+
+                case Globals.E_MODULES.SONGCARD:
+                    switch (key) {
                         case "title":
                         case "subTitle":
                         case "mapper":
@@ -68,104 +64,125 @@ export class Template {
                         case "difficulty":
                         case "bsrKey":
                         case "bpm":
-                        case "time":
-                        case "totalTime":
                         case "timeToLetters":
                         case "accuracy":
                         case "accuracyToLetters":
                         case "score":
                         case "combo":
+                        case "miss":
                             $("#" + key).text(value);
                             break;
-                        
-                        // SONG PICTURE
+
                         case "cover":
                             $("#" + key).css("background-image", "url('" + value + "')");
                             break;
-                        
-                        // SONG CSS
+
                         case "qualified":
                         case "ranked":
                             $("#" + key).css("display", (value) ? "inline-block" : "none");
                             break;
 
+                        case "accuracyToLetterClass":
+                            $("." + key).removeClass("ss s a b c de").addClass(value as string);
+                            break;
                         case "difficultyClass":
-                            $("." + key).removeClass("ExpertPlus Expert Hard Normal Easy").addClass(value);
+                            $("." + key).removeClass("ExpertPlus Expert Hard Normal Easy").addClass(value as string);
                             break;
 
-                        case "timeToBarLength":
+                        case "health":
+                        case "timeToPercentage":
                             $("#" + key).css("width", value + "%");
                             break;
                     }
                     break;
             }
-        });
+        }
     }
 
-    public refreshUITemplate(order: object) {
-        let htmlElement: any;
+    public moduleScale(moduleName: Globals.E_MODULES, position: string, scale: number): void {
+        let element = $("#playerCard");
 
-        Object.entries<any>(order).forEach(entry => {
-            const [key, value] = entry;
+        if (moduleName === Globals.E_MODULES.SONGCARD)
+            element = $("#songCard");
 
-            Object.entries<any>(value).forEach(entry => {
-                const [key, value] = entry;
-
-                switch(key) {
-                    case "element":
-                        htmlElement = value;
-                        break;
-
-                    case "removeClass":
-                        $(htmlElement).removeClass(value);
-                        break;
-
-                    case "addClass":
-                        $(htmlElement).addClass(value);
-                        break;
-
-                    case "modify":
-                        Object.entries<string>(value).forEach(entry => {
-                            let [key, value] = entry;
-
-                            key = key.replace(/(_)/g, "-");
-                            $(htmlElement).css(key, value);
-                        });
-                        break;
-                }
-            });
-        });
+        element.css("transform-origin", position.replace(/(-)/g, " "));
+        element.css("transform", "scale(" + scale + ")");
     }
 
-    public accuracyToLetter(accuracy: number): string {
-        if (accuracy >= 90) {
-            return "SS";
-        }
+    public moduleCorners(moduleName: Globals.E_MODULES, position: string): void {
+        let element = $("#playerCard");
 
-        if (accuracy < 90 && accuracy >= 80) {
-            return "S";
-        }
+        if (moduleName === Globals.E_MODULES.SONGCARD)
+            element = $("#songCard");
 
-        if (accuracy < 80 && accuracy >= 65) {
-            return "A";
-        }
+        element.removeClass("top-left bottom-left top-right bottom-right");
+        element.addClass(position);
+    }
 
-        if (accuracy < 65 && accuracy >= 50) {
-            return "B";
-        }
+    public moduleToggleDisplay(playerCardData: Globals.I_playerCard, songCardData: Globals.I_songCard): void {
+        if (playerCardData.disabled)
+            $("#playerCard").addClass("hidden");
 
-        if (accuracy < 50 && accuracy >= 35) {
-            return "C";
-        }
+        if (songCardData.disabled)
+            $("#songCard").addClass("hidden");
 
-        if (accuracy < 35 && accuracy >= 20) {
-            return "D";
-        }
+        if (!songCardData.started)
+            $("#songCard").addClass("hidden");
 
-        if (accuracy < 20) {
-            return "E";
-        }
+        if (songCardData.started)
+            $("#songCard").removeClass("hidden");
 
-        return "E";
+        if (!playerCardData.display)
+            $("#playerCard").addClass("hidden");
+
+        if (playerCardData.display)
+            $("#playerCard").removeClass("hidden");
+    }
+
+    public stopOrStart(started: boolean, paused: boolean): void {
+        $("#songCard").removeClass("stop");
+
+        if (!started || paused)
+            $("#songCard").addClass("stop");
+    }
+
+    public missDisplay(display: boolean): void {
+        if (display)
+            $("#missGroup").css("display", "block");
+        else
+            $("#missGroup").css("display", "none");
+    }
+
+    /////////////////////////////
+    // PUBLIC PLUGINS FUNCTION //
+    /////////////////////////////
+    public timerToCircleBar(percentage: number): void {
+        const circumference = 30 * Math.PI * 2;
+
+        $("#progress").css("stroke-dashoffset", ((1 - (percentage / 100)) * circumference) + "px");
+    }
+
+    ///////////////////////////
+    // PUBLIC SETUP FUNCTION //
+    ///////////////////////////
+    public setupHide(display: boolean): void {
+        if (display)
+            $("#setupPanel").css("display", "none");
+        else
+            $("#setupPanel").css("display", "block");
+    }
+
+    public makeActive(element?: JQuery): void {
+        $("li").removeClass("active");
+
+        if (element !== undefined)
+            element.addClass("active");
+    }
+
+    public makeHidden(displayed: boolean): void {
+        if (!displayed)
+            $("#setup").removeClass("hidden");
+        else
+            $("#setup").addClass("hidden");
     }
 }

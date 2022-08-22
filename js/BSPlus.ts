@@ -1,112 +1,118 @@
-import { SongCard } from "./songCard.js";
+import { Globals } from "./global.js";
 import { PlayerCard } from "./playerCard.js";
+import { SongCard } from "./songCard.js";
 
 export class BSPlus {
 
-    ////////////////////////////
-    // PRIVATE CLASS VARIABLE //
-    ////////////////////////////
-    private _songCard: SongCard;
+    /////////////////////
+    // @CLASS VARIABLE //
+    /////////////////////
     private _playerCard: PlayerCard;
+    private _songCard: SongCard;
 
     constructor() {
-        this._songCard = SongCard.Instance;
         this._playerCard = PlayerCard.Instance;
+        this._songCard = SongCard.Instance;
     }
 
     //////////////////////
     // PRIVATE FUNCTION //
     //////////////////////
-    private eHandshake(dataHandshake: any) {
+    private eHandshake(dataHandshake: Globals.I_bsPlusObject): void {
         console.log("%cBeat Saber " + dataHandshake.gameVersion + " | Protocol Version " + dataHandshake.protocolVersion, "background-color: green;");
         console.log("\n\n");
 
-        this._playerCard.playerCardParameters.needUpdate = true;
+        if (!this._playerCard.playerCardData.disabled)
+            this._playerCard.playerCardData.needUpdate = true;
     }
 
-    private eHandler(dataEvent: any) {
+    private eHandler(dataEvent: Globals.I_bsPlusObject): void {
         switch(dataEvent._event) {
             case "gameState":
                 switch(dataEvent.gameStateChanged) {
                     case "Menu":
-                        this._songCard.songCardParameters.started = false;
-                        this._songCard.songCardParameters.inProgress = false;
-                        this._songCard.songCardParameters.finished = true;
+                        this._songCard.songCardData.started = false;
+                        this._songCard.songCardData.paused = false;
+                        this._songCard.songCardData.inProgress = false;
+                        this._songCard.songCardData.finished = true;
 
-                        this._playerCard.playerCardParameters.needUpdate = true;
-                        this._playerCard.playerCardParameters.display = true;
+                        if (!this._playerCard.playerCardData.disabled) {
+                            this._playerCard.playerCardData.needUpdate = true;
+                            this._playerCard.playerCardData.display = true;
+                        }
                         break;
 
                     case "Playing":
-                        this._songCard.songCardParameters.started = true;
-                        this._songCard.songCardParameters.finished = false;
+                        this._songCard.songCardData.started = true;
+                        this._songCard.songCardData.finished = false;
 
-                        this._playerCard.playerCardParameters.display = false;
+                        if (!this._playerCard.playerCardData.disabled)
+                            this._playerCard.playerCardData.display = false;
+
                         break;
                 }
                 break;
 
             case "mapInfo":
-                this.mapInfoParser(dataEvent.mapInfoChanged);
+                this.mapInfoParser(dataEvent);
                 break;
 
             case "score":
-                this.scoreParser(dataEvent.scoreEvent);
+                this.scoreParser(dataEvent);
                 break;
 
             case "pause":
-                this._songCard.songCardParameters.paused = true;
-                this._songCard.songCardParameters.inProgress = false;
+                this._songCard.songCardData.paused = true;
+                this._songCard.songCardData.inProgress = false;
+
+                this._songCard.songCardData.time = dataEvent.pauseTime * 1000;
                 break;
 
             case "resume":
-                this._songCard.songCardParameters.paused = false;
-                this._songCard.songCardParameters.inProgress = true;
+                this._songCard.songCardData.paused = false;
+                this._songCard.songCardData.inProgress = true;
+
+                this._songCard.songCardData.time = dataEvent.resumeTime * 1000;
                 break;
         }
     }
 
-    private mapInfoParser(mapInfoData: any) {
-        this._songCard.songCardData.cover = "data:image/png;base64," + mapInfoData.coverRaw;
-        this._songCard.songCardData.title = mapInfoData.name;
-        this._songCard.songCardData.subTitle = mapInfoData.sub_name;
-        this._songCard.songCardData.mapper = mapInfoData.mapper;
-        this._songCard.songCardData.author = mapInfoData.artist;
+    private mapInfoParser(dataEvent: Globals.I_bsPlusObject): void {
+        this._songCard.songCardData.cover = "data:image/png;base64," + dataEvent.mapInfoChanged.coverRaw;
+        this._songCard.songCardData.title = dataEvent.mapInfoChanged.name;
+        this._songCard.songCardData.subTitle = dataEvent.mapInfoChanged.sub_name;
+        this._songCard.songCardData.mapper = dataEvent.mapInfoChanged.mapper;
+        this._songCard.songCardData.author = dataEvent.mapInfoChanged.artist;
 
-        this._songCard.songCardData.bsrKey = mapInfoData.BSRKey;
-        this._songCard.songCardData.bpm = mapInfoData.BPM;
+        this._songCard.songCardData.bsrKey = dataEvent.mapInfoChanged.BSRKey;
+        this._songCard.songCardData.bpm = dataEvent.mapInfoChanged.BPM;
 
-        this._songCard.songCardData.difficulty = (mapInfoData.difficulty === "ExpertPlus") ? "Expert +" : mapInfoData.difficulty;
-        this._songCard.songCardData.difficultyClass = mapInfoData.difficulty;
+        this._songCard.songCardData.difficulty = (dataEvent.mapInfoChanged.difficulty === "ExpertPlus") ? "Expert +" : dataEvent.mapInfoChanged.difficulty;
+        this._songCard.songCardData.difficultyClass = dataEvent.mapInfoChanged.difficulty;
 
-        this._songCard.songCardData.ranked = false;
-        this._songCard.songCardData.qualified = false;
-
-        this._songCard.songCardData.time = mapInfoData.time * 1000;
-        this._songCard.songCardData.totalTime = mapInfoData.duration;
-        this._songCard.songCardData.timeToLetters = "0:00";
-        this._songCard.songCardData.timeToBarLength = 0;
+        this._songCard.songCardData.time = dataEvent.mapInfoChanged.time * 1000;
+        this._songCard.songCardData.totalTime = dataEvent.mapInfoChanged.duration;
 
         this._songCard.songCardData.accuracy = 100;
-        this._songCard.songCardData.accuracyToLetters = "SS";
 
-        this._songCard.songCardData.speedModifier = mapInfoData.timeMultiplier;
+        this._songCard.songCardData.speedModifier = dataEvent.mapInfoChanged.timeMultiplier;
 
-        if ((mapInfoData.level_id.indexOf("custom_level") === 0) && (mapInfoData.level_id.substring(13).length === 40)) {
-            this._songCard.beatSaverInfo(mapInfoData.level_id.substring(13));
-        }
+        this._songCard.songCardData.hashMap = dataEvent.mapInfoChanged.level_id.replace("custom_level_", "");
+
+        this._songCard.songCardData.needUpdate = true;
     }
 
-    private scoreParser(scoreInfo: any) {
-        this._songCard.songCardData.accuracy = +((scoreInfo.accuracy * 100).toFixed(1));
-        this._songCard.songCardData.score = scoreInfo.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        this._songCard.songCardData.combo = scoreInfo.combo;
+    private scoreParser(dataEvent: Globals.I_bsPlusObject): void {
+        this._songCard.songCardData.accuracy = +((dataEvent.scoreEvent.accuracy * 100).toFixed(1));
+        this._songCard.songCardData.score = dataEvent.scoreEvent.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        this._songCard.songCardData.combo = dataEvent.scoreEvent.combo;
+        this._songCard.songCardData.miss = dataEvent.scoreEvent.missCount;
 
-        this._songCard.songCardData.health = scoreInfo.currentHealth;
+        this._songCard.songCardData.health = dataEvent.scoreEvent.currentHealth;
     }
 
-    public dataParser(data: any): void {
-        let dataParsed = JSON.parse(data.data);
+    public dataParser(data: string): void {
+        let dataParsed: Globals.I_bsPlusObject = JSON.parse(data);
 
         if (dataParsed._type === "handshake") {
             this.eHandshake(dataParsed);
