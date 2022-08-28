@@ -111,6 +111,9 @@ export class BSPlus {
         this._songCard.songCardData.health = dataEvent.scoreEvent.currentHealth;
     }
 
+    /////////////////////
+    // PUBLIC FUNCTION //
+    /////////////////////
     public dataParser(data: string): void {
         let dataParsed: Globals.I_bsPlusObject = JSON.parse(data);
 

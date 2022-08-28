@@ -1,7 +1,7 @@
 {
-    "name": "beatsaber_overlay",
-    "version": "2.1.0",
-    "description": "Beat Saber Overlay for BSPlus, HTTPStatus and DataPuller",
+    "name": "BeatSaber-Overlay",
+    "version": "2.1.1",
+    "description": "Beat Saber Overlay for BSPlus, HTTPStatus, HTTPSiraStatus and DataPuller",
     "main": "init.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
