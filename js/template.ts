@@ -167,9 +167,9 @@ export class Template {
     ///////////////////////////
     public setupHide(display: boolean): void {
         if (display)
-            $("#setupPanel").css("display", "none");
+            $("#setupPanel").addClass("hidden");
         else
-            $("#setupPanel").css("display", "block");
+            $("#setupPanel").removeClass("hidden");
     }
 
     public makeActive(element?: JQuery): void {

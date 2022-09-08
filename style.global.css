@@ -137,7 +137,7 @@ body:hover {
     top: 50%;
     transform: translate(-50%, -50%);
 
-    display: none;
+    display: inline-block;
     position: absolute;
 
     background-image: url("./pictures/Logo.png"), linear-gradient(#879fd2, #b990d9);
@@ -520,6 +520,22 @@ body:hover #setupButton {
 }
 
 #setup.hidden  {
+    opacity: 0;
+    transition:
+            opacity var(--hide);
+}
+
+#setupPanel {
+    --show: 300ms;
+    --hide: 300ms;
+}
+
+#setupPanel {
+    transition:
+            opacity var(--show);
+}
+
+#setupPanel.hidden  {
     opacity: 0;
     transition:
             opacity var(--hide);

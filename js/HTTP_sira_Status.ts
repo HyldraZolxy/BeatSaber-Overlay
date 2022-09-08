@@ -64,6 +64,7 @@ export class HTTP_sira_Status {
 
             case "songStart":
                 this._songCard.songCardData.started = true;
+                this._songCard.songCardData.paused = false;
                 this._songCard.songCardData.inProgress = true;
                 this._songCard.songCardData.finished = false;
 
@@ -92,6 +93,7 @@ export class HTTP_sira_Status {
 
             case "menu":
                 this._songCard.songCardData.started = false;
+                this._songCard.songCardData.paused = false;
                 this._songCard.songCardData.inProgress = false;
                 if (!this._playerCard.playerCardData.disabled)
                     this._playerCard.playerCardData.display = true;
