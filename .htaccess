@@ -1,0 +1,37 @@
+# NO CACHE ! >:( GRRRGrrGrrGr MEEEERRRRRRRRP
+<FilesMatch "\.(css|gif|html|ico|jpeg|jpg|js|png|txt|json)$">
+    <IfModule mod_expires.c>
+        ExpiresActive Off
+    </IfModule>
+    <IfModule mod_headers.c>
+            FileETag None
+            Header unset ETag
+            Header unset Pragma
+            Header unset Cache-Control
+            Header unset Last-Modified
+            Header set Pragma "no-cache"
+            Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+            Header set Expires "Thu, 1 Jan 1970 00:00:00 GMT"
+        </IfModule>
+</FilesMatch>
+
+# BUT cache enabled for the fonts, because thats never change i think (365 days of cache)
+<FilesMatch "\.(eot|ttf|woff|woff2)$">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "max-age=31536000, public, no-transform"
+    </IfModule>
+</FilesMatch>
+
+# Webtools says do that, so i do it ¯\_(ツ)_/¯
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+</IfModule>
+
+# Can't access to the .htaccess directly
+<files .htaccess>
+    order allow,deny
+    deny from all
+</files>
+
+# No indexed foldes/files
+Options -Indexes
