@@ -80,7 +80,7 @@ export class Setup {
 
                         setTimeout(() => {
                             this.setupAction();
-                        }, Globals.MS_TIMER);
+                        }, Globals.MS_TIMER * 7);
                     }, 300);
                 }
             }
@@ -100,7 +100,7 @@ export class Setup {
                         setTimeout(() => {
                             this.setupAction();
                             $("#switchPlayerPreview").prop("checked", this.isPlayerChecked);
-                        }, Globals.MS_TIMER);
+                        }, Globals.MS_TIMER * 7);
                     }, 300);
                 }
             }
@@ -120,7 +120,7 @@ export class Setup {
                         setTimeout(() => {
                             this.setupAction();
                             $("#switchSongPreview").prop("checked", this.isSongChecked);
-                        }, Globals.MS_TIMER);
+                        }, Globals.MS_TIMER * 7);
                     }, 300);
                 }
             }
