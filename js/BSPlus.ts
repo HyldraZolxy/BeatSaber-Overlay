@@ -65,14 +65,14 @@ export class BSPlus {
                 this._songCard.songCardData.paused = true;
                 this._songCard.songCardData.inProgress = false;
 
-                this._songCard.songCardData.time = dataEvent.pauseTime * 1000;
+                this._songCard.songCardData.time = Number.isSafeInteger(dataEvent.pauseTime) ? dataEvent.pauseTime : dataEvent.pauseTime * 1000;
                 break;
 
             case "resume":
                 this._songCard.songCardData.paused = false;
                 this._songCard.songCardData.inProgress = true;
 
-                this._songCard.songCardData.time = dataEvent.resumeTime * 1000;
+                this._songCard.songCardData.time = Number.isSafeInteger(dataEvent.resumeTime) ? dataEvent.resumeTime : dataEvent.resumeTime * 1000;
                 break;
         }
     }
@@ -90,12 +90,12 @@ export class BSPlus {
         this._songCard.songCardData.difficulty = (dataEvent.mapInfoChanged.difficulty === "ExpertPlus") ? "Expert +" : dataEvent.mapInfoChanged.difficulty;
         this._songCard.songCardData.difficultyClass = dataEvent.mapInfoChanged.difficulty;
 
-        this._songCard.songCardData.time = dataEvent.mapInfoChanged.time * 1000;
+        this._songCard.songCardData.time = (dataEvent.mapInfoChanged.time !== undefined) ? dataEvent.mapInfoChanged.time * 1000 : 0;
         this._songCard.songCardData.totalTime = dataEvent.mapInfoChanged.duration;
 
         this._songCard.songCardData.accuracy = 100;
 
-        this._songCard.songCardData.speedModifier = dataEvent.mapInfoChanged.timeMultiplier;
+        this._songCard.songCardData.speedModifier = (dataEvent.mapInfoChanged.timeMultiplier !== undefined) ? dataEvent.mapInfoChanged.timeMultiplier : 1;
 
         this._songCard.songCardData.hashMap = dataEvent.mapInfoChanged.level_id.replace("custom_level_", "");
 

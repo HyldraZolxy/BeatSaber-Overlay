@@ -262,20 +262,20 @@ export namespace Globals {
 
         gameStateChanged: string;       // State of the game (Menu, Playing)
         mapInfoChanged: {
-            BPM: number;                // BPM of the actual song
-            BSRKey: string;             // BSR key of the actual song
-            PP: number;                 // PP Max of the actual song
-            artist: string;             // Author of the actual song
-            characteristic: string;     // Type of the actual song (Lawless, Normal, OneHand, etc ...)
-            coverRaw: string;           // Cover of the actual song but in Base64
-            difficulty: string;         // Difficulty of the actual song (Easy, Normal, Hard, Expert, Expert+)
-            duration: number;           // Time length of the actual song
-            level_id: string;           // Hash of the actual song
-            mapper: string;             // Mapper of the actual song
-            name: string;               // Title of the actual song
-            sub_name: string;           // Subtitle of the actual song
-            time: number;               // Actual time of the actual song
-            timeMultiplier: number;     // Time multiplier of the actual song (If player play the map in 125%, multiplier is 1.25)
+            BPM: number;                            // BPM of the actual song
+            BSRKey: string;                         // BSR key of the actual song
+            PP: number;                             // PP Max of the actual song
+            artist: string;                         // Author of the actual song
+            characteristic: string;                 // Type of the actual song (Lawless, Normal, OneHand, etc ...)
+            coverRaw: string;                       // Cover of the actual song but in Base64
+            difficulty: string;                     // Difficulty of the actual song (Easy, Normal, Hard, Expert, Expert+)
+            duration: number;                       // Time length of the actual song
+            level_id: string;                       // Hash of the actual song
+            mapper: string;                         // Mapper of the actual song
+            name: string;                           // Title of the actual song
+            sub_name: string;                       // Subtitle of the actual song
+            time: undefined | number;               // Actual time of the actual song
+            timeMultiplier: undefined | number;     // Time multiplier of the actual song (If player play the map in 125%, multiplier is 1.25)
         };
         resumeTime: number;             // Time when the song is resumed in the game
         pauseTime: number;              // Time when the song is paused in the game
