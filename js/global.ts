@@ -18,10 +18,11 @@ export namespace Globals {
     // PARAMETERS GLOBAL VARIABLE //
     ////////////////////////////////
     export interface I_uriParamsAllowed {
-        [key: string]: string|number;
+        [key: string]: string|number|boolean;
 
         ip: string;         // Local IP or External IP
         pid: string;        // Player ID from ScoreSaber (string because the number is too long)
+        md: boolean;        // If display the miss system
 
         pcsk: string;       // Skin of Player Card
         pcpos: string;      // Position of Player Card
@@ -68,7 +69,8 @@ export namespace Globals {
         songCard: {
             default: ["./skins/songCard/default/", "index.html", "style.css"],
             freemium: ["./skins/songCard/freemium/", "index.html", "style.css"],
-            reselim: ["./skins/songCard/reselim/", "index.html", "style.css"]
+            reselim: ["./skins/songCard/reselim/", "index.html", "style.css"],
+            dietah: ["./skins/songCard/dietah/", "index.html", "style.css"]
         },
         setup: {
             default: ["./skins/setup/default/", "index.html", "general.html", "playerCard.html", "songCard.html", "style.css"]
@@ -179,6 +181,7 @@ export namespace Globals {
         time: number;                   // Actual time of the actual song
         totalTime: number;              // Time length of the actual song
         timeToLetters: string;          // Time in letter of the actual song
+        totalTimeToLetters: string;     // Total time in letter of the actual song
         timeToPercentage: number;       // Time in percentage of the actual song
 
         accuracy: number;               // Player accuracy of the actual song

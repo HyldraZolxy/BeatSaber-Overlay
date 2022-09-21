@@ -21,6 +21,7 @@ export class Parameters {
     public _uriParams: Globals.I_uriParamsAllowed = {
         ip: "localhost",
         pid: "0",
+        md: false,
 
         pcsk: "default",
         pcpos: "top-right",
@@ -46,7 +47,8 @@ export class Parameters {
         for (const [key, value] of uri_search.entries()) {
             if (decodeURI(key) in this._uriParams)
                 if (this.parseParameters(decodeURI(key), decodeURI(value)))
-                    this._uriParams[decodeURI(key)] = ["pcsc", "scsc"].includes(decodeURI(key)) ? +(decodeURI(value)) : decodeURI(value);
+                    this._uriParams[decodeURI(key)] =   ["pcsc", "scsc"].includes(decodeURI(key)) ? +(decodeURI(value)) :
+                                                        ["md"].includes(decodeURI(key)) ? true : decodeURI(value);
         }
     }
 
@@ -56,6 +58,7 @@ export class Parameters {
         this._playerCard.playerCardData.scale = this._uriParams.pcsc;
         this._playerCard.playerCardData.playerId = this._uriParams.pid;
 
+        this._songCard.songCardData.displayMiss = this._uriParams.md;
         this._songCard.songCardData.skin = this._uriParams.scsk;
         this._songCard.songCardData.position = this._uriParams.scpos;
         this._songCard.songCardData.scale = this._uriParams.scsc;
@@ -73,6 +76,11 @@ export class Parameters {
 
             case "pid":
                 if (RegExp(/^-?\d+$/).test(value))
+                    return true;
+                return false;
+
+            case "md":
+                if (value === "true")
                     return true;
                 return false;
 

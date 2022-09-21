@@ -65,6 +65,7 @@ export class Template {
                         case "bsrKey":
                         case "bpm":
                         case "timeToLetters":
+                        case "totalTimeToLetters":
                         case "accuracy":
                         case "accuracyToLetters":
                         case "score":
@@ -148,9 +149,9 @@ export class Template {
 
     public missDisplay(display: boolean): void {
         if (display)
-            $("#missGroup").css("display", "block");
+            $(".missGroup").css("display", "block");
         else
-            $("#missGroup").css("display", "none");
+            $(".missGroup").css("display", "none");
     }
 
     /////////////////////////////
@@ -160,6 +161,17 @@ export class Template {
         const circumference = 30 * Math.PI * 2;
 
         $("#progress").css("stroke-dashoffset", ((1 - (percentage / 100)) * circumference) + "px");
+    }
+
+    public missChanger(missNumber: number): void {
+        if (missNumber === 0) {
+            $("#miss").removeClass("ion-android-checkmark-circle ion-android-cancel");
+            $("#miss").addClass("ion-android-checkmark-circle");
+            $("#miss").text("FC");
+        } else {
+            $("#miss").removeClass("ion-android-checkmark-circle ion-android-cancel");
+            $("#miss").addClass("ion-android-cancel");
+        }
     }
 
     ///////////////////////////

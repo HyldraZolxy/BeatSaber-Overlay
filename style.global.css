@@ -10,28 +10,33 @@
 */
 @font-face {
     font-family: "Roboto-thin";
-    src: url("./fonts/roboto_thin.woff") format('woff');
+    src: url("./fonts/roboto_thin.woff") format("woff");
     font-weight: 100;
 }
 @font-face {
     font-family: "Roboto-light";
-    src: url("./fonts/roboto_light.woff") format('woff');
+    src: url("./fonts/roboto_light.woff") format("woff");
     font-weight: 300;
 }
 @font-face {
     font-family: "Roboto-regular";
-    src: url("./fonts/roboto_regular.woff") format('woff');
+    src: url("./fonts/roboto_regular.woff") format("woff");
     font-weight: 400;
 }
 @font-face {
     font-family: "Roboto-medium";
-    src: url("./fonts/roboto_medium.woff") format('woff');
+    src: url("./fonts/roboto_medium.woff") format("woff");
     font-weight: 500;
 }
 @font-face {
     font-family: "Walkway";
-    src: url("./fonts/walkway_black.woff") format('woff');
+    src: url("./fonts/walkway_black.woff") format("woff");
     font-weight: 900;
+}
+@font-face {
+    font-family: "ElasticStretch";
+    src: url("./fonts/elasticStretch.ttf") format("truetype");
+    font-weight: 500;
 }
 /* ==================
    = @font-face end =
@@ -98,6 +103,18 @@
 /* Stop filter */
 .stop {
     filter: grayscale(100%);
+}
+
+/* FC/Miss */
+.ion-android-checkmark-circle {
+    color: gold;
+}
+.ion-android-cancel {
+    color: #d53535;
+    font-weight: bold;
+}
+.missGroup {
+    display: none;
 }
 /* ===================
    = REUSED TAGS end =

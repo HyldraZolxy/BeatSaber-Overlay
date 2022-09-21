@@ -53,6 +53,7 @@ export class SongCard {
         time: 137000,
         totalTime: 274000,
         timeToLetters: "2:17",
+        totalTimeToLetters: "4:24",
         timeToPercentage: 50,
 
         accuracy: 69.69,
@@ -95,14 +96,14 @@ export class SongCard {
 
             if (this.songCardData.finished) {
                 this.songCardData.time = this.songCardData.totalTime;
-                this.songCardData.timeToLetters = this.timeToLetters();
+                this.songCardData.timeToLetters = this.timeToLetters(this.songCardData.time);
                 this.songCardData.timeToPercentage = 100;
                 return;
             }
 
             if (this.songCardData.inProgress) {
                 this.songCardData.time += (100 * this.songCardData.speedModifier);
-                this.songCardData.timeToLetters = this.timeToLetters();
+                this.songCardData.timeToLetters = this.timeToLetters(this.songCardData.time);
                 this.songCardData.timeToPercentage = this.timeToPercentage();
             }
         }, Globals.MS_TIMER);
@@ -155,9 +156,9 @@ export class SongCard {
         return "de";
     }
 
-    private timeToLetters(): string {
-            let minutes = Math.floor((this.songCardData.time / 1000) / 60).toFixed(0);
-            let seconds = ((this.songCardData.time / 1000) % 60).toFixed(0);
+    private timeToLetters(time: number): string {
+            let minutes = Math.floor((time / 1000) / 60).toFixed(0);
+            let seconds = ((time / 1000) % 60).toFixed(0);
 
             if (+(seconds) < 10) {
                 seconds = "0" + seconds;
@@ -176,6 +177,7 @@ export class SongCard {
             return;
 
         this.songCardData.needUpdate = false;
+        this.songCardData.totalTimeToLetters = this.timeToLetters(this.songCardData.totalTime);
         const data = await this._beatSaver.getSongInfo(this.songCardData.hashMap);
 
         if (data.error !== undefined) {
@@ -217,6 +219,9 @@ export class SongCard {
             /* Plugin details */
             if (this.songCardData.skin === "reselim")
                 this._template.timerToCircleBar(this.songCardData.timeToPercentage);
+
+            if (this.songCardData.skin === "dietah")
+                this._template.missChanger(this.songCardData.miss);
         });
     }
 

@@ -1,0 +1,186 @@
+/* ===================
+   = SONG TAGS start =
+   =================== */
+#songCard {
+    width: 500px;
+    padding: 10px 20px;
+
+    position: absolute;
+
+    background-color: rgba(0, 0, 0, 0.7);
+
+    font-family: "ElasticStretch", Arial, "Helvetica Neue", "Helvetica";
+    color: white;
+}
+#songCard.top-left { border-bottom-right-radius: 50px; }
+#songCard.top-right { border-bottom-left-radius: 50px; }
+#songCard.bottom-left { border-top-right-radius: 50px; }
+#songCard.bottom-right { border-top-left-radius: 50px; }
+#songCard.top-left, #songCard.bottom-left { text-align: left; }
+#songCard.top-right, #songCard.bottom-right { text-align: right; }
+
+/* ==========================
+   = SONG TAGS / Info start =
+   ========================== */
+#title {
+    width: 100%;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 2em;
+}
+
+#author {
+    width: 100%;
+    margin-bottom: 5px;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 1.2em;
+}
+
+#infoGroup {
+    width: 100%;
+    margin-bottom: 5px;
+
+    display: inline-flex;
+    justify-content: space-between;
+
+    line-height: 2em;
+}
+#songCard.top-left #infoGroup, #songCard.bottom-left #infoGroup { flex-direction: row-reverse; }
+#songCard.top-right #infoGroup, #songCard.bottom-right #infoGroup { flex-direction: row; }
+
+#bsrKey {
+    font-family: "walkway", Arial, serif;
+    font-size: 2em;
+}
+
+#mapper {
+    width: 45%;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 1.6em;
+    text-align: center;
+}
+#mapper:before { content: "["; }
+#mapper:after { content: "]"; }
+
+#difficulty {
+    padding: 0 10px 0 10px;
+
+    border-radius: 2px;
+
+    font-size: 1em;
+}
+/* ========================
+   = SONG TAGS / Info end =
+   ======================== */
+
+/* ==========================
+   = SONG TAGS / Time start =
+   ========================== */
+#timeBarGroup {
+    width: 100%;
+    margin-bottom: 5px;
+
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    line-height: 2em;
+}
+
+#timeBarInfo {
+    width: 100%;
+
+    display: inline-flex;
+    flex-direction: row;
+
+    font-family: Arial, "Helvetica Neue", "Helvetica";
+}
+#songCard.top-left #timeBarInfo, #songCard.bottom-left #timeBarInfo { justify-content: flex-start; }
+#songCard.top-right #timeBarInfo, #songCard.bottom-right #timeBarInfo { justify-content: flex-end; }
+
+#timeToLetters, #totalTimeToLetters {
+    font-size: 1em;
+}
+#timeToLetters:after { content: " /"; margin-right: 5px; }
+
+#songBarLength {
+    width: 100%;
+    height: 10px;
+    margin-top: -8px;
+
+    border: 1px solid rgba(221, 221, 221, 0.459);
+    border-radius: 1px;
+
+    background-color: rgba(221, 221, 221, 0.459);
+
+    overflow: hidden;
+}
+
+#timeToPercentage {
+    background-color: rgba(221, 221, 221, 0.61);
+
+    width: 0;
+    height: 100%;
+
+    display: block;
+}
+/* ========================
+   = SONG TAGS / Time end =
+   ======================== */
+
+/* =================================
+   = SONG TAGS / Performance start =
+   ================================= */
+#performanceGroup {
+    width: 100%;
+
+    display: inline-flex;
+    justify-content: flex-end;
+
+    line-height: 2.5em;
+    font-size: 1.3em;
+}
+#songCard.top-left #performanceGroup, #songCard.bottom-left #performanceGroup { flex-direction: row-reverse; }
+#songCard.top-right #performanceGroup, #songCard.bottom-right #performanceGroup { flex-direction: row; }
+
+#songCard.top-left #miss, #songCard.bottom-left #miss { margin-left: 20px; }
+#songCard.top-right #miss, #songCard.bottom-right #miss { margin-right: 20px; }
+
+#accuracy {
+    width: 70px;
+}
+#accuracy:after { content: "%"; }
+/* ===============================
+   = SONG TAGS / Performance end =
+   =============================== */
+
+/* =============================
+   = ANIMATION AND STATE Start =
+   ============================= */
+/* Song Card Variables */
+#songCard {
+    --show: 500ms;
+    --hide: 500ms;
+}
+
+#songCard {
+    transition:
+            opacity var(--show);
+}
+
+#songCard.hidden {
+    opacity: 0;
+    transition:
+            opacity var(--show);
+}
+/* ===========================
+   = ANIMATION AND STATE end =
+   =========================== */
