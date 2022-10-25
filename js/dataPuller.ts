@@ -14,6 +14,7 @@ export class DataPuller {
     // PRIVATE VARIABLE //
     //////////////////////
     private helloEvent = true;
+    private oldVersion = false;
     private timeResolve = false;
 
     constructor() {
@@ -30,6 +31,7 @@ export class DataPuller {
             console.log("\n\n");
 
             this.helloEvent = false;
+            this.oldVersion = (["2.0.12"].includes(dataEvent.PluginVersion)) ? true : false;
         }
     }
 
@@ -47,7 +49,7 @@ export class DataPuller {
             if (!this._playerCard.playerCardData.disabled)
                 this._playerCard.playerCardData.display = false;
 
-            if (this.helloEvent) {
+            if (this.helloEvent || dataEvent.PracticeMode) {
                 this.timeResolve = true;
             }
         } else {
@@ -112,7 +114,7 @@ export class DataPuller {
         this._songCard.songCardData.difficultyClass = dataEvent.Difficulty;
 
         this._songCard.songCardData.time = 0;
-        this._songCard.songCardData.totalTime = dataEvent.Length * 1000;
+        this._songCard.songCardData.totalTime = (this.oldVersion) ? dataEvent.Length * 1000 : dataEvent.Duration * 1000;
 
         this._songCard.songCardData.accuracy = 100;
 
@@ -125,19 +127,33 @@ export class DataPuller {
 
     private speedParser(dataEvent: Globals.I_dataPullerMapDataObject) {
         if (dataEvent.PracticeMode) {
-            return dataEvent.PracticeModeModifiers.songSpeedMul;
+            return (this.oldVersion) ? dataEvent.PracticeModeModifiers.songSpeedMul : dataEvent.PracticeModeModifiers.SongSpeedMul;
         }
 
-        if (dataEvent.Modifiers.fasterSong) {
-            return 1.20;
-        }
+        if (this.oldVersion) {
+            if (dataEvent.Modifiers.fasterSong) {
+                return 1.20;
+            }
 
-        if (dataEvent.Modifiers.superFastSong) {
-            return 1.50;
-        }
+            if (dataEvent.Modifiers.superFastSong) {
+                return 1.50;
+            }
 
-        if (dataEvent.Modifiers.slowerSong) {
-            return 0.85;
+            if (dataEvent.Modifiers.slowerSong) {
+                return 0.85;
+            }
+        } else {
+            if (dataEvent.Modifiers.FasterSong) {
+                return 1.20;
+            }
+
+            if (dataEvent.Modifiers.SuperFastSong) {
+                return 1.50;
+            }
+
+            if (dataEvent.Modifiers.SlowerSong) {
+                return 0.85;
+            }
         }
 
         return 1;

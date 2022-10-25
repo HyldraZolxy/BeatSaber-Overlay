@@ -445,14 +445,16 @@ export namespace Globals {
         Mapper: string;                             // Mapper name of the song
         BSRKey: null | string;                      // BSR key of the song
         coverImage: null | string;                  // Cover URL of the song (cdn beatsaver, .jpg)
-        Length: number;                             // Lenght in seconds of the song
-        TimeScale: number;                          // Speed of time for the song
+        Length: number;                             // Lenght in seconds of the song (Version < 2.1.0)
+        Duration: number;                           // Length in seconds of the song (Version >= 2.1.0)
+        TimeScale: number;                          // Speed of time for the song (Version < 2.1.0)
         MapType: string;                            // Type of map "Standard", etc ...
         Difficulty: string;                         // Difficulty of the map
         CustomDifficultyLabel: string;              // Custom name of the difficulty
         BPM: number;                                // BPM of the song
         NJS: number;                                // NJS of the song
         Modifiers: {                            // CAN BE EMTPY
+            /// (Version < 2.1.0)
             fourLives: boolean;                     // Four lives ?
             oneLife: boolean;                       // One life ?
             disappearingArrows: boolean;            // Disappearing arrows ?
@@ -468,20 +470,44 @@ export namespace Globals {
             proMode: boolean;                       // Pro mode ?
             smallNotes: boolean;                    // Small notes ?
             strictAngles: boolean;                  // Strict Angles ?
+
+            /// (Version >= 2.1.0)
+            FourLives: boolean;                     // Four lives ?
+            OneLife: boolean;                       // One life ?
+            DisappearingArrows: boolean;            // Disappearing arrows ?
+            GhostNotes: boolean;                    // Ghost Notes ?
+            FasterSong: boolean;                    // Faster song ?
+            SuperFastSong: boolean;                 // Super faster song ?
+            ZenMode: boolean;                       // Zen Mode ?
+            NoFailOn0Energy: boolean;               // No fail when 0 energy ? (Softfailed)
+            NoBombs: boolean;                       // No bombs ?
+            SlowerSong: boolean;                    // Slower song ?
+            NoArrows: boolean;                      // No arrows ?
+            NoWalls: boolean;                       // No walls ?
+            ProMode: boolean;                       // Pro mode ?
+            SmallNotes: boolean;                    // Small notes ?
+            StrictAngles: boolean;                  // Strict Angles ?
         };
         ModifiersMultiplier: number;                // Multiplier when modifier is enabled (1, 1.2, 0.8, etc ...)
         PracticeMode: boolean;                      // Is in practice ?
         PracticeModeModifiers: {                // CAN BE EMTPY
+            /// (Version < 2.1.0)
             songSpeedMul: number;                   // Speed multiplier in Practice mode
             startInAdvanceAndClearNotes: number;    // I don't know really what is this ????
             startSongTime: number;                  // Time in number where the song start
+
+            /// (Version >= 2.1.0)
+            SongSpeedMul: number;                   // Speed multiplier in Practice mode
+            StartInAdvanceAndClearNotes: number;    // I don't know really what is this ????
+            SongStartTime: number;                  // Time in number where the song start (Version >= 2.1.0)
         };
         PP: number;                                 // Performance point of the map
         Star: number;                               // Stars of the map
         IsMultiplayer: boolean;                     // Is in multiplayer ?
         PreviousRecord: number;                     // Previous score of the previous song
         PreviousBSR: null | string;                 // Previous BSR of the previous map
-        unixTimestamp: number;                      // Time of the event
+        unixTimestamp: number;                      // Time of the event (Version < 2.1.0)
+        UnixTimestamp: number;                      // Time of the event (Version >= 2.1.0)
     }
     export interface I_dataPullerLiveDataObject {
         Score: number;                              // Player score
