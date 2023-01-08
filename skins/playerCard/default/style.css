@@ -1,28 +1,52 @@
 /* ======================
    = PLAYER TAGS start =
    ====================== */
-#playerCard {
-    width: 300px;
-    height: 140px;
-    margin: 3% 3%;
+#playerCard-overlay {
+    height: 160px;
+
+    margin: 2% 2%;
 
     position: absolute;
-
     display: flex;
     justify-content: space-between;
 
     overflow: hidden;
 
-    font-family: "Walkway", Arial, serif;
+    font-family: "Montserrat", Arial, serif;
     color: white;
 }
 
-#playerCard.top-left, #playerCard.bottom-left {
+#playerCard-overlay.top-left,
+#playerCard-overlay.bottom-left {
     flex-direction: row;
 }
-
-#playerCard.top-right, #playerCard.bottom-right {
+#playerCard-overlay.top-right,
+#playerCard-overlay.bottom-right {
     flex-direction: row-reverse;
+}
+
+#playerCardGroup {
+    display: flex;
+}
+#playerCard-overlay.top-left #playerCardGroup,
+#playerCard-overlay.bottom-left #playerCardGroup {
+    flex-direction: row;
+}
+#playerCard-overlay.top-right #playerCardGroup,
+#playerCard-overlay.bottom-right #playerCardGroup {
+    flex-direction: row-reverse;
+}
+#playerCard-overlay.top-left #playerCardGroup {
+    transform-origin: top left;
+}
+#playerCard-overlay.top-right #playerCardGroup {
+    transform-origin: top right;
+}
+#playerCard-overlay.bottom-left #playerCardGroup {
+    transform-origin: bottom left;
+}
+#playerCard-overlay.bottom-right #playerCardGroup {
+    transform-origin: bottom right;
 }
 
 /* =============================
@@ -32,6 +56,8 @@
     width: 140px;
     height: 140px;
 
+    margin: 10px;
+
     border-radius: 5px;
     overflow: hidden;
 
@@ -39,25 +65,50 @@
     background-repeat: no-repeat;
     background-size: contain;
 
+    filter: drop-shadow(0 0 0.25rem black)
+            drop-shadow(0 0 0.25rem black);
+
     z-index: 1;
 }
 
 #playerFlag {
     width: 30px;
     height: 30px;
+
     margin: 3% 5%;
 
     background-image: url("../../../pictures/country/FR.svg");
 }
-
-#playerCard.top-left #playerFlag, #playerCard.bottom-left #playerFlag {
+#playerCard-overlay.top-left #playerFlag,
+#playerCard-overlay.bottom-left #playerFlag {
     transform-origin: right;
     float: right;
 }
-
-#playerCard.top-right #playerFlag, #playerCard.bottom-right #playerFlag {
+#playerCard-overlay.top-right #playerFlag,
+#playerCard-overlay.bottom-right #playerFlag {
     transform-origin: left;
     float: left;
+}
+
+#logoLeaderboard {
+    background-image: url("../../../pictures/scoresaber_icon_32x32.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.logoLeaderboardPlayer {
+    width: 20px;
+    height: 20px;
+    bottom: 5px;
+
+    position: absolute;
+}
+#playerCard-overlay.top-left .logoLeaderboardPlayer,
+#playerCard-overlay.bottom-left .logoLeaderboardPlayer {
+    margin-left: 115px;
+}
+#playerCard-overlay.top-right .logoLeaderboardPlayer,
+#playerCard-overlay.bottom-right .logoLeaderboardPlayer {
+    margin-left: 5px;
 }
 /* ===========================
    = PLAYER TAGS/ Avatar end =
@@ -67,74 +118,79 @@
    = PLAYER TAGS/ Info start =
    =========================== */
 #playerData {
-    width: 150px;
-    height: 140px;
+    height: 160px;
 
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
 
-    font-size: 25px;
+    font-size: 1.2em;
+    filter: drop-shadow(0 0 0.25rem black)
+            drop-shadow(0 0 0.25rem black);
 }
 
-#playerCard.top-left #playerData,
-#playerCard.bottom-left #playerData {
+#playerCard-overlay.top-left #playerData,
+#playerCard-overlay.bottom-left #playerData {
+    margin-left: 10px;
+    padding-right: 10px;
+
     text-align: left;
 }
 
-#playerCard.top-right #playerData,
-#playerCard.bottom-right #playerData {
+#playerCard-overlay.top-right #playerData,
+#playerCard-overlay.bottom-right #playerData {
+    margin-right: 10px;
+    padding-left: 10px;
+
     text-align: right;
 }
 
-#playerCard.top-left #topCountry::before,
-#playerCard.bottom-left #topCountry::before,
-#playerCard.top-left #topWorld::before,
-#playerCard.bottom-left #topWorld::before {
+#playerCard-overlay.top-left #topWorld::before,
+#playerCard-overlay.bottom-left #topWorld::before {
+    content: "";
+
+    width: 18px;
+    height: 18px;
+
+    margin-right: 10px;
+
+    background-image: url("../../../pictures/World-icon.svg");
+    background-size: 18px 18px;
+    background-repeat: no-repeat;
+
+    display: inline-block;
+}
+
+#playerCard-overlay.top-left #topCountry::before,
+#playerCard-overlay.bottom-left #topCountry::before {
     content: "# ";
 
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
-    font-weight: 800;
+    font-family: Arial, sans-serif;
 }
 
-#playerCard.top-left #topWorld::after,
-#playerCard.bottom-left #topWorld::after {
+#playerCard-overlay.top-right #topWorld::after,
+#playerCard-overlay.bottom-right #topWorld::after {
     content: "";
 
     width: 18px;
     height: 18px;
-    margin-left: 5px;
+
+    margin-left: 10px;
 
     background-image: url("../../../pictures/World-icon.svg");
     background-size: 18px 18px;
+    background-repeat: no-repeat;
 
     display: inline-block;
 }
 
-#playerCard.top-right #topCountry::after,
-#playerCard.bottom-right #topCountry::after,
-#playerCard.top-right #topWorld::after,
-#playerCard.bottom-right #topWorld::after {
+#playerCard-overlay.top-right #topCountry::after,
+#playerCard-overlay.bottom-right #topCountry::after {
     content: " #";
 
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
-    font-weight: 800;
-}
+    padding-left: 10px;
 
-#playerCard.top-right #topWorld::before,
-#playerCard.bottom-right #topWorld::before {
-    content: "";
-
-    width: 18px;
-    height: 18px;
-    margin-right: 5px;
-
-    background-image: url("../../../pictures/World-icon.svg");
-    background-size: 18px 18px;
-
-    display: inline-block;
+    font-family: Arial, sans-serif;
 }
 
 #performancePoint::after {
@@ -149,60 +205,73 @@
    ============================= */
 
 /* Player Card Variables */
-#playerCard {
+#playerCard-overlay {
     --show: 500ms;
     --hide: 500ms;
+    --reduced-1: 350ms;
+    --reduced-2: 250ms;
 }
 
-#playerCard.top-right, #playerCard.bottom-right {
+#playerCard-overlay.top-right, #playerCard-overlay.bottom-right {
     --transitionSide: 50px;
 }
 
-#playerCard.top-left, #playerCard.bottom-left {
+#playerCard-overlay.top-left, #playerCard-overlay.bottom-left {
     --transitionSide: -50px;
 }
 
-/* Avatar */
-#playerCard #avatar  {
+#playerCard-overlay #playerCardGroup {
     transition:
-            opacity var(--show);
+        transform var(--reduced-1);
 }
 
-#playerCard.hidden #avatar  {
+#playerCard-overlay.reduced #playerCardGroup {
+    transform: scale(0.5);
+    transition:
+        transform var(--reduced-2);
+}
+
+/* Avatar */
+#playerCard-overlay #avatar  {
+    transition:
+        opacity var(--show);
+}
+
+#playerCard-overlay.hidden #avatar  {
     transition-delay: 500ms !important;
     opacity: 0;
     transition:
-            opacity var(--hide);
+        opacity var(--hide);
 }
 
 /* Player Flag */
-#playerCard.top-left #playerFlag, #playerCard.bottom-left #playerFlag {
+#playerCard-overlay.top-left #playerFlag, #playerCard-overlay.bottom-left #playerFlag {
     --marginBase: -5% -20% 0 0;
     --marginModify: 3% 5%;
     --rotateDegre: 45deg;
     animation: rotateCountry 20s ease infinite;
 }
 
-#playerCard.top-right #playerFlag, #playerCard.bottom-right #playerFlag {
+#playerCard-overlay.top-right #playerFlag, #playerCard-overlay.bottom-right #playerFlag {
     --marginBase: -5% 0 0 -18%;
     --marginModify: 3% 6%;
     --rotateDegre: -45deg;
     animation: rotateCountry 20s ease infinite;
 }
 
-#playerCard.hidden #playerFlag  {
+#playerCard-overlay.hidden #playerFlag  {
     animation: none;
 }
 
 /* Player Data */
-#playerCard #playerData > * {
+#playerCard-overlay #playerData > * {
     transform: translate(0, 0);
     transition:
             opacity var(--show),
             transform var(--show);
 }
 
-#playerCard.hidden #playerData > * {
+#playerCard-overlay.hidden #playerData > * {
     transform: translate(var(--transitionSide), 0);
     opacity: 0;
     transition:
@@ -210,15 +279,15 @@
             transform var(--show);
 }
 
-#playerCard #playerData > *:nth-child(3) {
+#playerCard-overlay #playerData > *:nth-child(3) {
     transition-delay: 300ms;
 }
 
-#playerCard #playerData > *:nth-child(2) {
+#playerCard-overlay #playerData > *:nth-child(2) {
     transition-delay: 200ms;
 }
 
-#playerCard #playerData > *:nth-child(1) {
+#playerCard-overlay #playerData > *:nth-child(1) {
     transition-delay: 100ms;
 }
 
@@ -267,3 +336,7 @@
         transform: rotate(var(--rotateDegre));
     }
 }
+
+/* ===========================
+   = ANIMATION AND STATE End =
+   =========================== */

@@ -92,9 +92,11 @@ input:checked + .slider:before {
 #module {
     width: 95%;
     height: 80%;
+
+    overflow: auto;
 }
 
-#module label {
+#module .moduleSection {
     width: 100%;
     padding: 4% 5%;
 
@@ -105,14 +107,56 @@ input:checked + .slider:before {
     overflow: hidden;
 
     border-radius: 5px;
+
+    background-color: rgba(0, 0, 0, 0.25);
+
+    z-index: 0;
+}
+
+.moduleSection table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+.moduleSection tr {
+    height: 25px;
+
+    border-bottom: 1px solid rgba(215, 215, 215, 0.3);
+}
+.moduleSection tr:last-child {
+    margin-bottom: 0;
+    border: none;
+}
+
+#module label {
+    width: 100%;
+
+    display: inline-block;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 5px;
+
+    z-index: 0;
 }
 
 #module label span {
     width: 100%;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
     display: inline-block;
 
     font-weight: bold;
+}
+
+#module label .switch {
+    top: 0;
+    right: 0;
+    display: inline-block;
+    position: absolute;
+
+    z-index: 0;
 }
 
 #module .ion-ios-help-outline {
@@ -194,21 +238,20 @@ input:checked + .slider:before {
     width: 100%;
 }
 
-.blurredBackground {
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+.lilSpan {
+    font-size: 0.7em;
+}
 
-    position: absolute;
+.inline {
+    margin-left: 25px;
 
-    border-radius: 5px;
+    display: inline-block;
 
-    -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px);
-    background-color: rgba(0, 0, 0, 0.25);
+    font-size: 0.8em;
+}
 
-    z-index: -1;
+.checkboxInline {
+    margin: 0 10px;
 }
 /* =================================
    = SETUP PANEL TAGS / Module end =

@@ -1,35 +1,54 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
+#songCard-overlay {
+    max-width: 650px;
 
-#songCard {
-    margin: 3% 3% 3% 3%;
-
-    display: flex;
-    flex-direction: column-reverse;
+    margin: 2% 2%;
 
     position: absolute;
+    display: flex;
+    flex-direction: column-reverse;
 
     font-family: "Montserrat", sans-serif;
 
     color: white;
 }
 
-#songCard.top-left,
-#songCard.bottom-left {
+#songCard-overlay.top-left,
+#songCard-overlay.bottom-left {
     text-align: left;
 }
 
-#songCard.top-right,
-#songCard.bottom-right {
+#songCard-overlay.top-right,
+#songCard-overlay.bottom-right {
     text-align: right;
 }
 
-#songCard.top-left,
-#songCard.top-right {
+#songCard-overlay.top-left,
+#songCard-overlay.top-right {
     flex-direction: column-reverse;
 }
 
-#songCard.bottom-left,
-#songCard.bottom-right {
+#songCard-overlay.bottom-left,
+#songCard-overlay.bottom-right {
+    flex-direction: column;
+}
+
+#songCardGroup {
+    display: flex
+}
+#songCard-overlay.top-left #songCardGroup {
+    transform-origin: top left;
+    flex-direction: column-reverse;
+}
+#songCard-overlay.top-right #songCardGroup {
+    transform-origin: top right;
+    flex-direction: column-reverse;
+}
+#songCard-overlay.bottom-left #songCardGroup {
+    transform-origin: bottom left;
+    flex-direction: column;
+}
+#songCard-overlay.bottom-right #songCardGroup {
+    transform-origin: bottom right;
     flex-direction: column;
 }
 
@@ -37,15 +56,18 @@
 
 #beatmap {
     display: flex;
+
+    filter: drop-shadow(0 0 0.25rem black)
+            drop-shadow(0 0 0.25rem black);
 }
 
-#songCard.top-left #beatmap,
-#songCard.bottom-left #beatmap {
+#songCard-overlay.top-left #beatmap,
+#songCard-overlay.bottom-left #beatmap {
     flex-direction: row;
 }
 
-#songCard.top-right #beatmap,
-#songCard.bottom-right #beatmap {
+#songCard-overlay.top-right #beatmap,
+#songCard-overlay.bottom-right #beatmap {
     flex-direction: row-reverse;
 }
 
@@ -69,6 +91,15 @@
     padding: 0 16px;
 }
 
+#songCard-overlay.top-left #meta,
+#songCard-overlay.bottom-left #meta {
+    align-items: flex-start;
+}
+#songCard-overlay.top-right #meta,
+#songCard-overlay.bottom-right #meta {
+    align-items: flex-end;
+}
+
 #text {
     flex-grow: 1;
 
@@ -79,6 +110,15 @@
 #titles {
     display: flex;
     align-items: flex-end;
+}
+
+#songCard-overlay.top-left #titles,
+#songCard-overlay.bottom-left #titles {
+    flex-direction: row;
+}
+#songCard-overlay.top-right #titles,
+#songCard-overlay.bottom-right #titles {
+    flex-direction: row-reverse;
 }
 
 #title {
@@ -97,6 +137,15 @@
     align-items: flex-end;
 }
 
+#songCard-overlay.top-left #makers,
+#songCard-overlay.bottom-left #makers {
+    flex-direction: row;
+}
+#songCard-overlay.top-right #makers,
+#songCard-overlay.bottom-right #makers {
+    flex-direction: row-reverse;
+}
+
 #author {
     display: block;
     font-size: 16px;
@@ -108,7 +157,15 @@
     display: block;
     font-size: 16px;
     font-weight: 400;
+}
+
+#songCard-overlay.top-left #mapper,
+#songCard-overlay.bottom-left #mapper {
     margin: 2px 0 0 10px;
+}
+#songCard-overlay.top-right #mapper,
+#songCard-overlay.bottom-right #mapper {
+    margin: 2px 10px 0 0;
 }
 
 #mapper:before {
@@ -118,10 +175,22 @@
     content: "]";
 }
 
-#difficulty, #bpm, #bsrKey {
-    display: inline-block;
+#other {
+    display: flex;
+    line-height: 1em;
+}
 
-    font-size: 10px;
+#songCard-overlay.top-left #other,
+#songCard-overlay.bottom-left #other {
+    flex-direction: row;
+}
+#songCard-overlay.top-right #other,
+#songCard-overlay.bottom-right #other {
+    flex-direction: row-reverse;
+}
+
+#difficulty, #bpm, #bsrKey {
+    font-size: 0.7em;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 3px;
@@ -135,8 +204,8 @@
     border-radius: 4px;
 }
 
-#bpm {
-    margin: 0 8px;
+#bpm, #bsrKey {
+    margin: 5px 8px;
 }
 
 #bpm:after {
@@ -145,6 +214,22 @@
 
 #bsrKey:before {
     content: "!bsr ";
+}
+
+#bsrKey {
+    font-size: 0.7em;
+}
+
+#logoLeaderboard {
+    background-image: url("../../../pictures/scoresaber_icon_32x32.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.logoLeaderboardSong {
+    width: 20px;
+    height: 20px;
+
+    margin: 3px;
 }
 
 /* Progress */
@@ -198,15 +283,18 @@
 #performance {
     display: flex;
     margin: 0 0 20px 0;
+
+    filter: drop-shadow(0 0 0.25rem black)
+            drop-shadow(0 0 0.25rem black);
 }
 
-#songCard.top-left #performance,
-#songCard.top-right #performance {
+#songCard-overlay.top-left #performance,
+#songCard-overlay.top-right #performance {
     flex-direction: column-reverse;
 }
 
-#songCard.bottom-left #performance,
-#songCard.bottom-right #performance {
+#songCard-overlay.bottom-left #performance,
+#songCard-overlay.bottom-right #performance {
     flex-direction: column;
 }
 
@@ -245,18 +333,31 @@
 
 /* Animations and state */
 
-#songCard {
+#songCard-overlay {
     --show: cubic-bezier(0.19, 1, 0.22, 1) 300ms;
     --hide: cubic-bezier(0.55, 0.085, 0.68, 0.53) 200ms;
+    --reduced-1: 350ms;
+    --reduced-2: 250ms;
 }
 
-#songCard #beatmap, #songCard #performance > * {
+#songCard-overlay #songCardGroup {
+    transition:
+            transform var(--reduced-1);
+}
+
+#songCard-overlay.reduced #songCardGroup {
+    transform: scale(0.5);
+    transition:
+            transform var(--reduced-2);
+}
+
+#songCard-overlay #beatmap, #songCard-overlay #performance > * {
     transition:
             opacity var(--show),
             transform var(--show);
 }
 
-#songCard.hidden #beatmap, #songCard.hidden #performance > * {
+#songCard-overlay.hidden #beatmap, #songCard-overlay.hidden #performance > * {
     opacity: 0;
     transform: translate(0, 15px);
     transition:
@@ -264,14 +365,14 @@
             transform var(--hide);
 }
 
-#songCard #performance > *:nth-child(3) {
+#songCard-overlay #performance > *:nth-child(3) {
     transition-delay: 100ms !important;
 }
 
-#songCard #performance > *:nth-child(2) {
+#songCard-overlay #performance > *:nth-child(2) {
     transition-delay: 200ms !important;
 }
 
-#songCard #performance > *:nth-child(1) {
+#songCard-overlay #performance > *:nth-child(1) {
     transition-delay: 300ms !important;
 }

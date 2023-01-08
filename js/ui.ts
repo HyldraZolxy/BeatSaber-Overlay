@@ -1,26 +1,31 @@
-import { Globals } from "./global.js";
-import { PlayerCard } from "./playerCard.js";
-import { SongCard } from "./songCard.js";
-import { Template } from "./template.js";
+import { Globals }      from "./globals";
+import { Template }     from "./template";
+import { PlayerCard }   from "./playerCard";
+import { SongCard }     from "./songCard";
 
 export class UI {
 
-    /////////////////////
-    // @CLASS VARIABLE //
-    /////////////////////
-    private _playerCard: PlayerCard;
-    private _songCard: SongCard;
-    private _template: Template;
+    //////////////////////
+    // @Class Variables //
+    //////////////////////
+    private _template:      Template;
+    private _playerCard:    PlayerCard;
+    private _songCard:      SongCard;
 
     constructor() {
-        this._playerCard = PlayerCard.Instance;
-        this._songCard = SongCard.Instance;
-        this._template = new Template();
+        this._template      = new Template();
+        this._playerCard    = PlayerCard.Instance;
+        this._songCard      = SongCard.Instance;
     }
 
-    /////////////////////
-    // PUBLIC FUNCTION //
-    /////////////////////
+    ////////////////////
+    // Public Methods //
+    ////////////////////
+    public async initUI() {
+        await this._template.loadSkin(Globals.E_MODULES.PLAYERCARD, this._playerCard.playerCardData.skin);
+        await this._template.loadSkin(Globals.E_MODULES.SONGCARD, this._songCard.songCardData.skin);
+    }
+
     public refreshUI(): void {
         setInterval(() => {
             this._playerCard.refreshPlayerCard();

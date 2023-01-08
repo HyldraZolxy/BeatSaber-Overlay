@@ -1,7 +1,7 @@
 /* ===================
    = SONG TAGS start =
    =================== */
-#songCard {
+#songCard-overlay {
     width: 500px;
     padding: 10px 20px;
 
@@ -9,15 +9,15 @@
 
     background-color: rgba(0, 0, 0, 0.7);
 
-    font-family: "ElasticStretch", Arial, "Helvetica Neue", "Helvetica";
+    font-family: "ElasticStretch", Arial, "Helvetica Neue", "Helvetica", serif;
     color: white;
 }
-#songCard.top-left { border-bottom-right-radius: 50px; }
-#songCard.top-right { border-bottom-left-radius: 50px; }
-#songCard.bottom-left { border-top-right-radius: 50px; }
-#songCard.bottom-right { border-top-left-radius: 50px; }
-#songCard.top-left, #songCard.bottom-left { text-align: left; }
-#songCard.top-right, #songCard.bottom-right { text-align: right; }
+#songCard-overlay.top-left { border-bottom-right-radius: 50px; }
+#songCard-overlay.top-right { border-bottom-left-radius: 50px; }
+#songCard-overlay.bottom-left { border-top-right-radius: 50px; }
+#songCard-overlay.bottom-right { border-top-left-radius: 50px; }
+#songCard-overlay.top-left, #songCard-overlay.bottom-left { text-align: left; }
+#songCard-overlay.top-right, #songCard-overlay.bottom-right { text-align: right; }
 
 /* ==========================
    = SONG TAGS / Info start =
@@ -50,8 +50,8 @@
 
     line-height: 2em;
 }
-#songCard.top-left #infoGroup, #songCard.bottom-left #infoGroup { flex-direction: row-reverse; }
-#songCard.top-right #infoGroup, #songCard.bottom-right #infoGroup { flex-direction: row; }
+#songCard-overlay.top-left #infoGroup, #songCard-overlay.bottom-left #infoGroup { flex-direction: row-reverse; }
+#songCard-overlay.top-right #infoGroup, #songCard-overlay.bottom-right #infoGroup { flex-direction: row; }
 
 #timeBarInfo {
     margin-top: 10px;
@@ -64,8 +64,8 @@
     font-size: 1.1em;
 }
 #timeToLetters:after { content: " /"; margin-right: 5px; }
-#songCard.top-left #timeBarInfo, #songCard.bottom-left #timeBarInfo { right: 20px; }
-#songCard.top-right #timeBarInfo, #songCard.bottom-right #timeBarInfo { left: 20px; }
+#songCard-overlay.top-left #timeBarInfo, #songCard-overlay.bottom-left #timeBarInfo { right: 20px; }
+#songCard-overlay.top-right #timeBarInfo, #songCard-overlay.bottom-right #timeBarInfo { left: 20px; }
 
 #mapper {
     width: 50%;
@@ -77,8 +77,8 @@
 }
 #mapper:before { content: "["; }
 #mapper:after { content: "]"; }
-#songCard.top-left #mapper, #songCard.bottom-left #mapper { margin-left: 20px; text-align: left; }
-#songCard.top-right #mapper, #songCard.bottom-right #mapper { margin-right: 20px; text-align: right; }
+#songCard-overlay.top-left #mapper, #songCard-overlay.bottom-left #mapper { margin-left: 20px; text-align: left; }
+#songCard-overlay.top-right #mapper, #songCard-overlay.bottom-right #mapper { margin-right: 20px; text-align: right; }
 
 #difficulty {
     padding: 0 10px 0 10px;
@@ -141,22 +141,22 @@
 
     line-height: 2.5em;
 }
-#songCard.top-left #performanceGroup, #songCard.bottom-left #performanceGroup { flex-direction: row-reverse; }
-#songCard.top-right #performanceGroup, #songCard.bottom-right #performanceGroup { flex-direction: row; }
+#songCard-overlay.top-left #performanceGroup, #songCard-overlay.bottom-left #performanceGroup { flex-direction: row-reverse; }
+#songCard-overlay.top-right #performanceGroup, #songCard-overlay.bottom-right #performanceGroup { flex-direction: row; }
 
 #infoPerformanceGroup {
     display: inline-flex;
 }
-#songCard.top-left #infoPerformanceGroup, #songCard.bottom-left #infoPerformanceGroup { flex-direction: row-reverse; }
-#songCard.top-right #infoPerformanceGroup, #songCard.bottom-right #infoPerformanceGroup { flex-direction: row; }
+#songCard-overlay.top-left #infoPerformanceGroup, #songCard-overlay.bottom-left #infoPerformanceGroup { flex-direction: row-reverse; }
+#songCard-overlay.top-right #infoPerformanceGroup, #songCard-overlay.bottom-right #infoPerformanceGroup { flex-direction: row; }
 
 #bsrKey {
     font-family: "walkway", Arial, serif;
     font-size: 2em;
 }
 
-#songCard.top-left #miss, #songCard.bottom-left #miss { margin-left: 20px; font-size: 1.4em; }
-#songCard.top-right #miss, #songCard.bottom-right #miss { margin-right: 20px; font-size: 1.4em; }
+#songCard-overlay.top-left #miss, #songCard-overlay.bottom-left #miss { margin-left: 20px; font-size: 1.4em; }
+#songCard-overlay.top-right #miss, #songCard-overlay.bottom-right #miss { margin-right: 20px; font-size: 1.4em; }
 
 #accuracy {
     width: 70px;
@@ -172,17 +172,17 @@
    = ANIMATION AND STATE Start =
    ============================= */
 /* Song Card Variables */
-#songCard {
+#songCard-overlay {
     --show: 500ms;
     --hide: 500ms;
 }
 
-#songCard {
+#songCard-overlay {
     transition:
             opacity var(--show);
 }
 
-#songCard.hidden {
+#songCard-overlay.hidden {
     opacity: 0;
     transition:
             opacity var(--show);

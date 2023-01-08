@@ -1,28 +1,53 @@
 /* ===================
    = SONG TAGS start =
    =================== */
-#songCard {
-    width: 650px;
-    height: 140px;
-    margin: 3% 3%;
+#songCard-overlay {
+    max-width: 650px;
+    height: 160px;
+
+    margin: 2% 2%;
 
     position: absolute;
-
     display: flex;
     justify-content: space-between;
 
     overflow: hidden;
 
-    font-family: "walkway", Arial, serif;
+    font-family: "Montserrat", Arial, serif;
     color: white;
 }
 
-#songCard.top-left, #songCard.bottom-left {
+#songCard-overlay.top-left,
+#songCard-overlay.bottom-left {
     flex-direction: row;
 }
-
-#songCard.top-right, #songCard.bottom-right {
+#songCard-overlay.top-right,
+#songCard-overlay.bottom-right {
     flex-direction: row-reverse;
+}
+
+#songCardGroup {
+    display: flex;
+}
+#songCard-overlay.top-left #songCardGroup,
+#songCard-overlay.bottom-left #songCardGroup {
+    flex-direction: row;
+}
+#songCard-overlay.top-right #songCardGroup,
+#songCard-overlay.bottom-right #songCardGroup {
+    flex-direction: row-reverse;
+}
+#songCard-overlay.top-left #songCardGroup {
+    transform-origin: top left;
+}
+#songCard-overlay.top-right #songCardGroup {
+    transform-origin: top right;
+}
+#songCard-overlay.bottom-left #songCardGroup {
+    transform-origin: bottom left;
+}
+#songCard-overlay.bottom-right #songCardGroup {
+    transform-origin: bottom right;
 }
 
 /* ==========================
@@ -32,6 +57,8 @@
     width: 140px;
     height: 140px;
 
+    margin: 10px;
+
     border-radius: 5px;
     overflow: hidden;
 
@@ -39,31 +66,63 @@
     background-repeat: no-repeat;
     background-size: contain;
 
+    filter: drop-shadow(0 0 0.25rem black)
+            drop-shadow(0 0 0.25rem black);
+
     z-index: 1;
 }
 
-#ranked {
+#ranked, #qualified {
     width: 100%;
     height: 19px;
+
     margin: 50% -14%;
 
     background-color: rgba(130, 27, 214, 0.959);
 
     box-shadow: 0 -3px 3px rgba(130, 27, 214, 0.959), 0 3px 3px rgba(130, 27, 214, 0.959);
 
+    line-height: 19px;
+    font-size: 0.8em;
+
     text-align: center;
 }
-
-#songCard.top-left #ranked, #songCard.bottom-left #ranked {
+#songCard-overlay.top-left #ranked,
+#songCard-overlay.bottom-left #ranked,
+#songCard-overlay.top-left #qualified,
+#songCard-overlay.bottom-left #qualified {
     transform: rotate(45deg);
     transform-origin: right;
     float: right;
 }
-
-#songCard.top-right #ranked, #songCard.bottom-right #ranked {
+#songCard-overlay.top-right #ranked,
+#songCard-overlay.bottom-right #ranked,
+#songCard-overlay.top-right #qualified,
+#songCard-overlay.bottom-right #qualified {
     transform: rotate(-45deg);
     transform-origin: left;
     float: left;
+}
+
+#logoLeaderboard {
+    background-image: url("../../../pictures/scoresaber_icon_32x32.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.logoLeaderboardSong {
+    width: 20px;
+    height: 20px;
+    top: 3px;
+
+    position: absolute;
+}
+#songCard-overlay.top-left .logoLeaderboardSong,
+#songCard-overlay.bottom-left .logoLeaderboardSong {
+    margin-left: 117px;
+}
+#songCard-overlay.top-right .logoLeaderboardSong,
+#songCard-overlay.bottom-right .logoLeaderboardSong {
+    margin-left: 3px;
 }
 /* ========================
    = SONG TAGS/ Cover end =
@@ -73,17 +132,20 @@
    = SONG TAGS/ Info start =
    ========================= */
 #songData {
-    width: 500px;
     height: 140px;
+
+    margin-top: 10px;
 
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
 
-    font-size: 25px;
+    filter: drop-shadow(0 0 0.25rem black)
+            drop-shadow(0 0 0.25rem black);
 }
-
 #songData p {
+    max-width: 59%;
+
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -93,124 +155,119 @@
     display: flex;
     line-height: 30px;
 }
-
-#songCard.top-left #songNameSubName,
-#songCard.bottom-left #songNameSubName {
+#songCard-overlay.top-left #songNameSubName,
+#songCard-overlay.bottom-left #songNameSubName {
     flex-direction: row;
 }
-
-#songCard.top-right #songNameSubName,
-#songCard.bottom-right #songNameSubName {
+#songCard-overlay.top-right #songNameSubName,
+#songCard-overlay.bottom-right #songNameSubName {
     flex-direction: row-reverse;
 }
 
 #title {
-    font-size: 30px;
+    font-size: 1.5em;
 }
-
-#songCard.top-left #title, #songCard.bottom-left #title {
+#songCard-overlay.top-left #title,
+#songCard-overlay.bottom-left #title {
     margin-right: 10px;
 }
-
-#songCard.top-right #title, #songCard.bottom-right #title {
+#songCard-overlay.top-right #title,
+#songCard-overlay.bottom-right #title {
     margin-left: 10px;
 }
 
 #subTitle {
-    font-size: 23px;
+    font-size: 1em;
 }
 
 #songAuthorMapper {
+    margin-top: -5px;
     display: flex;
 
-    font-size: 20px;
-    line-height: 20px;
+    font-size: 1.1em;
 }
-
-#songCard.top-left #songAuthorMapper, #songCard.bottom-left #songAuthorMapper {
+#songCard-overlay.top-left #songAuthorMapper,
+#songCard-overlay.bottom-left #songAuthorMapper {
+    margin-right: 10px;
     flex-direction: row;
 }
-
-#songCard.top-right #songAuthorMapper, #songCard.bottom-right #songAuthorMapper {
+#songCard-overlay.top-right #songAuthorMapper,
+#songCard-overlay.bottom-right #songAuthorMapper {
+    margin-left: 10px;
     flex-direction: row-reverse;
 }
-
-#songCard.top-left #mapper, #songCard.bottom-left #mapper {
+#songCard-overlay.top-left #mapper,
+#songCard-overlay.bottom-left #mapper {
     margin-right: 10px;
 }
-
-#songCard.top-right #mapper, #songCard.bottom-right #mapper {
+#songCard-overlay.top-right #mapper,
+#songCard-overlay.bottom-right #mapper {
     margin-left: 10px;
 }
-
 #mapper::before {
     content: "[";
 }
-
 #mapper::after {
     content: "]";
 }
 
 #songDataInfo {
-    margin-top: 10px;
-    margin-bottom: -10px;
+    margin-top: 30px;
 
     display: flex;
 
-    line-height: 25px;
+    line-height: 20px;
 }
-
-#songCard.top-left #songDataInfo, #songCard.bottom-left #songDataInfo {
+#songCard-overlay.top-left #songDataInfo,
+#songCard-overlay.bottom-left #songDataInfo {
     flex-direction: row;
 }
-
-#songCard.top-right #songDataInfo, #songCard.bottom-right #songDataInfo {
+#songCard-overlay.top-right #songDataInfo,
+#songCard-overlay.bottom-right #songDataInfo {
     flex-direction: row-reverse;
 }
 
 #difficulty {
     padding: 0 10px 0 10px;
 
-    font-size: 16px;
-
     border-radius: 2px;
-}
 
-#songCard.top-left #difficulty, #songCard.bottom-left #difficulty {
+    font-size: 0.8em;
+}
+#songCard-overlay.top-left #difficulty,
+#songCard-overlay.bottom-left #difficulty {
     margin-right: 20px;
 }
-
-#songCard.top-right #difficulty, #songCard.bottom-right #difficulty {
+#songCard-overlay.top-right #difficulty,
+#songCard-overlay.bottom-right #difficulty {
     margin-left: 20px;
 }
 
 #bsrKey {
-    font-size: 16px;
-    font-weight: bolder;
+    font-size: 1em;
 }
-
 #bsrKey::before {
     content: "!bsr ";
 }
 
 #songDataInfoBar {
-    margin-top: 5px;
+    width: 450px;
 
     display: flex;
     align-items: flex-end;
-    justify-content: space-around;
+    justify-content: space-between;
 }
-
-#songCard.top-left #songDataInfoBar, #songCard.bottom-left #songDataInfoBar {
+#songCard-overlay.top-left #songDataInfoBar,
+#songCard-overlay.bottom-left #songDataInfoBar {
     flex-direction: row;
 }
-
-#songCard.top-right #songDataInfoBar, #songCard.bottom-right #songDataInfoBar {
+#songCard-overlay.top-right #songDataInfoBar,
+#songCard-overlay.bottom-right #songDataInfoBar {
     flex-direction: row-reverse;
 }
 
 #songBarLength {
-    width: 81%;
+    width: 75%;
     height: 5px;
     bottom: 0;
 
@@ -223,30 +280,30 @@
 }
 
 #timeToPercentage {
-    background-color: rgba(221, 221, 221, 0.61);
-
     width: 0;
     height: 100%;
 
     display: block;
+
+    background-color: rgba(221, 221, 221, 0.61);
 }
 
 #accuracy {
-    width: 19%;
-    height: 24px;
+    width: 23%;
 
-    font-size: 26px;
+    margin: 0 10px -5px 10px;
+
+    font-size: 1.5em;
     text-align: right;
 }
-
-#songCard.top-left #accuracy, #songCard.bottom-left #accuracy {
+#songCard-overlay.top-left #accuracy,
+#songCard-overlay.bottom-left #accuracy {
     text-align: right;
 }
-
-#songCard.top-right #accuracy, #songCard.bottom-right #accuracy {
+#songCard-overlay.top-right #accuracy,
+#songCard-overlay.bottom-right #accuracy {
     text-align: left;
 }
-
 #accuracy::after {
     content: "%";
 }
@@ -258,44 +315,57 @@
    = ANIMATION AND STATE Start =
    ============================= */
 /* Song Card Variables */
-#songCard {
+#songCard-overlay {
     --show: 500ms;
     --hide: 500ms;
+    --reduced-1: 350ms;
+    --reduced-2: 250ms;
 }
 
-#songCard.top-right, #songCard.bottom-right {
+#songCard-overlay.top-right, #songCard-overlay.bottom-right {
     --transitionSide: 500px;
 }
 
-#songCard.top-left, #songCard.bottom-left {
+#songCard-overlay.top-left, #songCard-overlay.bottom-left {
     --transitionSide: -500px;
 }
 
-/* Cover */
-#songCard #cover  {
+#songCard-overlay #songCardGroup {
     transition:
-            opacity var(--show);
+            transform var(--reduced-1);
 }
 
-#songCard.hidden #cover  {
+#songCard-overlay.reduced #songCardGroup {
+    transform: scale(0.5);
+    transition:
+            transform var(--reduced-2);
+}
+
+/* Cover */
+#songCard-overlay #cover  {
+    transition:
+        opacity var(--show);
+}
+
+#songCard-overlay.hidden #cover  {
     transition-delay: 500ms !important;
     opacity: 0;
     transition:
-            opacity var(--hide);
+        opacity var(--hide);
 }
 
 /* song Data */
-#songCard #songData {
+#songCard-overlay #songData {
     transform: translate(0, 0);
     transition:
-            opacity var(--show),
-            transform var(--show);
+        opacity var(--show),
+        transform var(--show);
 }
 
-#songCard.hidden #songData {
+#songCard-overlay.hidden #songData {
     transform: translate(var(--transitionSide), 0);
     opacity: 0;
     transition:
-            opacity var(--show),
-            transform var(--show);
+        opacity var(--show),
+        transform var(--show);
 }

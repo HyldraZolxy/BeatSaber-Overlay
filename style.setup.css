@@ -1,0 +1,335 @@
+/* ====================
+   = SETUP TAGS start =
+   ==================== */
+#games-setup {
+    width: 735px; /* No mobile version + it's inferior at 800*600 */
+    height: 485px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    display: inline-flex;
+    position: absolute;
+
+    background-image: url("./pictures/Logo.png"), linear-gradient(#879fd2, #b990d9);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+
+    border-radius: 4px;
+    box-shadow: 0 15px 50px 10px rgba(0, 0, 0, 0.3);
+
+    font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+    color: white;
+
+    overflow: hidden;
+}
+
+.roundedButton:hover #twitter,
+.roundedButton:hover #discord,
+.roundedButton:hover #mail,
+.roundedButton:hover #github,
+.roundedButton:hover #koFi,
+.roundedButton:hover #customURI {
+    display: block;
+    color: white;
+}
+#twitter, #discord, #mail, #github, #koFi, #customURI {
+    padding: 5px;
+    bottom: 45px;
+    left: 10px;
+
+    display: none;
+    position: absolute;
+
+    border-radius: 3px;
+    border: 1px solid #6c6c6c;
+    background-color: #545454;
+
+    line-height: 20px;
+    font-size: 0.7em;
+}
+
+/*=================LEFT PANEL=================*/
+#leftPanel-setup {
+    width: 65%;
+    height: 100%;
+}
+
+#options-setup {
+    width: 100%;
+    height: 92%;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+#socialMedia-setup {
+    width: 100%;
+    height: 8%;
+    padding-left: 10px;
+}
+
+.ion-social-twitter:hover  {
+    color: #3498db;
+}
+.ion-android-textsms:hover  {
+    color: #344adb;
+}
+.ion-android-mail:hover,
+.ion-card:hover {
+    color: #34dbae;
+}
+
+/*=================RIGHT PANEL================*/
+#rightPanel-setup {
+    width: 35%;
+    height: 100%;
+
+    background-color: #ececec;
+    border-left: 1px solid rgba(0, 0, 0, 0.40);
+}
+
+.return {
+    width: 55px;
+    height: 25px;
+    top: 10px;
+    right: 190px;
+
+    position: absolute;
+
+    border: 1px solid #ee6767;
+    border-radius: 3px;
+    background: none;
+
+    font-size: 0.65em;
+    color: #ee6767;
+
+    cursor: pointer;
+}
+.return:hover {
+    color: #e03535;
+}
+
+.closeButton {
+    width: 35px;
+    height: 35px;
+    top: 5px;
+    right: 5px;
+
+    position: absolute;
+
+    border: none;
+    background: none;
+
+    font-size: 1.8em;
+    color: #919191;
+
+    cursor: pointer;
+}
+.closeButton:hover {
+    color: #e03535;
+}
+
+#menu-setup {
+    width: 100%;
+    height: 92%;
+}
+
+#menu-setup nav {
+    width: 100%;
+    height: 100%;
+
+    display: inline-flex;
+    align-items: center;
+}
+
+#menu-setup ul {
+    width: 100%;
+    height: 60%;
+
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    list-style-type: none;
+}
+
+#menu-setup li {
+    width: 85%;
+    height: 15%;
+
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+
+    background-color: rgba(211, 211, 211, 0.30);
+    border-radius: 5px;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    transition-duration: 100ms;
+}
+
+#menu-setup li:hover {
+    background-color: rgba(211, 211, 211, 0.50);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+
+    transition-duration: 100ms;
+}
+
+#menu-setup .icon {
+    width: 20%;
+    height: 100%;
+    padding-left: 10px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    clip-path: polygon(0 0, 100% 0, 60% 100%, 0% 100%);
+    background-color: #545454;
+
+    font-size: 1.8em;
+
+    transition-duration: 100ms;
+}
+
+#menu-setup li:hover .icon {
+    width: 20%;
+    height: 100%;
+    padding-left: 0;
+
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    background-color: #6c6c6c;
+
+    font-size: 1.8em;
+    color: #34dbae;
+
+    transition-duration: 100ms;
+}
+
+#menu-setup .description {
+    padding-left: 10px;
+
+    font-size: 0.9em;
+    color: #646464;
+
+    transition-duration: 100ms;
+}
+
+#menu-setup li:hover .description {
+    font-size: 1em;
+
+    transition-duration: 100ms;
+}
+
+#menu-setup li.active {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+    background-color: rgba(211, 211, 211, 0.50);
+}
+
+#menu-setup li.active .icon {
+    padding-left: 0;
+
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    background-color: #6c6c6c;
+
+    font-size: 1.8em;
+    color: #34dbae;
+}
+
+#menu-setup li.active .description {
+    font-size: 1em;
+}
+
+#footer-setup {
+    width: 100%;
+    height: 8%;
+    padding-left: 10px;
+}
+
+#customURITypeScript {
+    cursor: pointer;
+}
+#customURI {
+    margin-left: 65%;
+}
+
+#BSOVersion {
+    right: 10px;
+    bottom: 10px;
+
+    display: inline-block;
+    position: absolute;
+
+    font-size: 0.7em;
+    color: #919191;
+}
+/* ==================
+   = SETUP TAGS end =
+   ================== */
+
+/* =============================
+   = SETUP TAGS / Button start =
+   ============================= */
+#setupButton {
+    bottom: 25px;
+    right: 25px;
+
+    width: 50px;
+    height: 50px;
+
+    display: none;
+    position: absolute;
+
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgb(7, 25, 38);
+    border-radius: 5px;
+    border: 1px solid rgb(147, 148, 151);
+
+    font-size: 2em;
+    color: rgb(147, 148, 151);
+
+    cursor: pointer;
+}
+
+#setupButton:hover {
+    color: rgb(160, 113, 239);
+}
+
+body:hover #setupButton {
+    display: inline-flex;
+}
+/* ===========================
+   = SETUP TAGS / Button end =
+   =========================== */
+
+/* =========================
+   = SETUP ANIMATION start =
+   ========================= */
+#games-setup {
+    --show: 300ms;
+    --hide: 300ms;
+}
+
+#games-setup {
+    transition:
+        opacity var(--show);
+}
+#games-setup.hidden {
+    opacity: 0;
+    transition:
+        opacity var(--hide);
+}
+
+/* =======================
+   = SETUP ANIMATION end =
+   ======================= */

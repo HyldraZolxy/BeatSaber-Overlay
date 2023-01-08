@@ -9,9 +9,9 @@
 class Cache_System {
     private string $CACHE_FOLDER = "Cache";
 
-    ////////////////////////
-    /// PRIVATE FUNCTIONS //
-    ////////////////////////
+    //////////////////////
+    /// Private Methods //
+    //////////////////////
 
     /**
      * Get cache filename by hashing the ID
@@ -31,32 +31,27 @@ class Cache_System {
      * Create recursively directories
      */
     private function CreateDirectories(string $p_DirectoryName): void {
-        if (!is_dir($p_DirectoryName)) {
-            mkdir($p_DirectoryName, 0775, true);
-        }
+        if (!is_dir($p_DirectoryName)) mkdir($p_DirectoryName, 0775, true);
     }
 
-    ///////////////////////
-    /// PUBLIC FUNCTIONS //
-    ///////////////////////
+    /////////////////////
+    /// Public Methods //
+    /////////////////////
 
     /**
      * Set the cache
      */
     public function Set(string $p_ID, string $p_Data): void {
-        $l_CacheID = $this->GetCacheHash($p_ID);
-
+        $l_CacheID  = $this->GetCacheHash($p_ID);
         $l_FilePath = $this->CACHE_FOLDER . "/" . $this->GetCachePath($l_CacheID);
         $l_FileName = $l_CacheID . ".php";
 
         $this->CreateDirectories($l_FilePath);
 
-        if (is_file($l_FilePath . $l_FileName))
-            unlink($l_FilePath . $l_FileName);
+        if (is_file($l_FilePath . $l_FileName)) unlink($l_FilePath . $l_FileName);
 
-        $l_Content = str_replace("'", "\'", serialize($p_Data));
-        $l_Content = "<?php" . "\n" . "$" . "cache = unserialize('" . $l_Content . "')" . ";";
-
+        $l_Content      = str_replace("'", "\'", serialize($p_Data));
+        $l_Content      = "<?php" . "\n" . "$" . "cache = unserialize('" . $l_Content . "')" . ";";
         $l_FileInstance = fopen($l_FilePath . $l_FileName, "w");
 
         flock($l_FileInstance, LOCK_EX);
@@ -70,14 +65,12 @@ class Cache_System {
      * Get the cache
      */
     public function Get(string $p_ID): null|string {
-        $l_CacheID = $this->GetCacheHash($p_ID);
-
+        $l_CacheID  = $this->GetCacheHash($p_ID);
         $l_FilePath = $this->CACHE_FOLDER . "/" . $this->GetCachePath($l_CacheID);
         $l_FileName = $l_CacheID . ".php";
 
         if (!file_exists($l_FilePath . $l_FileName)) {
-            if (is_file($l_FilePath . $l_FileName))
-                unlink($l_FilePath . $l_FileName);
+            if (is_file($l_FilePath . $l_FileName)) unlink($l_FilePath . $l_FileName);
 
             return null;
         }
@@ -90,16 +83,13 @@ class Cache_System {
      * Does the cache need a rebuild ?
      */
     public function NeedRebuild(string $p_ID, float|int $p_ExpireSeconds): bool {
-        $l_CacheID = $this->GetCacheHash($p_ID);
-
+        $l_CacheID  = $this->GetCacheHash($p_ID);
         $l_FilePath = $this->CACHE_FOLDER . "/" . $this->GetCachePath($l_CacheID);
         $l_FileName = $l_CacheID . ".php";
 
-        if (!is_file($l_FilePath . $l_FileName))
-            return true;
+        if (!is_file($l_FilePath . $l_FileName)) return true;
 
-        if (is_file($l_FilePath . $l_FileName) && (time() - filemtime($l_FilePath . $l_FileName)) > $p_ExpireSeconds)
-            return true;
+        if (is_file($l_FilePath . $l_FileName) && (time() - filemtime($l_FilePath . $l_FileName)) > $p_ExpireSeconds) return true;
 
         return false;
     }

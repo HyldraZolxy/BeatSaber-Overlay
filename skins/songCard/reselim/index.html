@@ -1,52 +1,56 @@
-<div id="performance">
-    <div class="performance-group">
-        <span class="text" id="accuracyToLetters">E</span>
-        <span class="subtext" id="accuracy">0</span>
-    </div>
-
-    <div class="performance-group missGroup">
-        <span class="text" id="miss">0</span>
-        <span class="subtext">Miss</span>
-    </div>
-
-    <div class="performance-group">
-        <span class="text" id="combo">0</span>
-        <span class="subtext">Combo</span>
-    </div>
-
-    <span id="score">0</span>
-</div>
-
-<div id="beatmap">
-    <div id="cover">
-        <svg width="90" height="90">
-            <rect width="90" height="90" id="darken"></rect>
-            <circle cx="45" cy="45" r="30" id="remaining"></circle>
-            <circle cx="45" cy="45" r="30" id="progress"></circle>
-        </svg>
-
-        <div>
-            <span id="timeToLetters">0:00</span>
+<div id="songCardGroup">
+    <div id="performance">
+        <div class="performance-group">
+            <span class="text" id="accuracyToLetters">E</span>
+            <span class="subtext" id="accuracy">0</span>
         </div>
+
+        <div class="performance-group missGroup">
+            <span class="text" id="miss">0</span>
+            <span class="subtext">Miss</span>
+        </div>
+
+        <div class="performance-group">
+            <span class="text" id="combo">0</span>
+            <span class="subtext">Combo</span>
+        </div>
+
+        <span id="score">0</span>
     </div>
 
-    <div id="meta">
-        <div id="text">
-            <div id="titles">
-                <span id="title">Title</span>
-                <span id="subTitle">Subtitle</span>
-            </div>
+    <div id="beatmap">
+        <div id="cover">
+            <svg width="90" height="90">
+                <rect width="90" height="90" id="darken"></rect>
+                <circle cx="45" cy="45" r="30" id="remaining"></circle>
+                <circle cx="45" cy="45" r="30" id="progress"></circle>
+            </svg>
 
-            <div id="makers">
-                <span id="author">Artist</span>
-                <span id="mapper">Mapper</span>
+            <div>
+                <span id="timeToLetters">0:00</span>
             </div>
         </div>
 
-        <div>
-            <span id="difficulty">Easy</span>
-            <span id="bpm">0 BPM</span>
-            <span id="bsrKey">!bsr 485de</span>
+        <div id="meta">
+            <div id="text">
+                <div id="titles">
+                    <span id="title">Title</span>
+                    <span id="subTitle">Subtitle</span>
+                </div>
+
+                <div id="makers">
+                    <span id="author">Artist</span>
+                    <span id="mapper">Mapper</span>
+                </div>
+            </div>
+
+            <div id="other">
+                <span id="difficulty">Easy</span>
+                <span id="bpm">0 BPM</span>
+                <span id="bsrKey">!bsr 485de</span>
+
+                <p id="logoLeaderboard" class="logoLeaderboardSong"></p>
+            </div>
         </div>
     </div>
 </div>

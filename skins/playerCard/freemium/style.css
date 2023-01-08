@@ -1,0 +1,285 @@
+/* ======================
+   = PLAYER TAGS start =
+   ====================== */
+#playerCard-overlay {
+    height: 160px;
+
+    margin: 2% 2%;
+
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+
+    overflow: hidden;
+
+    font-family: "Walkway", Arial, serif;
+    color: white;
+}
+
+#playerCard-overlay.top-left,
+#playerCard-overlay.bottom-left {
+    flex-direction: row;
+}
+#playerCard-overlay.top-right,
+#playerCard-overlay.bottom-right {
+    flex-direction: row-reverse;
+}
+
+#playerCardGroup {
+    display: flex;
+}
+
+#playerCard-overlay.top-left #playerCardGroup,
+#playerCard-overlay.bottom-left #playerCardGroup {
+    flex-direction: row;
+}
+#playerCard-overlay.top-right #playerCardGroup,
+#playerCard-overlay.bottom-right #playerCardGroup {
+    flex-direction: row-reverse;
+}
+#playerCard-overlay.top-left #playerCardGroup {
+    transform-origin: top left;
+}
+#playerCard-overlay.top-right #playerCardGroup {
+    transform-origin: top right;
+}
+#playerCard-overlay.bottom-left #playerCardGroup {
+    transform-origin: bottom left;
+}
+#playerCard-overlay.bottom-right #playerCardGroup {
+    transform-origin: bottom right;
+}
+
+/* =============================
+   = PLAYER TAGS/ Avatar start =
+   ============================= */
+#playerAvatar {
+    padding: 10px;
+
+    filter: drop-shadow(0 0 0.25rem black)
+            drop-shadow(0 0 0.25rem black);
+}
+
+#avatarFrame {
+    width: 125px;
+    height: 140px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background-color: #c2c073;
+}
+
+#avatar {
+    width: 115px;
+    height: 130px;
+
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background-image: url("../../../pictures/default/notFound.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+/* ===========================
+   = PLAYER TAGS/ Avatar end =
+   =========================== */
+
+/* ===========================
+   = PLAYER TAGS/ Info start =
+   =========================== */
+#playerData {
+    height: 115px;
+
+    margin-top: 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    filter: drop-shadow(0 0 0.25rem black);
+}
+
+#playerCard-overlay.top-left #playerData,
+#playerCard-overlay.bottom-left #playerData {
+    margin-left: 10px;
+}
+
+#playerCard-overlay.top-right #playerData,
+#playerCard-overlay.bottom-right #playerData {
+    margin-right: 10px;
+}
+
+#playerName {
+    padding: 0 10px 0 10px;
+
+    font-family: "Montserrat", Arial, serif;
+    font-size: 1.5em;
+
+    filter: drop-shadow(0 0 0.25rem black);
+}
+
+#playerPerformance {
+    display: flex;
+    justify-content: flex-start;
+
+    font-size: 1.2em;
+    line-height: 25px;
+}
+
+#playerCard-overlay.top-left #playerPerformance,
+#playerCard-overlay.bottom-left #playerPerformance {
+    flex-direction: row;
+}
+#playerCard-overlay.top-right #playerPerformance,
+#playerCard-overlay.bottom-right #playerPerformance {
+    flex-direction: row-reverse;
+}
+
+#logoLeaderboard {
+    background-image: url("../../../pictures/scoresaber_icon_32x32.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.logoLeaderboardPlayer {
+    width: 25px;
+    height: 25px;
+}
+
+#topWorld {
+    filter: drop-shadow(0 0 0.25rem black);
+}
+#topWorld:before {
+    content: "# ";
+    font-family: Arial, serif;
+}
+
+#playerCard-overlay.top-left #topWorld,
+#playerCard-overlay.bottom-left #topWorld {
+    padding: 0 20px 0 10px;
+    border-right: 2px solid white;
+}
+#playerCard-overlay.top-right #topWorld,
+#playerCard-overlay.bottom-right #topWorld {
+    padding: 0 10px 0 20px;
+    border-left: 2px solid white;
+}
+
+#performancePoint {
+    filter: drop-shadow(0 0 0.25rem black);
+}
+#performancePoint:after {
+    content: " PP";
+}
+
+#playerCard-overlay.top-left #performancePoint,
+#playerCard-overlay.bottom-left #performancePoint {
+    padding: 0 10px 0 20px;
+}
+#playerCard-overlay.top-right #performancePoint,
+#playerCard-overlay.bottom-right #performancePoint {
+    padding: 0 20px 0 10px;
+}
+
+#playerCountryGroup {
+    display: flex;
+    justify-content: flex-start;
+
+    font-size: 1.2em;
+    line-height: 25px;
+}
+
+#playerCard-overlay.top-left #playerCountryGroup,
+#playerCard-overlay.bottom-left #playerCountryGroup {
+    flex-direction: row;
+}
+#playerCard-overlay.top-right #playerCountryGroup,
+#playerCard-overlay.bottom-right #playerCountryGroup {
+    flex-direction: row-reverse;
+}
+
+#playerFlag {
+    width: 25px;
+    height: 25px;
+
+    border-radius: 50%;
+
+    background-image: url("../../../pictures/country/FR.svg");
+    background-repeat: no-repeat;
+    background-size: 35px;
+    background-position: center;
+}
+
+#playerCountry {
+    padding: 0 10px 0 10px;
+
+    filter: drop-shadow(0 0 0.25rem black);
+}
+/* =========================
+   = PLAYER TAGS/ Info end =
+   ========================= */
+
+/* =============================
+   = ANIMATION AND STATE Start =
+   ============================= */
+
+/* Player Card Variables */
+#playerCard-overlay {
+    --show: 500ms;
+    --hide: 500ms;
+    --reduced-1: 350ms;
+    --reduced-2: 250ms;
+}
+
+#playerCard-overlay #playerCardGroup {
+    transition:
+            transform var(--reduced-1);
+}
+
+#playerCard-overlay.reduced #playerCardGroup {
+    transform: scale(0.5);
+    transition:
+            transform var(--reduced-2);
+}
+
+/* Avatar */
+#playerCard-overlay #playerAvatar  {
+    transition:
+            opacity var(--show);
+}
+
+#playerCard-overlay.hidden #playerAvatar  {
+    transition-delay: 500ms !important;
+    opacity: 0;
+    transition:
+            opacity var(--hide);
+}
+
+/* Player Data */
+#playerCard-overlay #playerData > * {
+    transition:
+            opacity var(--show);
+}
+
+#playerCard-overlay.hidden #playerData > * {
+    opacity: 0;
+    transition:
+            opacity var(--show);
+}
+
+#playerCard-overlay #playerData > *:nth-child(3) {
+    transition-delay: 300ms;
+}
+
+#playerCard-overlay #playerData > *:nth-child(2) {
+    transition-delay: 200ms;
+}
+
+#playerCard-overlay #playerData > *:nth-child(1) {
+    transition-delay: 100ms;
+}
+
+/* ===========================
+   = ANIMATION AND STATE End =
+   =========================== */

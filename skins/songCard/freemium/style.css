@@ -1,29 +1,53 @@
 /* ===================
    = SONG TAGS start =
    =================== */
-#songCard {
-    width: 500px;
-    height: 140px;
-    margin: 3% 3%;
+#songCard-overlay {
+    max-width: 650px;
+    height: 160px;
+    margin: 2% 2%;
 
     position: absolute;
-
     display: flex;
+    justify-content: space-between;
 
-    font-family: "Walkway", Arial, serif;
+    font-family: "Montserrat", Arial, serif;
     color: white;
 }
 
-#songCard.top-left,
-#songCard.bottom-left {
+#songCard-overlay.top-left,
+#songCard-overlay.bottom-left {
     flex-direction: row;
     text-align: left;
 }
 
-#songCard.top-right,
-#songCard.bottom-right {
+#songCard-overlay.top-right,
+#songCard-overlay.bottom-right {
     flex-direction: row-reverse;
     text-align: right;
+}
+
+#songCardGroup {
+    display: flex;
+}
+#songCard-overlay.top-left #songCardGroup,
+#songCard-overlay.bottom-left #songCardGroup {
+    flex-direction: row;
+}
+#songCard-overlay.top-right #songCardGroup,
+#songCard-overlay.bottom-right #songCardGroup {
+    flex-direction: row-reverse;
+}
+#songCard-overlay.top-left #songCardGroup {
+    transform-origin: top left;
+}
+#songCard-overlay.top-right #songCardGroup {
+    transform-origin: top right;
+}
+#songCard-overlay.bottom-left #songCardGroup {
+    transform-origin: bottom left;
+}
+#songCard-overlay.bottom-right #songCardGroup {
+    transform-origin: bottom right;
 }
 
 /* ==========================
@@ -33,6 +57,8 @@
     width: 140px;
     height: 140px;
 
+    margin: 10px;
+
     border-radius: 5px;
     overflow: hidden;
 
@@ -40,12 +66,18 @@
     background-repeat: no-repeat;
     background-size: contain;
 
+    filter: drop-shadow(0 0 0.25rem black)
+            drop-shadow(0 0 0.25rem black);
+
     z-index: 1;
 }
 
 #songAccuracyDiv {
     width: 70px;
     height: 70px;
+
+    margin: 10px;
+
     position: absolute;
 
     background-color: azure;
@@ -55,14 +87,14 @@
     z-index: 2;
 }
 
-#songCard.top-left #songAccuracyDiv,
-#songCard.bottom-left #songAccuracyDiv {
+#songCard-overlay.top-left #songAccuracyDiv,
+#songCard-overlay.bottom-left #songAccuracyDiv {
     clip-path: polygon(0 0, 100% 0, 0 100%, 0% 100%);
     border-top-left-radius: 5px;
 }
 
-#songCard.top-right #songAccuracyDiv,
-#songCard.bottom-right #songAccuracyDiv {
+#songCard-overlay.top-right #songAccuracyDiv,
+#songCard-overlay.bottom-right #songAccuracyDiv {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%);
     border-top-right-radius: 5px;
 }
@@ -78,60 +110,65 @@
     z-index: 2;
 }
 
-#songCard.top-left #songAccuracyLetterDiv,
-#songCard.bottom-left #songAccuracyLetterDiv {
-    margin-top: -20px;
-    margin-left: -20px;
+#songCard-overlay.top-left #songAccuracyLetterDiv,
+#songCard-overlay.bottom-left #songAccuracyLetterDiv {
+    margin-top: -10px;
+    margin-left: -10px;
 }
 
-#songCard.top-right #songAccuracyLetterDiv,
-#songCard.bottom-right #songAccuracyLetterDiv {
-    margin-top: -20px;
-    margin-right: -20px;
+#songCard-overlay.top-right #songAccuracyLetterDiv,
+#songCard-overlay.bottom-right #songAccuracyLetterDiv {
+    margin-top: -10px;
+    margin-right: -10px;
 }
 
 #accuracyToLetters {
     width: 100%;
     height: 100%;
+
     margin: auto;
+
     display: inline-block;
 
-    color: rgb(44, 44, 44);
-    -webkit-text-stroke: 0.5px rgb(30, 30, 30);
-    font-size: 40px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
+    filter: drop-shadow(0 0 0.03rem black)
+            drop-shadow(0 0 0.03rem black)
+            drop-shadow(0 0 0.03rem black);
+    font-size: 2.3em;
     text-align: center;
+
+    color: rgb(44, 44, 44);
 
     z-index: 3;
 }
 
-#songCard.top-left #accuracyToLetters,
-#songCard.bottom-left #accuracyToLetters {
+#songCard-overlay.top-left #accuracyToLetters,
+#songCard-overlay.bottom-left #accuracyToLetters {
     transform: rotate(-45deg);
 }
 
-#songCard.top-right #accuracyToLetters,
-#songCard.bottom-right #accuracyToLetters {
+#songCard-overlay.top-right #accuracyToLetters,
+#songCard-overlay.bottom-right #accuracyToLetters {
     transform: rotate(45deg);
 }
 
 #accuracy {
-    display: inline-block;
     margin-top: 18px;
 
+    display: inline-block;
+
+    font-size: 1em;
+
     color: rgb(44, 44, 44);
-    font-size: 20px;
 }
 
-#songCard.top-left #accuracy,
-#songCard.bottom-left #accuracy {
+#songCard-overlay.top-left #accuracy,
+#songCard-overlay.bottom-left #accuracy {
     margin-left: -15px;
     transform: rotate(-45deg);
 }
 
-#songCard.top-right #accuracy,
-#songCard.bottom-right #accuracy {
+#songCard-overlay.top-right #accuracy,
+#songCard-overlay.bottom-right #accuracy {
     margin-right: -15px;
     transform: rotate(45deg);
 }
@@ -139,6 +176,7 @@
 #songBarLength {
     width: 100%;
     height: 10px;
+
     margin-top: 130px;
 
     background-color: rgba(44, 44, 44, 0.70);
@@ -147,12 +185,33 @@
 }
 
 #timeToPercentage {
-    background-color: rgba(0, 199, 161, 0.73);
-
     width: 0;
     height: 100%;
 
     display: block;
+
+    background-color: rgba(0, 199, 161, 0.73);
+}
+
+#logoLeaderboard {
+    background-image: url("../../../pictures/scoresaber_icon_32x32.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.logoLeaderboardSong {
+    width: 20px;
+    height: 20px;
+    top: 3px;
+
+    position: absolute;
+}
+#songCard-overlay.top-left .logoLeaderboardSong,
+#songCard-overlay.bottom-left .logoLeaderboardSong {
+    margin-left: 117px;
+}
+#songCard-overlay.top-right .logoLeaderboardSong,
+#songCard-overlay.bottom-right .logoLeaderboardSong {
+    margin-left: 3px;
 }
 /* ========================
    = SONG TAGS/ Cover end =
@@ -163,34 +222,51 @@
    ========================= */
 #songDataCover {
     height: 130px;
-    margin-top: 10px;
+    margin-top: 20px;
 
     font-size: 25px;
+
+    filter: drop-shadow(0 0 0.10rem black)
+            drop-shadow(0 0 0.10rem black);
 
     overflow: hidden;
 }
 
-.descBar {
-    margin-bottom: 5px;
-    display: inline-block;
-
-    font-size: 16px;
-    line-height: 16px;
+#songCard-overlay.top-left #songDataCover,
+#songCard-overlay.bottom-left #songDataCover {
+    margin-left: -10px;
 }
 
-#songCard.top-left .descBar,
-#songCard.bottom-left .descBar {
+#songCard-overlay.top-right #songDataCover,
+#songCard-overlay.bottom-right #songDataCover {
+    margin-right: -10px;
+}
+
+.descBar {
+    margin-bottom: 5px;
+
+    display: inline-block;
+
+    font-size: 0.6em;
+}
+
+#songCard-overlay.top-left .descBar,
+#songCard-overlay.bottom-left .descBar {
+    padding: 3px 15px 2px 5px;
+
     float: left;
     clear: left;
-    padding: 3px 15px 2px 5px;
+
     clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
 }
 
-#songCard.top-right .descBar,
-#songCard.bottom-right .descBar {
+#songCard-overlay.top-right .descBar,
+#songCard-overlay.bottom-right .descBar {
+    padding: 3px 5px 2px 15px;
+
     float: right;
     clear: right;
-    padding: 3px 5px 2px 15px;
+
     clip-path: polygon(0 0, 100% 0, 100% 100%, 10% 100%);
 }
 
@@ -205,7 +281,7 @@
 }
 
 #bsrKey::before {
-    content: "bsr ";
+    content: "!bsr ";
 }
 
 #bpm::after {
@@ -216,19 +292,22 @@
     width: 350px;
     height: 50px;
 
+    position: absolute;
+
     overflow: hidden;
 
-    position: absolute;
+    filter: drop-shadow(0 0 0.25rem black)
+    drop-shadow(0 0 0.25rem black);
 }
 
-#songCard.top-left #songData,
-#songCard.top-right #songData {
-    margin-top: -25px;
+#songCard-overlay.top-left #songData,
+#songCard-overlay.top-right #songData {
+    margin-top: -15px;
 }
 
-#songCard.bottom-left #songData,
-#songCard.bottom-right #songData {
-    margin-top: 145px;
+#songCard-overlay.bottom-left #songData,
+#songCard-overlay.bottom-right #songData {
+    margin-top: 155px;
 }
 
 #songDataInfo {
@@ -237,6 +316,7 @@
 
 #songDataInfo p {
     width: 350px;
+
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -257,32 +337,45 @@
    = ANIMATION AND STATE Start =
    ============================= */
 /* Song Card Variables */
-#songCard {
+#songCard-overlay {
     --show: 500ms;
     --hide: 500ms;
+    --reduced-1: 350ms;
+    --reduced-2: 250ms;
 }
 
-#songCard.top-right, #songCard.bottom-right {
+#songCard-overlay.top-right, #songCard-overlay.bottom-right {
     --transitionSide: 300px;
 }
 
-#songCard.top-left, #songCard.bottom-left {
+#songCard-overlay.top-left, #songCard-overlay.bottom-left {
     --transitionSide: -300px;
 }
 
+#songCard-overlay #songCardGroup {
+    transition:
+            transform var(--reduced-1);
+}
+
+#songCard-overlay.reduced #songCardGroup {
+    transform: scale(0.5);
+    transition:
+            transform var(--reduced-2);
+}
+
 /* Cover */
-#songCard #cover,
-#songCard #songAccuracyDiv,
-#songCard #songAccuracyLetterDiv,
-#songCard #songData {
+#songCard-overlay #cover,
+#songCard-overlay #songAccuracyDiv,
+#songCard-overlay #songAccuracyLetterDiv,
+#songCard-overlay #songData {
     transition:
             opacity var(--show);
 }
 
-#songCard.hidden #cover,
-#songCard.hidden #songAccuracyDiv,
-#songCard.hidden #songAccuracyLetterDiv,
-#songCard.hidden #songData {
+#songCard-overlay.hidden #cover,
+#songCard-overlay.hidden #songAccuracyDiv,
+#songCard-overlay.hidden #songAccuracyLetterDiv,
+#songCard-overlay.hidden #songData {
     transition-delay: 500ms !important;
     opacity: 0;
     transition:
@@ -290,14 +383,14 @@
 }
 
 /* song Data */
-#songCard #songDataCover > * {
+#songCard-overlay #songDataCover > * {
     transform: translate(0, 0);
     transition:
             opacity var(--show),
             transform var(--show);
 }
 
-#songCard.hidden #songDataCover > * {
+#songCard-overlay.hidden #songDataCover > * {
     opacity: 0;
     transform: translate(var(--transitionSide), 0);
     transition:
@@ -305,23 +398,23 @@
             transform var(--hide);
 }
 
-#songCard #songDataCover > *:nth-child(5) {
+#songCard-overlay #songDataCover > *:nth-child(5) {
     transition-delay: 300ms !important;
 }
 
-#songCard #songDataCover > *:nth-child(4) {
+#songCard-overlay #songDataCover > *:nth-child(4) {
     transition-delay: 300ms !important;
 }
 
-#songCard #songDataCover > *:nth-child(3) {
+#songCard-overlay #songDataCover > *:nth-child(3) {
     transition-delay: 400ms !important;
 }
 
-#songCard #songDataCover > *:nth-child(2) {
+#songCard-overlay #songDataCover > *:nth-child(2) {
     transition-delay: 450ms !important;
 }
 
-#songCard #songDataCover > *:nth-child(1) {
+#songCard-overlay #songDataCover > *:nth-child(1) {
     transition-delay: 500ms !important;
 }
 

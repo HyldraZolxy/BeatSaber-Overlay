@@ -1,9 +1,10 @@
 <?php
 require_once("./cache.php");
+
 $cache_system                   = new Cache_System();
-$_SCORESABER_URL_API            = "https://scoresaber.com/api/";
-$_SCORESABER_API_COOLDOWN       = 2 * 60;
-$_SCORESABER_DEFAULT_PLAYER_ID  = 0;
+$_BEATLEADER_URL_API            = "https://api.beatleader.xyz/";
+$_BEATLEADER_API_COOLDOWN       = 2 * 60;
+$_BEATLEADER_DEFAULT_PLAYER_ID  = 0;
 $_DEFAULT_MSG_ERROR             = '{ "errorMessage": "Player not found" }';
 
 if (!isset($_GET["playerID"]) || $_GET["playerID"] === "0") {
@@ -11,11 +12,11 @@ if (!isset($_GET["playerID"]) || $_GET["playerID"] === "0") {
     return;
 }
 
-$player_id  = (is_numeric($_GET["playerID"])) ? $_GET["playerID"] : $_SCORESABER_DEFAULT_PLAYER_ID;
-$cache_key  = "ssprofile_" . $player_id;
+$player_id  = (is_numeric($_GET["playerID"])) ? $_GET["playerID"] : $_BEATLEADER_DEFAULT_PLAYER_ID;
+$cache_key  = "blprofile_" . $player_id;
 $cache_data = "";
 
-if (!$cache_system->NeedRebuild($cache_key, $_SCORESABER_API_COOLDOWN)) {
+if (!$cache_system->NeedRebuild($cache_key, $_BEATLEADER_API_COOLDOWN)) {
     $cache_data = $cache_system->Get($cache_key);
 
     if ($cache_data !== null && json_encode($cache_data) !== "false") {
@@ -24,7 +25,7 @@ if (!$cache_system->NeedRebuild($cache_key, $_SCORESABER_API_COOLDOWN)) {
     }
 }
 
-$json_data = @file_get_contents( $_SCORESABER_URL_API . "player/" . $player_id . "/basic" );
+$json_data = @file_get_contents( $_BEATLEADER_URL_API . "player/" . $player_id . "?stats=false" );
 
 if (json_encode($json_data) !== "false") {
     $cache_system->Set($cache_key, $json_data);
