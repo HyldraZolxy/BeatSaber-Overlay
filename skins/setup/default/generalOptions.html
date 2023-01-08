@@ -3,10 +3,33 @@
         <label for="ip">
             <span>IP:
                 <a href="#" class="ion-ios-help-outline" title="If you want to use a second pc to stream, you can write it's ip address to make the overlay connect to your game
-                If not, leave it blank"></a>
+If not, leave it blank
+(It can take 10sec for being active if IP is changed)"></a>
             </span>
             <input type="text" placeholder="localhost / 127.0.0.1" id="ip" />
             <input type="button" id="ipChanger" value="Apply" title="Apply Settings" />
+        </label>
+    </div>
+
+    <div class="moduleSection">
+        <label for="ScoringSystemSS">
+            <span>ScoreSaber:
+                <a href="#" class="ion-ios-help-outline" title="If you want using ScoreSaber scoring system"></a>
+            </span>
+            <div class="switch">
+                <input type="checkbox" id="ScoringSystemSS" title="Switch On/Off ScoreSaber">
+                <span class="slider round"></span>
+            </div>
+        </label>
+
+        <label for="ScoringSystemBL">
+            <span>BeatLeader:
+                <a href="#" class="ion-ios-help-outline" title="If you want using BeatLeader scoring system"></a>
+            </span>
+            <div class="switch">
+                <input type="checkbox" id="ScoringSystemBL" title="Switch On/Off BeatLeader">
+                <span class="slider round"></span>
+            </div>
         </label>
     </div>
 </div>

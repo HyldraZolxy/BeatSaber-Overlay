@@ -29,12 +29,12 @@
 .roundedButton:hover #discord,
 .roundedButton:hover #mail,
 .roundedButton:hover #github,
-.roundedButton:hover #koFi,
+.roundedButton:hover #githubSponsor,
 .roundedButton:hover #customURI {
     display: block;
     color: white;
 }
-#twitter, #discord, #mail, #github, #koFi, #customURI {
+#twitter, #discord, #mail, #github, #githubSponsor, #customURI {
     padding: 5px;
     bottom: 45px;
     left: 10px;
@@ -92,7 +92,7 @@
     border-left: 1px solid rgba(0, 0, 0, 0.40);
 }
 
-.return {
+.returnButton {
     width: 55px;
     height: 25px;
     top: 10px;
@@ -109,7 +109,7 @@
 
     cursor: pointer;
 }
-.return:hover {
+.returnButton:hover {
     color: #e03535;
 }
 

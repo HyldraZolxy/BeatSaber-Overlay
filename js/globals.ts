@@ -131,7 +131,6 @@ export namespace Globals {
     export const BEATLEADER_SONG_API_PROXY_URI      = "./php/beatLeaderSongProxy.php";
     export const BEATSAVER_API_URI                  = "https://api.beatsaver.com";
     export const MS_TIMER                           = 100;
-    export const WAIT_TIME_BEFORE_UPDATE_PLAYERCARD = 2000;
 
     //////////////////////////
     // Parameters Variables //
@@ -272,11 +271,11 @@ export namespace Globals {
 
         // Skin for SetupMenu module
         3: {
-            default : ["./skins/setup/default/", "indexMenu.html", "generalMenu.html", "gamesAndPluginsMenu.html", "playerCard.html", "songCard.html", "style.css"]
+            default : ["./skins/setup/default/", "indexMenu.html", "generalMenu.html", "gamesAndPluginsMenu.html", "overlayMenu.html", "style.css"]
         },
         // Skin for SetupOptions module
         4: {
-            default : ["./skins/setup/default/", "indexOptions.html", "generalOptions.html", "gamesAndPluginsOptions.html", "playerCard.html", "songCard.html", "style.css"]
+            default : ["./skins/setup/default/", "indexOptions.html", "generalOptions.html", "gamesAndPluginsOptions.html", "overlayOptions.html", "playerCardOptions.html", "songCardOptions.html", "leaderboardOptions.html", "style.css"]
         }
     };
 

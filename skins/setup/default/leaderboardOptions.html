@@ -1,0 +1,49 @@
+<span id="switchLabel">Preview</span>
+<label class="switch">
+  <input type="checkbox" id="switchLeaderboardPreview" title="Switch On/Off Preview">
+  <span class="slider round"></span>
+</label>
+
+<div id="module">
+  <div class="moduleSection">
+    <label for="leaderboardPosition">
+      <span>Position:
+        <a href="#" class="ion-ios-help-outline" title="This is to change the position of the leaderboard"></a>
+      </span>
+      <select id="leaderboardPosition" name="leaderboardPosition">
+        <option value="">-- Please choose an option --</option>
+        <option value="0">Top-left</option>
+        <option value="1">Top-right</option>
+        <option value="2">bottom-left</option>
+        <option value="3">bottom-right</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="moduleSection">
+    <label for="leaderboardPosX">
+            <span>Position X:
+                <a href="#" class="ion-ios-help-outline" title="This is to change the position X of the leaderboard"></a>
+            </span>
+      <input type="range" value="0" min="0" max="2000" step="1" id="leaderboardPosX" />
+    </label>
+  </div>
+
+  <div class="moduleSection">
+    <label for="leaderboardPosY">
+            <span>Position Y:
+                <a href="#" class="ion-ios-help-outline" title="This is to change the position Y of the leaderboard"></a>
+            </span>
+      <input type="range" value="0" min="0" max="2000" step="1" id="leaderboardPosY" />
+    </label>
+  </div>
+
+  <div class="moduleSection">
+    <label for="leaderboardScale">
+            <span>Scale:
+                <a href="#" class="ion-ios-help-outline" title="This is to change the scale of the leaderboard"></a>
+            </span>
+      <input type="range" value="1" min="0.50" max="1.70" step="0.01" id="leaderboardScale" />
+    </label>
+  </div>
+</div>

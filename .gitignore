@@ -2,3 +2,6 @@
 /node_modules/
 /js/*.js
 tsconfig.json
+/php/Cache/
+/dist/
+package-lock.json

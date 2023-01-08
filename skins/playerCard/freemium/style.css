@@ -137,7 +137,7 @@
     flex-direction: row-reverse;
 }
 
-#logoLeaderboard {
+#logoLeaderboardPlayer {
     background-image: url("../../../pictures/scoresaber_icon_32x32.png");
     background-repeat: no-repeat;
     background-size: contain;

@@ -112,7 +112,7 @@
 }
 
 /* Stop filter */
-.stop {
+.stop, .disabled {
     filter: grayscale(100%);
 }
 

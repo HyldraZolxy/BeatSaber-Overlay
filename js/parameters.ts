@@ -60,14 +60,14 @@ export class Parameters {
     public uriParams: Globals.I_uriParamsAllowed = {
         // General
         ip:                         "127.0.0.1",
-        token:                      "", // Token debug mode: zjeukdtheydhagetzyhgsteyhgdteynu
+        token:                      "v-rFZp2Hg1B4M6ZEtaL3bNx9fS8Elpvy", // Token debug mode: v-rFZp2Hg1B4M6ZEtaL3bNx9fS8Elpvy
         scoringSystem:              1,
 
         // PlayerCard
         pc_disabled:                false,
-        pc_alwaysEnabled:           true,
-        pc_playerID:                "76561198235823594",
-        pc_skin:                    "freemium",
+        pc_alwaysEnabled:           false,
+        pc_playerID:                "0",
+        pc_skin:                    "default",
         pc_position:                0,
         pc_scale:                   1.0,
         pc_pos_x:                   0,
@@ -76,7 +76,7 @@ export class Parameters {
         // SongCard
         sc_disabled:                false,
         sc_alwaysEnabled:           false,
-        sc_skin:                    "reselim",
+        sc_skin:                    "default",
         sc_position:                3,
         sc_scale:                   1.0,
         sc_pos_x:                   0,
@@ -87,10 +87,10 @@ export class Parameters {
         sc_ppEstimated:             false,
 
         // Leaderboard
-        ld_disabled:                false,
+        ld_disabled:                true,
         ld_alwaysEnabled:           false,
         ld_skin:                    "default",
-        ld_position:                2,
+        ld_position:                0,
         ld_scale:                   1.0,
         ld_pos_x:                   0,
         ld_pos_y:                   0,
@@ -98,9 +98,9 @@ export class Parameters {
 
         // Games
         g_beatSaber:                true,
-        g_synthRiders:              true,
-        g_audioTrip:                true,
-        g_audica:                   true,
+        g_synthRiders:              false,
+        g_audioTrip:                false,
+        g_audica:                   false,
 
         // Plugins
             // Beat Saber
@@ -109,11 +109,11 @@ export class Parameters {
         p_dataPuller:               true,
         p_httpSiraStatus:           true,
             // Synth Riders
-        p_synthRiders:              true,
+        p_synthRiders:              false,
             // Audio Trip
-        p_audioTrip:                true,
+        p_audioTrip:                false,
             // Audica
-        p_audica:                   true
+        p_audica:                   false
     };
 
     constructor() {
@@ -285,7 +285,7 @@ export class Parameters {
         }
     }
 
-    public async saveTokenParameters(): Promise<void> {
+    public async saveTokenParameters(): Promise<boolean> {
         const formData = {
             token:      this.uriParams.token,
             function:   "save",
@@ -301,9 +301,11 @@ export class Parameters {
 
             this.uriParams.token = dataJson.token;
         }
+
+        return this.uriParams.token !== "";
     }
 
-    public async updateTokenParameters(): Promise<void> {
+    public async updateTokenParameters(): Promise<boolean> {
         if ((this.uriParams.token !== null) && (this.uriParams.token.length === Globals.TOKEN_LENGTH)) {
             const formData = {
                 token:      this.uriParams.token,
@@ -313,10 +315,16 @@ export class Parameters {
 
             let dataJson: Globals.I_uriParamsJSONUpdate = await this._Tools.postMethod(Globals.URI_TOKEN_SCRIPT, formData);
 
-            if ("errorMessage" in dataJson) console.log("%c" + dataJson.errorMessage, Globals.WARN_LOG);
+            if ("errorMessage" in dataJson)     console.log("%c" + dataJson.errorMessage,   Globals.WARN_LOG);
+            if ("successMessage" in dataJson) {
+                console.log("%c" + dataJson.successMessage, Globals.INFO_LOG);
+                return true;
+            }
 
-            if ("successMessage" in dataJson) console.log("%c" + dataJson.successMessage, Globals.INFO_LOG);
+            return false;
         }
+
+        return false;
     }
 
     public assocValue(): void {

@@ -24,6 +24,17 @@ export class Tools {
         return await response.json();
     }
 
+    public moduleStringConverter(module: number): string {
+        switch (module) {
+            case 0:     return "playerCard";
+            case 1:     return "songCard";
+            case 2:     return "leaderboard";
+            case 3:     return "setup";
+            case 4:     return "setup";
+            default:    return "";
+        }
+    }
+
     public positionStringConverter(position: number): string {
         switch (position) {
             case Globals.E_POSITION.TOP_LEFT:       return "top-left";

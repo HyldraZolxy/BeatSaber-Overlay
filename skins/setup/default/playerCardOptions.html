@@ -1,0 +1,72 @@
+<span id="switchLabel">Preview</span>
+<label class="switch">
+    <input type="checkbox" id="switchPlayerCardPreview" title="Switch On/Off Preview">
+    <span class="slider round"></span>
+</label>
+
+<div id="module">
+    <div class="moduleSection">
+        <label for="playerId">
+            <span>ScoreSaber ID:
+                <a href="#" class="ion-ios-help-outline" title="If you want to use the player card, you have to give your ScoreSaber ID or the link of your ScoreSaber profile"></a>
+            </span>
+            <input type="text" placeholder="https://scoresaber.com/u/76561198235823594" id="playerId" />
+            <input type="button" id="playerIdChanger" value="Apply" title="Apply Settings" />
+        </label>
+    </div>
+
+    <div class="moduleSection">
+        <label for="playerCardSkin">
+            <span>Skin:
+                <a href="#" class="ion-ios-help-outline" title="This is to change the skin of the player card"></a>
+            </span>
+            <select id="playerCardSkin" name="playerCardSkin">
+                <option value="">-- Please choose an option --</option>
+                <option value="default">Default</option>
+                <option value="freemium">Freemium</option>
+            </select>
+        </label>
+    </div>
+
+    <div class="moduleSection">
+        <label for="playerCardPosition">
+            <span>Position:
+                <a href="#" class="ion-ios-help-outline" title="This is to change the position of the player card"></a>
+            </span>
+            <select id="playerCardPosition" name="playerCardPosition">
+                <option value="">-- Please choose an option --</option>
+                <option value="0">Top-left</option>
+                <option value="1">Top-right</option>
+                <option value="2">bottom-left</option>
+                <option value="3">bottom-right</option>
+            </select>
+        </label>
+    </div>
+
+    <div class="moduleSection">
+        <label for="playerCardPosX">
+            <span>Position X:
+                <a href="#" class="ion-ios-help-outline" title="This is to change the position X of the player card"></a>
+            </span>
+            <input type="range" value="0" min="-700" max="700" step="1" id="playerCardPosX" />
+        </label>
+    </div>
+
+    <div class="moduleSection">
+        <label for="playerCardPosY">
+            <span>Position Y:
+                <a href="#" class="ion-ios-help-outline" title="This is to change the position Y of the player card"></a>
+            </span>
+            <input type="range" value="0" min="-700" max="700" step="1" id="playerCardPosY" />
+        </label>
+    </div>
+
+    <div class="moduleSection">
+        <label for="playerCardScale">
+            <span>Scale:
+                <a href="#" class="ion-ios-help-outline" title="This is to change the scale of the player card"></a>
+            </span>
+            <input type="range" value="1" min="0.50" max="1.70" step="0.01" id="playerCardScale" />
+        </label>
+    </div>
+</div>

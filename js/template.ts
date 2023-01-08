@@ -34,7 +34,7 @@ export class Template {
             let skinPath    = skin[0];
 
             if (!fileName) {
-                $("link[rel=stylesheet][href*=\"./skins/" + module + "\"]").remove();
+                $("link[rel=stylesheet][href*=\"./skins/" + this._tools.moduleStringConverter(module) + "\"]").remove();
 
                 for (let i = 1; i < skin.length; i++) {
                     if (skin[i] === "style.css") {
@@ -79,8 +79,8 @@ export class Template {
                                 break;
 
                             case "scoringSystem":
-                                if      (value === Globals.E_SCORING_SYSTEM.SCORESABER) $("#logoLeaderboard").css("background-image", "url('../../../pictures/scoresaber_icon_32x32.png')");
-                                else if (value === Globals.E_SCORING_SYSTEM.BEATLEADER) $("#logoLeaderboard").css("background-image", "url('../../../pictures/beatleader_icon_32x32.png')");
+                                if      (value === Globals.E_SCORING_SYSTEM.SCORESABER) $("#logoLeaderboardPlayer").css("background-image", "url('../../../pictures/scoresaber_icon_32x32.png')");
+                                else if (value === Globals.E_SCORING_SYSTEM.BEATLEADER) $("#logoLeaderboardPlayer").css("background-image", "url('../../../pictures/beatleader_icon_32x32.png')");
                                 break;
                         }
                         break;
@@ -109,8 +109,8 @@ export class Template {
                                 break;
 
                             case "scoringSystem":
-                                if      (value === Globals.E_SCORING_SYSTEM.SCORESABER) $("#logoLeaderboard").css("background-image", "url('../../../pictures/scoresaber_icon_32x32.png')");
-                                else if (value === Globals.E_SCORING_SYSTEM.BEATLEADER) $("#logoLeaderboard").css("background-image", "url('../../../pictures/beatleader_icon_32x32.png')");
+                                if      (value === Globals.E_SCORING_SYSTEM.SCORESABER) $("#logoLeaderboardSong").css("background-image", "url('../../../pictures/scoresaber_icon_32x32.png')");
+                                else if (value === Globals.E_SCORING_SYSTEM.BEATLEADER) $("#logoLeaderboardSong").css("background-image", "url('../../../pictures/beatleader_icon_32x32.png')");
                                 break;
 
                             case "qualified":

@@ -120,15 +120,19 @@ export class Plugins {
         }
     }
 
-    public removeConnection(): void {
-        this._websocketManager.remove("BSPlus" + this.websocketVersion);
-        this._websocketManager.remove("BSPlusLeaderboard" + this.websocketVersion);
-        this._websocketManager.remove("DataPullerMapData" + this.websocketVersion);
-        this._websocketManager.remove("DataPullerLiveData" + this.websocketVersion);
-        this._websocketManager.remove("HttpSiraStatus" + this.websocketVersion);
-        this._websocketManager.remove("SynthRiders" + this.websocketVersion);
-        this._websocketManager.remove("AudioTrip" + this.websocketVersion);
-        this._websocketManager.remove("Audica" + this.websocketVersion);
+    public removeConnection(): Promise<unknown> {
+        return new Promise(resolve => {
+            this._websocketManager.remove("BSPlus" + this.websocketVersion);
+            this._websocketManager.remove("BSPlusLeaderboard" + this.websocketVersion);
+            this._websocketManager.remove("DataPullerMapData" + this.websocketVersion);
+            this._websocketManager.remove("DataPullerLiveData" + this.websocketVersion);
+            this._websocketManager.remove("HttpSiraStatus" + this.websocketVersion);
+            this._websocketManager.remove("SynthRiders" + this.websocketVersion);
+            this._websocketManager.remove("AudioTrip" + this.websocketVersion);
+            this._websocketManager.remove("Audica" + this.websocketVersion);
+
+            setTimeout(() => resolve(""), 250);
+        });
     }
 
     /////////////
