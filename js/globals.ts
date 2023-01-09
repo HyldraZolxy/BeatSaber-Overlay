@@ -954,6 +954,7 @@ export namespace Globals {
 
             playTimeMS      : number;           // Current play time position, in milliseconds.
 
+            score           : number;           // Total score after the note is hit
             combo           : number;           // Number of consecutive hits made so far. This resets after a note miss.
             multiplier      : number;           // Current score multiplier. Runs from 1 to 6.
             completed       : number;           // Running total of all notes hit (perfect + normal + bad, no fails)

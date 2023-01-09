@@ -5,6 +5,9 @@ import { PlayerCard }       from "./playerCard";
 import { BSPlus }           from "./BSPlus";
 import { HTTP_sira_Status } from "./HTTP_sira_Status";
 import { DataPuller }       from "./dataPuller";
+import { SynthRiders }      from "./synthRiders";
+import { AudioTrip }        from "./audioTrip";
+import { Audica }           from "./audica";
 
 export class Plugins {
 
@@ -22,6 +25,9 @@ export class Plugins {
     private _bsPlus:            BSPlus;
     private _httpSiraStatus:    HTTP_sira_Status;
     private _dataPuller:        DataPuller;
+    private _synthRiders:       SynthRiders;
+    private _audioTrip:         AudioTrip;
+    private _audica:            Audica;
 
     ///////////////////////
     // Private Variables //
@@ -35,6 +41,9 @@ export class Plugins {
         this._bsPlus            = new BSPlus();
         this._httpSiraStatus    = new HTTP_sira_Status();
         this._dataPuller        = new DataPuller();
+        this._synthRiders       = new SynthRiders();
+        this._audioTrip         = new AudioTrip();
+        this._audica            = new Audica();
     }
 
     ////////////////////
@@ -94,7 +103,7 @@ export class Plugins {
 
         if (this._parameters.uriParams.g_synthRiders) {
             this._websocketManager.add("SynthRiders" + this.websocketVersion, "ws://" + this._parameters.uriParams.ip + ":9000/",
-                (data) => { console.log(data); },
+                (data) => { this._synthRiders.dataParser(data); },
                 () => { console.log("%csocket initialized on SynthRiders!", Globals.SUCCESS_LOG); },
                 () => {},
                 () => { console.log("%cinit of SynthRiders socket failed!", Globals.WARN_LOG); }
@@ -103,7 +112,7 @@ export class Plugins {
 
         if (this._parameters.uriParams.g_audioTrip) {
             this._websocketManager.add("AudioTrip" + this.websocketVersion, "ws://" + this._parameters.uriParams.ip + ":48998/",
-                (data) => { console.log(data); },
+                (data) => { this._audioTrip.dataParser(data); },
                 () => { console.log("%csocket initialized on AudioTrip!", Globals.SUCCESS_LOG); },
                 () => {},
                 () => { console.log("%cinit of AudioTrip socket failed!", Globals.WARN_LOG); }
@@ -112,7 +121,7 @@ export class Plugins {
 
         if (this._parameters.uriParams.g_audica) {
             this._websocketManager.add("Audica" + this.websocketVersion, "ws://" + this._parameters.uriParams.ip + ":8085/AudicaStats",
-                (data) => { console.log(data); },
+                (data) => { this._audica.dataParser(data); },
                 () => { console.log("%csocket initialized on Audica!", Globals.SUCCESS_LOG); },
                 () => {},
                 () => { console.log("%cinit of Audica socket failed!", Globals.WARN_LOG); }
