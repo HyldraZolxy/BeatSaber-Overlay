@@ -282,7 +282,9 @@ export class Setup {
         this.elements.set("playerIdChanger",            $("#playerIdChanger"));
         this.elements.set("playerCardSkin",             $("#playerCardSkin"));
         this.elements.set("playerCardPosition",         $("#playerCardPosition"));
+        this.elements.set("playerCardPosXReset",        $("#playerCardPosXReset"));
         this.elements.set("playerCardPosX",             $("#playerCardPosX"));
+        this.elements.set("playerCardPosYReset",        $("#playerCardPosYReset"));
         this.elements.set("playerCardPosY",             $("#playerCardPosY"));
         this.elements.set("playerCardScale",            $("#playerCardScale"));
         /******************************************************************************/
@@ -292,7 +294,9 @@ export class Setup {
         this.elements.set("switchSongCardPreview",  $("#switchSongCardPreview"));
         this.elements.set("songCardSkin",           $("#songCardSkin"));
         this.elements.set("songCardPosition",       $("#songCardPosition"));
+        this.elements.set("songCardPosXReset",        $("#songCardPosXReset"));
         this.elements.set("songCardPosX",           $("#songCardPosX"));
+        this.elements.set("songCardPosYReset",        $("#songCardPosYReset"));
         this.elements.set("songCardPosY",           $("#songCardPosY"));
         this.elements.set("songCardScale",          $("#songCardScale"));
         this.elements.set("missDisplay",            $("#missDisplay"));
@@ -303,9 +307,11 @@ export class Setup {
 
         // Leaderboard Settings
         /******************************************************************************/
-        /*this.elements.set("switchLeaderboardPreview",   $("#switchLeaderboardPreview"));
+        /*this.elements.set("switchLeaderboardPreview", $("#switchLeaderboardPreview"));
         this.elements.set("leaderboardPosition",        $("#leaderboardPosition"));
+        this.elements.set("leaderboardPosXReset",       $("#leaderboardPosXReset"));
         this.elements.set("leaderboardPosX",            $("#leaderboardPosX"));
+        this.elements.set("leaderboardPosYReset",       $("#leaderboardPosYReset"));
         this.elements.set("leaderboardPosY",            $("#leaderboardPosY"));
         this.elements.set("leaderboardScale",           $("#leaderboardScale"));*/
         /******************************************************************************/
@@ -609,6 +615,11 @@ export class Setup {
                 }
             }
         });
+        this.elements.get("playerCardPosXReset")?.on("click", async () => {
+            this.elements.get("playerCardPosX")?.val("0");
+            this._parameters.uriParams.pc_pos_x = 0;
+            this._parameters.assocValue();
+        });
         this.elements.get("playerCardPosX")?.on("input", () => {
             let playerCardPosXValue = this.elements.get("playerCardPosX")?.val();
 
@@ -618,6 +629,11 @@ export class Setup {
                     this._parameters.assocValue();
                 }
             }
+        });
+        this.elements.get("playerCardPosYReset")?.on("click", async () => {
+            this.elements.get("playerCardPosY")?.val("0");
+            this._parameters.uriParams.pc_pos_y = 0;
+            this._parameters.assocValue();
         });
         this.elements.get("playerCardPosY")?.on("input", () => {
             let playerCardPosYValue = this.elements.get("playerCardPosY")?.val();
@@ -678,6 +694,11 @@ export class Setup {
                 }
             }
         });
+        this.elements.get("songCardPosXReset")?.on("click", async () => {
+            this.elements.get("songCardPosXReset")?.val("0");
+            this._parameters.uriParams.sc_pos_x = 0;
+            this._parameters.assocValue();
+        });
         this.elements.get("songCardPosX")?.on("input", () => {
             let songCardPosXValue = this.elements.get("songCardPosX")?.val();
 
@@ -687,6 +708,11 @@ export class Setup {
                     this._parameters.assocValue();
                 }
             }
+        });
+        this.elements.get("songCardPosYReset")?.on("click", async () => {
+            this.elements.get("songCardPosYReset")?.val("0");
+            this._parameters.uriParams.sc_pos_y = 0;
+            this._parameters.assocValue();
         });
         this.elements.get("songCardPosY")?.on("input", () => {
             let songCardPosYValue = this.elements.get("songCardPosY")?.val();
