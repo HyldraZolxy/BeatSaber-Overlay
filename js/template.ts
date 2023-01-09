@@ -141,7 +141,7 @@ export class Template {
     public moduleScale(module: Globals.E_MODULES, position: number, scale: number): void {
         let element = $("#" + this._prefix(module));
 
-        element.css("transform-origin", this._tools.positionStringConverter(position));
+        element.css("transform-origin", this._tools.positionStringConverter(position).replace(/(-)/g, " "));
         element.css("transform", "scale(" + scale + ")");
     }
     public moduleCorners(module: Globals.E_MODULES, position: number): void {
@@ -190,8 +190,23 @@ export class Template {
     }
 
     public missDisplay(display: boolean): void {
-        if (display)    $(".missGroup").css("display", "block");
-        else            $(".missGroup").css("display", "none");
+        const element = $(".missGroup");
+
+        if (display)    element.css("display", "block");
+        else            element.css("display", "none");
+    }
+    public bigBSR(bigBSR: boolean, skin: string): void {
+        const element = $("#bsrKey");
+
+        if (bigBSR) {
+            if (skin === "default")     element.css("font-size", "1.4em");
+            if (skin === "freemium")    element.css("font-size", "1em");
+            if (skin === "reselim")     element.css("font-size", "1.2em");
+        } else {
+            if (skin === "default")     element.css("font-size", "1em");
+            if (skin === "freemium")    element.css("font-size", "0.6em");
+            if (skin === "reselim")     element.css("font-size", "0.7em");
+        }
     }
 
     /////////////////////////

@@ -58,15 +58,17 @@ export class WebSocketManager {
                      reconnectIfAnyOpen: boolean,
                      reconnectInterval: number
     ) {
+        if (!this.sockets.get(key)) return;
+
         if ((!reconnectIfAnyOpen && !this.anyOpen()) || reconnectIfAnyOpen) {
-            if (!this.reconnecting.get(key) && this.sockets.get(key)) {
+            if (!this.reconnecting.get(key)) {
                 this.reconnecting.set(key, true);
 
                 console.log("%c" + key + " WebSocket reconnecting in " + this.reconnectInterval.get(key) + "ms", Globals.INFO_LOG);
 
                 setTimeout(() => {
-                    this.reconnecting.set(key, false);
                     if (this.sockets.get(key)) this.add(key, url, messageHandler, openHandler, closeHandler, errorHandler, reconnectIfAnyOpen, reconnectInterval);
+                    this.reconnecting.set(key, false);
                 }, reconnectInterval);
             }
         } else {

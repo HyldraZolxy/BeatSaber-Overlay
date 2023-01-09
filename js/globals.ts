@@ -594,7 +594,7 @@ export namespace Globals {
     }
 
     export const TIMEOUT_MS                         = 4500;
-    export const TIME_BEFORE_RETRY                  = 10000;
+    export const TIME_BEFORE_RETRY                  = 5000;
     export const RETRY_NUMBER                       = 1;
     export const PLUGINS_INFOS: I_modsConnection    = {
         // Beat Saber Mods

@@ -111,6 +111,19 @@
     margin-right: 10px;
 }
 
+#playerInformation {
+    display: flex;
+}
+
+#playerCard-overlay.top-left #playerInformation,
+#playerCard-overlay.bottom-left #playerInformation {
+    justify-content: flex-start;
+}
+#playerCard-overlay.top-right #playerInformation,
+#playerCard-overlay.bottom-right #playerInformation {
+    justify-content: flex-end;
+}
+
 #playerName {
     padding: 0 10px 0 10px;
 

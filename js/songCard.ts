@@ -235,6 +235,7 @@ export class SongCard {
 
             this._template.stopOrStart(Globals.E_MODULES.SONGCARD, this.songCardData.started, this.songCardData.paused);
             this._template.missDisplay(this.songCardData.displayMiss);
+            this._template.bigBSR(this.songCardData.bigBSR, this.songCardData.skin);
 
             /* Plugin details */
             if (this.songCardData.skin === "reselim") this._template.timerToCircleBar(this.songCardPerformance.timeToPercentage);

@@ -295,6 +295,10 @@ export class Setup {
         this.elements.set("songCardPosX",           $("#songCardPosX"));
         this.elements.set("songCardPosY",           $("#songCardPosY"));
         this.elements.set("songCardScale",          $("#songCardScale"));
+        this.elements.set("missDisplay",            $("#missDisplay"));
+        this.elements.set("bigBSR",                 $("#bigBSR"));
+        /*this.elements.set("ppMax",                $("#ppMax"));
+        this.elements.set("ppEstimated",            $("#ppEstimated"));*/
         /******************************************************************************/
 
         // Leaderboard Settings
@@ -310,13 +314,6 @@ export class Setup {
     }
 
     private fillParameters() {
-        // Menu Setup
-        /*--------------------------------------------------------------------------------------------------------------*/
-        // Other menu button
-        /*this.elements.set("customURITypeScript",        $("#customURITypeScript"));
-        this.elements.set("customURI",                  $("#customURI"));*/
-        /*--------------------------------------------------------------------------------------------------------------*/
-
         // Options Setup
         /*--------------------------------------------------------------------------------------------------------------*/
         // General Settings
@@ -361,12 +358,16 @@ export class Setup {
 
         // Song Card Settings
         /******************************************************************************/
-        this.elements.get("switchSongCardPreview")?.prop("checked",     this._songCard.songCardData.display);
+        this.elements.get("switchSongCardPreview")?.prop("checked", this._songCard.songCardData.display);
         this.elements.get("songCardSkin")?.         val(this._parameters.uriParams.sc_skin);
         this.elements.get("songCardPosition")?.     val(this._parameters.uriParams.sc_position);
         this.elements.get("songCardPosX")?.         val(this._parameters.uriParams.sc_pos_x);
         this.elements.get("songCardPosY")?.         val(this._parameters.uriParams.sc_pos_y);
         this.elements.get("songCardScale")?.        val(this._parameters.uriParams.sc_scale);
+        this.elements.get("missDisplay")?.          prop("checked", this._parameters.uriParams.sc_missDisplay);
+        this.elements.get("bigBSR")?.               prop("checked", this._parameters.uriParams.sc_bigBSR);
+        this.elements.get("ppMax")?.                prop("checked", this._parameters.uriParams.sc_ppMax);
+        this.elements.get("ppEstimated")?.          prop("checked", this._parameters.uriParams.sc_ppEstimated);
         /******************************************************************************/
 
         // Leaderboard Settings
@@ -707,11 +708,26 @@ export class Setup {
                 }
             }
         });
+        this.elements.get("missDisplay")?.on("click", async () => {
+            this._parameters.uriParams.sc_missDisplay = this.elements.get("missDisplay")?.prop("checked") === true;
+            this._parameters.assocValue();
+        });
+        this.elements.get("bigBSR")?.on("click", async () => {
+            this._parameters.uriParams.sc_bigBSR = this.elements.get("bigBSR")?.prop("checked") === true;
+            this._parameters.assocValue();
+        });
+        /*this.elements.get("ppMax")?.on("click", async () => {
+            this._parameters.uriParams.sc_ppMax = this.elements.get("ppMax")?.prop("checked") === true;
+            this._parameters.assocValue();
+        });
+        this.elements.get("ppEstimated")?.on("click", async () => {
+            this._parameters.uriParams.sc_ppEstimated = this.elements.get("ppEstimated")?.prop("checked") === true;
+            this._parameters.assocValue();
+        });*/
 
         this.elements.get("customURITypeScript")?.on("click", async () => {
             await this.urlTextBuilder();
             let value = this.elements.get("customURITypeScript")?.data("clipboardtext");
-            console.log(value);
             await navigator.clipboard.writeText(value);
         });
     }
@@ -719,11 +735,11 @@ export class Setup {
     private async urlTextBuilder() {
         let url = (this._parameters.uriParams.ip === "127.0.0.1") ? "https://overlay.hyldrazolxy.fr/" : "http://overlay.hyldrazolxy.fr/";
 
-        if (this._parameters.uriParams.token !== "") await this._parameters.updateTokenParameters();
-        else                                         await this._parameters.saveTokenParameters();
+        if (this._parameters.uriParams.token !== "")    await this._parameters.updateTokenParameters();
+        else                                            await this._parameters.saveTokenParameters();
 
         url += (this._parameters.uriParams.token === "") ? "" : "?token=" + this._parameters.uriParams.token;
 
-        $("#customURITypeScript").data("clipboardtext", url);
+        this.elements.get("customURITypeScript")?.data("clipboardtext", url);
     }
 }
