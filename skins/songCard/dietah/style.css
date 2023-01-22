@@ -60,7 +60,7 @@
     position: absolute;
 }
 #timeToLetters, #totalTimeToLetters {
-    font-family: Arial, "Helvetica Neue", "Helvetica";
+    font-family: Arial, "Helvetica Neue", "Helvetica", sans-serif;
     font-size: 1.1em;
 }
 #timeToLetters:after { content: " /"; margin-right: 5px; }

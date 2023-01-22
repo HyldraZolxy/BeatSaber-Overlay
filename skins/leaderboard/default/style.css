@@ -1,0 +1,230 @@
+/* =====================
+   = REUSED TAGS start =
+   ===================== */
+.ion-android-checkmark-circle {
+    color: gold;
+}
+
+.ion-android-cancel {
+    color: #d53535;
+    font-weight: bold;
+}
+
+.localPlayer {
+    color: rgb(29, 224, 204);
+    font-weight: bold;
+}
+
+.joined {
+    animation: joinedColor 0.5s linear;
+}
+
+.leaved {
+    animation: leavedColor 0.5s linear;
+}
+
+.first {
+    background-color: rgba(196, 143, 13, 0.7);
+}
+
+.second {
+    background-color: rgba(175, 175, 175, 0.7);
+}
+
+.third {
+    background-color: rgba(136, 81, 37, 0.7);
+}
+
+.miss {
+    animation: missColor 0.2s linear;
+}
+/* ===================
+   = REUSED TAGS end =
+   =================== */
+
+/* ==========================
+   = LEADERBOARD TAGS start =
+   ========================== */
+#leaderboard-overlay {
+    margin: 5px;
+    display: inline-flex;
+    position: absolute;
+}
+#leaderboard-overlay.top-left, #leaderboard-overlay.top-right {
+    flex-direction: column;
+}
+#leaderboard-overlay.bottom-left, #leaderboard-overlay.bottom-right {
+    flex-direction: column-reverse;
+}
+
+/* =================================
+   = LEADERBOARD TAGS / Rows start =
+   ================================= */
+tr {
+    margin-bottom: 3px;
+
+    display: inline-flex;
+    flex-direction: row;
+    clear: both;
+    position: absolute;
+
+    background-color: rgba(98, 98, 98, 0.7);
+
+    border-radius: 3px;
+    line-height: 40px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+
+    transition-duration: 0.5s;
+}
+#leaderboard-overlay.top-left tr, #leaderboard-overlay.bottom-left tr {
+    left: 0;
+}
+#leaderboard-overlay.top-right tr, #leaderboard-overlay.bottom-right tr {
+    right: 0;
+}
+
+tr > * {
+    margin: 7px 10px;
+    display: inline-block;
+}
+
+.playerLocalName {
+    display: inline-block;
+    margin-left: 10px;
+
+    font-weight: bold;
+
+    opacity: 0.85;
+}
+
+.position {
+    width: 40px;
+
+    font-weight: bold;
+}
+.position, .pseudo {
+    font-size: 1.2em;
+}
+
+.avatar {
+    outline: 2px solid rgb(29, 224, 204);
+}
+.avatar, .innerAvatar {
+    width: 40px;
+    height: 40px;
+
+    background-image: url("https://cdn.scoresaber.com/avatars/oculus.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    border-radius: 50%;
+}
+
+.pseudo {
+    width: 170px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.score, .percentage, .fcMiss {
+    text-align: right;
+    font-size: 1.1em;
+}
+
+.score {
+    width: 90px;
+}
+
+.percentage, .fcMiss {
+    width: 60px;
+}
+
+.percentage:after {
+    content: "%";
+}
+
+.barPercentage {
+    display: none;
+}
+
+#row-seperator {
+    width: 580px;
+
+    line-height: 23px;
+
+    background-color: rgba(84, 76, 135, 0.7);
+}
+/* ===============================
+   = LEADERBOARD TAGS / Rows end =
+   =============================== */
+
+/* ========================
+   = ANIMATION TAGS start =
+   ======================== */
+#leaderboard-overlay {
+    --show: 300ms;
+    --hide: 300ms;
+}
+
+#leaderboard-overlay {
+    transition:
+            opacity var(--show);
+}
+
+#leaderboard-overlay.hidden  {
+    opacity: 0;
+    transition:
+            opacity var(--hide);
+}
+
+@keyframes joinedColor {
+    0% {
+        background-color: rgba(77, 77, 77, 0.7);
+    }
+
+    50% {
+        box-shadow: 0 0 50px rgb(66, 198, 238);
+        background-color: rgb(66, 198, 238);
+    }
+
+    100% {
+        background-color: rgba(77, 77, 77, 0.7);
+    }
+}
+
+@keyframes leavedColor {
+    0% {
+        background-color: rgba(77, 77, 77, 0.7);
+    }
+
+    50% {
+        opacity: 70%;
+        box-shadow: 0 0 40px rgb(238, 82, 66) inset;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes missColor {
+    0% {}
+
+    50% {
+        box-shadow: 0 0 50px rgb(238, 82, 66);
+        background-color: rgba(238, 82, 66, 0.7);
+    }
+
+    100% {}
+}
+/* ======================
+   = ANIMATION TAGS end =
+   ====================== */
+
+/* ========================
+   = LEADERBOARD TAGS end =
+   ======================== */

@@ -761,8 +761,10 @@ export class Setup {
     private async urlTextBuilder() {
         let url = (this._parameters.uriParams.ip === "127.0.0.1") ? "https://overlay.hyldrazolxy.fr/" : "http://overlay.hyldrazolxy.fr/";
 
-        if (this._parameters.uriParams.token !== "")    await this._parameters.updateTokenParameters();
-        else                                            await this._parameters.saveTokenParameters();
+        if (this._parameters.uriParams.token !== "") {
+            if (!await this._parameters.updateTokenParameters()) await this._parameters.saveTokenParameters();
+        }
+        else await this._parameters.saveTokenParameters();
 
         url += (this._parameters.uriParams.token === "") ? "" : "?token=" + this._parameters.uriParams.token;
 

@@ -1,13 +1,14 @@
-import { Globals }          from "./globals";
-import { Parameters }       from "./parameters";
-import { WebSocketManager } from './websocket-manager';
-import { PlayerCard }       from "./playerCard";
-import { BSPlus }           from "./BSPlus";
-import { HTTP_sira_Status } from "./HTTP_sira_Status";
-import { DataPuller }       from "./dataPuller";
-import { SynthRiders }      from "./synthRiders";
-import { AudioTrip }        from "./audioTrip";
-import { Audica }           from "./audica";
+import { Globals }              from "./globals";
+import { Parameters }           from "./parameters";
+import { WebSocketManager }     from './websocket-manager';
+import { PlayerCard }           from "./playerCard";
+import { BSPlus }               from "./BSPlus";
+import { BSPlusLeaderboard }    from "./bsPlusLeaderboard";
+import { HTTP_sira_Status }     from "./HTTP_sira_Status";
+import { DataPuller }           from "./dataPuller";
+import { SynthRiders }          from "./synthRiders";
+import { AudioTrip }            from "./audioTrip";
+import { Audica }               from "./audica";
 
 export class Plugins {
 
@@ -23,6 +24,7 @@ export class Plugins {
     private _websocketManager:  WebSocketManager;
     private _playerCard:        PlayerCard;
     private _bsPlus:            BSPlus;
+    private _bsPlusLeaderboard: BSPlusLeaderboard;
     private _httpSiraStatus:    HTTP_sira_Status;
     private _dataPuller:        DataPuller;
     private _synthRiders:       SynthRiders;
@@ -39,6 +41,7 @@ export class Plugins {
         this._websocketManager  = new WebSocketManager();
         this._playerCard        = PlayerCard.Instance;
         this._bsPlus            = new BSPlus();
+        this._bsPlusLeaderboard = new BSPlusLeaderboard();
         this._httpSiraStatus    = new HTTP_sira_Status();
         this._dataPuller        = new DataPuller();
         this._synthRiders       = new SynthRiders();
@@ -59,13 +62,15 @@ export class Plugins {
                     () => {
                         console.log("%csocket initialized on BeatSaberPlus!", Globals.SUCCESS_LOG);
 
-                        this._websocketManager.add("BSPlusLeaderboard" + this.websocketVersion, "ws://" + this._parameters.uriParams.ip + ":2948/socket",
-                            (data) => { this._bsPlus.dataParser(data); },
-                            () => {},
-                            () => {},
-                            () => {},
-                            true
-                        );
+                        if (this._parameters.uriParams.p_beatSaberPlusLeaderboard) {
+                            this._websocketManager.add("BSPlusLeaderboard" + this.websocketVersion, "ws://" + this._parameters.uriParams.ip + ":2948/socket",
+                                (data) => { this._bsPlusLeaderboard.dataParser(data); },
+                                () => {},
+                                () => {},
+                                () => {},
+                                true
+                            );
+                        }
                     },
                     () => { this._websocketManager.remove("BSPlusLeaderboard" + this.websocketVersion); },
                     () => { console.log("%cinit of BeatSaberPlus socket failed!", Globals.WARN_LOG); }

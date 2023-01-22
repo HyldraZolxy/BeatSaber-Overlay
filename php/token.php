@@ -83,7 +83,6 @@ const DEFAULT_DATA = array(
     ),
     "leaderboard_data" => array(
         "disabled"                  => false,
-        "alwaysEnabled"             => false,
         "skin"                      => "default",
         "position"                  => 1,
         "scale"                     => 1,

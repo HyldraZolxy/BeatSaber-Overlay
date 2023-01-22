@@ -170,7 +170,6 @@ export namespace Globals {
 
         // Leaderboard
         ld_disabled         : boolean;  // Leaderboard is enabled ?
-        ld_alwaysEnabled    : boolean;  // Leaderboard is always displayed ?
         ld_skin             : string;   // Skin of Leaderboard
         ld_position         : number;   // Position of Leaderboard
         ld_scale            : number;   // Scale of Leaderboard
@@ -266,7 +265,7 @@ export namespace Globals {
 
         // Skin for Leaderboard module
         2: {
-            default : []
+            default : ["./skins/leaderboard/default/", "index.html", "style.css"]
         },
 
         // Skin for SetupMenu module
@@ -341,7 +340,7 @@ export namespace Globals {
         difficultyName  : string;   // Name of the difficulty
         duration        : number;   // Duration of the song
         id              : number;   // ID of the difficulty of the song
-        maxScore        : number;   // Maxscore posible of the song
+        maxScore        : number;   // Max score possible of the song
         mode            : number;   // ID Mode of the difficulty of the song ("Standard", "Lawless", etc ...)
         modeName        : string;   // Name Mode of the difficulty of the song ("Standard", "Lawless", etc ...)
         njs             : number;   // NJS of the map
@@ -385,14 +384,14 @@ export namespace Globals {
         id                  : string;   // BSR Key
         metadata: {
             songName        : string;   // Song name
-            songSubName     : string;   // Song subname
+            songSubName     : string;   // Song sub name
             levelAuthorName : string;   // Mapper name
             songAuthorName  : string;   // Author name
 
             bpm             : number;   // BPM of the song
             duration        : number;   // Duration length of the song
         };
-        name                : string;   // Song name include "Song name" and "Song subname"
+        name                : string;   // Song name include "Song name" and "Song sub name"
 
         /// WARNING: Qualified and Ranked can be true at the same time ! If it appends, use qualified, not ranked
         qualified           : boolean;  // Song is qualified ?
@@ -426,9 +425,9 @@ export namespace Globals {
         playerCountry   : string;   // ScoreSaber country of the player
         avatar          : string;   // Avatar of the player
         playerFlag      : string;   // Country flag of the player (./pictures/country/COUNTRYCODE.svg)
-        topWorld        : string;   // World rank of the player (String for commat support)
-        topCountry      : string;   // Country rank if the player (String for commat support)
-        performancePoint: string;   // PP of the player (Nice again :OwO:) (String for commat support)
+        topWorld        : string;   // World rank of the player (String for comma support)
+        topCountry      : string;   // Country rank if the player (String for comma support)
+        performancePoint: string;   // PP of the player (Nice again :OwO:) (String for comma support)
     }
 
     // Default value of Player ID
@@ -507,17 +506,6 @@ export namespace Globals {
     ///////////////////////
 
     // Globals
-    export enum E_WEBSOCKET_STATES {
-        CONNECTED,
-        DISCONNECTED,
-        ERROR
-    }
-    export enum E_GAMES {
-        BEAT_SABER      = "beatSaber",      // https://www.beatsaber.com/
-        SYNTH_RIDERS    = "synthRiders",    // https://synthridersvr.com/
-        AUDIO_TRIP      = "audioTrip",      // http://www.kinemotik.com/audiotrip/
-        AUDICA          = "audica"          // https://www.audicagame.com/
-    }
     export enum E_PLUGINS_BS {
         BSPLUS              = "bsPlus",             // https://github.com/hardcpp/BeatSaberPlus
         BSPLUSLEADERBOARD   = "bsPlusLeaderboard",  // https://github.com/hardcpp/BeatSaberPlus
@@ -593,9 +581,7 @@ export namespace Globals {
         }
     }
 
-    export const TIMEOUT_MS                         = 4500;
     export const TIME_BEFORE_RETRY                  = 5000;
-    export const RETRY_NUMBER                       = 1;
     export const PLUGINS_INFOS: I_modsConnection    = {
         // Beat Saber Mods
         beatSaber: {
@@ -697,6 +683,43 @@ export namespace Globals {
             time            : number;               // Actual time of the actual song
         };
     }
+    export interface I_bsPlusLeaderboardObject {
+        GameVersion     : string;                                                                                                   // Version of Beat Saber
+        ProtocolVersion : number;                                                                                                   // Protocol version of the plugin
+        LocalUserName   : string;                                                                                                   // Player name
+        LocalUserID     : string;                                                                                                   // Player platform ID (ScoreSaber ID here)
+
+        _type           : "handshake" | "event";                                                                                    // Type of the message
+        _event          : "RoomJoined" | "RoomLeaved" | "RoomState" | "PlayerJoined" | "PlayerLeaved" | "PlayerUpdated" | "Score";  // Event of the message
+
+        RoomState       : "None" | "SelectingSong" | "WarmingUp" | "Playing" | "Results";                                           // State of the room
+
+        PlayerJoined: {
+            LUID        : number;                                                                                                   // Player UID
+            UserID      : string;                                                                                                   // Player ID (Platform ID [ScoreSaber])
+            UserName    : string;                                                                                                   // Player name
+            Spectating  : boolean;                                                                                                  // is Player spectating?
+        }
+
+        PlayerLeaved: {
+            LUID        : number;                                                                                                   // Player UID
+        }
+
+        PlayerUpdated: {
+            LUID        : number;                                                                                                   // Player UID
+            Spectating  : boolean;                                                                                                  // is Player spectating?
+        }
+
+        Score: {
+            LUID        : number;                                                                                                   // Player UID
+            Score       : number;                                                                                                   // Player score
+            Accuracy    : number;                                                                                                   // Player accuracy
+            Combo       : number;                                                                                                   // Player combo
+            MissCount   : number;                                                                                                   // Player miss count
+            Failed      : boolean;                                                                                                  // is player failed the song ?
+            Deleted     : boolean;                                                                                                  // is player quit the song ?
+        }
+    }
 
     ///////////////// HTTP_sira_STATUS /////////////////
     // Object representation of the HttpSiraStatus data
@@ -742,7 +765,7 @@ export namespace Globals {
 
             game: {
                 pluginVersion           : string;                                                                                                       // Currently running version of the plugin
-                gameVersion             : string;                                                                                                       // Version of the game the current plugin version is targetting
+                gameVersion             : string;                                                                                                       // Version of the game the current plugin version is targeting
                 scene                   : "Menu" | "Song" | "Spectator";                                                                                // Indicates player's current activity
                 mode                    : null | "Standard" | "NoArrows" | "OneSaber" | "360Degree" | "90Degree" | "Lightshow" | "Lawless" | string;    // Composed of game mode and map characteristic.
             };
@@ -814,7 +837,7 @@ export namespace Globals {
             directionOK                 : null | boolean;                                                                                               // Note was cut in the correct direction. null for bombs.
             saberTypeOK                 : null | boolean;                                                                                               // Note was cut with the correct saber. null for bombs.
             wasCutTooSoon               : boolean;                                                                                                      // Note was cut too early
-            initialScore                : null | number;                                                                                                // Score without multipliers for the cut. It contains the prehit swing score and the cutDistanceScore, but doesn't include the score for swinging after cut. [0..85] null for bombs.
+            initialScore                : null | number;                                                                                                // Score without multipliers for the cut. It contains the pre-hit swing score and the cutDistanceScore, but doesn't include the score for swinging after cut. [0..85] null for bombs.
             finalScore                  : null | number;                                                                                                // Score without multipliers for the entire cut, including score for swinging after cut. [0..115] Available in [`noteFullyCut` event](#notefullycut-event). null for bombs.
             cutDistanceScore            : null | number;                                                                                                // Score for how close the cut plane was to the note center. [0..15]
             multiplier                  : number;                                                                                                       // Combo multiplier at the time of cut
@@ -824,7 +847,7 @@ export namespace Globals {
             swingRating                 : number;                                                                                                       // Game's swing rating. Uses the before cut rating in noteCut events and after cut rating for noteFullyCut events. -1 for bombs.
             timeDeviation               : number;                                                                                                       // Time offset in seconds from the perfect time to cut the note
             cutDirectionDeviation       : number;                                                                                                       // Offset from the perfect cut angle in degrees
-            cutPoint                    : [number, number, number];                                                                                     // Position in note space of the point on the cut plane closests to the note center [X, Y, Z]
+            cutPoint                    : [number, number, number];                                                                                     // Position in note space of the point on the cut plane closest to the note center [X, Y, Z]
             cutNormal                   : [number, number, number];                                                                                     // Normalized vector describing the normal of the cut plane in note space. Points towards negative X on a correct cut of a directional note. [X, Y Z]
             cutDistanceToCenter         : number;                                                                                                       // Distance from the center of the note to the cut plane
             timeToNextBasicNote         : number;                                                                                                       // Time until next note in seconds
@@ -856,7 +879,7 @@ export namespace Globals {
         CustomDifficultyLabel           : string;           // Custom name of the difficulty
         BPM                             : number;           // BPM of the song
         NJS                             : number;           // NJS of the song
-        Modifiers: {                                    // CAN BE EMTPY
+        Modifiers: {                                    // CAN BE EMPTY
             /// (Version < 2.1.0)
             fourLives                   : boolean;          // Four lives ?
             oneLife                     : boolean;          // One life ?
@@ -865,7 +888,7 @@ export namespace Globals {
             fasterSong                  : boolean;          // Faster song ?
             superFastSong               : boolean;          // Super faster song ?
             zenMode                     : boolean;          // Zen Mode ?
-            noFailOn0Energy             : boolean;          // No fail when 0 energy ? (Softfailed)
+            noFailOn0Energy             : boolean;          // No fail when 0 energy ? (Soft-failed)
             noBombs                     : boolean;          // No bombs ?
             slowerSong                  : boolean;          // Slower song ?
             noArrows                    : boolean;          // No arrows ?
@@ -882,7 +905,7 @@ export namespace Globals {
             FasterSong                  : boolean;          // Faster song ?
             SuperFastSong               : boolean;          // Super faster song ?
             ZenMode                     : boolean;          // Zen Mode ?
-            NoFailOn0Energy             : boolean;          // No fail when 0 energy ? (Softfailed)
+            NoFailOn0Energy             : boolean;          // No fail when 0 energy ? (Soft-failed)
             NoBombs                     : boolean;          // No bombs ?
             SlowerSong                  : boolean;          // Slower song ?
             NoArrows                    : boolean;          // No arrows ?
@@ -893,7 +916,7 @@ export namespace Globals {
         };
         ModifiersMultiplier             : number;           // Multiplier when modifier is enabled (1, 1.2, 0.8, etc ...)
         PracticeMode                    : boolean;          // Is in practice ?
-        PracticeModeModifiers: {                        // CAN BE EMTPY
+        PracticeModeModifiers: {                        // CAN BE EMPTY
             /// (Version < 2.1.0)
             songSpeedMul                : number;           // Speed multiplier in Practice mode
             startInAdvanceAndClearNotes : number;           // I don't know really what is this ????
@@ -924,7 +947,7 @@ export namespace Globals {
         Combo                   : number;                   // Player combo
         Misses                  : number;                   // Player miss
         Accuracy                : number;                   // Player accuracy
-        BlockHitScore           : [number, number, number], // Score cut [Pre-swing, Post-siwng, Accuracy]
+        BlockHitScore           : [number, number, number], // Score cut [Pre-swing, Post-swing, Accuracy]
         PlayerHealth            : number;                   // Player health
         TimeElapsed             : number;                   // Time elapsed in seconds
         unixTimestamp           : number;                   // Time of the event
@@ -983,11 +1006,11 @@ export namespace Globals {
         songID          : string;                               // ID of the song
         choreoID        : string;                               // ID of the map difficulty ???????????????
 
-        playerStatus    : "Playing" | "Finished" | "Failed";    // If you in playing time, or you finish the map or maybe you fail the map
+        playerStatus    : "Playing" | "Finished" | "Failed";    // If you in playing time, or you finish the map, or maybe you fail the map
 
         score           : number;                               // Player score
         multiplier      : number;                               // Score multiplier
-        playerHealth    : number;                               // Player health (-1 if nofail enabled, else between 1 and 0)
+        playerHealth    : number;                               // Player health (-1 if no-fail enabled, else between 1 and 0)
         curSongTime     : number;                               // Current song time in seconds
     }
 
@@ -1024,7 +1047,7 @@ export namespace Globals {
             streak              : number;   // Player combo
             highScore           : number;   // Best score on the song by the player ????
             isFullComboSoFar    : boolean;  // Player is in full combo ?
-            isNoFailMode        : boolean;  // Nofail mode is enabled ?
+            isNoFailMode        : boolean;  // No-fail mode is enabled ?
             isPracticeMode      : boolean;  // Player is in practice mode ?
             songSpeed           : number;   // Song time multiplier
             modifiers           : [];       // Modifiers enabled (????)
@@ -1041,13 +1064,46 @@ export namespace Globals {
         }
     }
 
-    /////////////////////
-    // Setup Variables //
-    /////////////////////
-    export enum E_SETUP_FILES {
-        INDEX = 1,
-        GENERAL = 2,
-        PLAYER = 3,
-        SONG = 4
+    ///////////////////////////
+    // Leaderboard Variables //
+    ///////////////////////////
+    export interface I_leaderboard {
+        disabled            : boolean;                                                          // Is leaderboard enabled?
+        display             : boolean;                                                          // Is leaderboard displayed?
+        needUpdate          : boolean;                                                          // Is leaderboard need update?
+        endedUpdate         : boolean;                                                          // Is leaderboard updated?
+        skin                : string;                                                           // Skin of the leaderboard
+        position            : number;                                                           // Position of the leaderboard
+        scale               : number;                                                           // Scale of the leaderboard
+        pos_x               : number;                                                           // Pos X of the leaderboard
+        pos_y               : number;                                                           // Pos Y of the leaderboard
+        playerRendering     : number;                                                           // Number of row rendered on the leaderboard
+
+        playerLocalId       : string;                                                           // Local player ID
+        playerLocalLUID     : number;                                                           // Local player UID
+        playerLocalName     : string;                                                           // Local player name
+        playerLocalPosition : number;                                                           // Local player position in the leaderboard
+
+        roomState           : "None" | "SelectingSong" | "WarmingUp" | "Playing" | "Results";   // State of the room
+    }
+    export interface I_leaderboardPlayer {
+        [key: string]       : string|number|boolean;
+
+        UserID      : string;   // Player ID (ScoreSaber)
+        UserName    : string;   // Player name
+        UserAvatar  : string;   // Player avatar (ScoreSaber link)
+
+        Position    : number;   // Player position in the leaderboard
+        Score       : number;   // Player score
+        Accuracy    : number;   // Player accuracy
+        Combo       : number;   // Player combo
+        MissCount   : number;   // Player miss count
+
+        Joined      : boolean;  // Is player just joined?
+        Leaved      : boolean;  // Is player just left?
+        Failed      : boolean;  // Is player failed?
+        Deleted     : boolean;  // Is player quit the map?
+        Missed      : boolean;  // Is player just miss a note ?
+        Spectating  : boolean;  // Is player spectating?
     }
 }

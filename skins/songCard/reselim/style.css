@@ -269,8 +269,8 @@
 }
 
 #progress {
-    stroke-dasharray: 188.495px, 188.495px;
-    stroke-dashoffset: 188.495px;
+    stroke-dasharray: 188px, 188px;
+    stroke-dashoffset: 188px;
 }
 
 #timeToLetters {

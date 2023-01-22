@@ -2,6 +2,7 @@ import { Globals }      from "./globals";
 import { Tools }        from "./tools";
 import { PlayerCard }   from "./playerCard";
 import { SongCard }     from "./songCard";
+import { Leaderboard }  from "./leaderboard";
 
 export class Parameters {
 
@@ -16,6 +17,7 @@ export class Parameters {
     private _Tools:         Tools;
     private _PlayerCard:    PlayerCard;
     private _SongCard:      SongCard;
+    private _Leaderboard:   Leaderboard
 
     ///////////////////////
     // Private Variables //
@@ -42,15 +44,6 @@ export class Parameters {
             case "scsc":    return "sc_scale";
             case "md":      return "sc_missDisplay";
             default:        return key;
-        }
-    };
-    private _convertURIParamsPosValue(value: string): number {
-        switch (value) {
-            case "top-left":        return Globals.E_POSITION.TOP_LEFT;
-            case "top-right":       return Globals.E_POSITION.TOP_RIGHT;
-            case "bottom-left":     return Globals.E_POSITION.BOTTOM_LEFT;
-            case "bottom-right":    return Globals.E_POSITION.BOTTOM_RIGHT;
-            default:                return Globals.E_POSITION.TOP_LEFT;
         }
     };
 
@@ -87,8 +80,7 @@ export class Parameters {
         sc_ppEstimated:             false,
 
         // Leaderboard
-        ld_disabled:                true,
-        ld_alwaysEnabled:           false,
+        ld_disabled:                false,
         ld_skin:                    "default",
         ld_position:                0,
         ld_scale:                   1.0,
@@ -120,6 +112,7 @@ export class Parameters {
         this._Tools         = new Tools();
         this._PlayerCard    = PlayerCard.Instance;
         this._SongCard      = SongCard.Instance;
+        this._Leaderboard   = Leaderboard.Instance;
 
         this.findParameters(new URLSearchParams(Globals.URI_NAV_SEARCH));
 
@@ -138,10 +131,10 @@ export class Parameters {
             let keyConverted    = this._convertURIParamsKey(decodeURI(key)); // Converting old keys to new ones
 
             if (keyConverted in this.uriParams)
-                if (this.parseParameters(keyConverted, this._uriParamsPos.includes(keyDecoded) ? this._convertURIParamsPosValue(valueDecoded) : valueDecoded)) {
+                if (this.parseParameters(keyConverted, this._uriParamsPos.includes(keyDecoded) ? this._Tools.positionNumberConverter(valueDecoded) : valueDecoded)) {
                     this.uriParams[keyConverted] = this._uriParamsNumber.includes(keyDecoded) ? +valueDecoded :
                         this._uriParamsBoolean.includes(keyDecoded) ? (valueDecoded === "true") :
-                            this._uriParamsPos.includes(keyDecoded) ? this._convertURIParamsPosValue(valueDecoded) : // Converting old positions values to new ones
+                            this._uriParamsPos.includes(keyDecoded) ? this._Tools.positionNumberConverter(valueDecoded) : // Converting old positions values to new ones
                                 valueDecoded;
                 }
         }
@@ -329,41 +322,50 @@ export class Parameters {
 
     public assocValue(): void {
         // PlayerCard
-        this._PlayerCard.playerCardGames.g_beatSaber    = this.uriParams.g_beatSaber;
-        this._PlayerCard.playerCardGames.g_synthRiders  = this.uriParams.g_synthRiders;
-        this._PlayerCard.playerCardGames.g_audioTrip    = this.uriParams.g_audioTrip;
-        this._PlayerCard.playerCardGames.g_audica       = this.uriParams.g_audica;
+        this._PlayerCard.playerCardGames.g_beatSaber        = this.uriParams.g_beatSaber;
+        this._PlayerCard.playerCardGames.g_synthRiders      = this.uriParams.g_synthRiders;
+        this._PlayerCard.playerCardGames.g_audioTrip        = this.uriParams.g_audioTrip;
+        this._PlayerCard.playerCardGames.g_audica           = this.uriParams.g_audica;
 
-        this._PlayerCard.playerCardData.disabled        = this.uriParams.pc_disabled;
-        this._PlayerCard.playerCardData.alwaysEnabled   = this.uriParams.pc_alwaysEnabled;
-        this._PlayerCard.playerCardData.skin            = this.uriParams.pc_skin;
-        this._PlayerCard.playerCardData.position        = this.uriParams.pc_position;
-        this._PlayerCard.playerCardData.scale           = this.uriParams.pc_scale;
-        this._PlayerCard.playerCardData.pos_x           = this.uriParams.pc_pos_x;
-        this._PlayerCard.playerCardData.pos_y           = this.uriParams.pc_pos_y;
-        this._PlayerCard.playerCardData.scoringSystem   = this.uriParams.scoringSystem;
+        this._PlayerCard.playerCardData.disabled            = this.uriParams.pc_disabled;
+        this._PlayerCard.playerCardData.alwaysEnabled       = this.uriParams.pc_alwaysEnabled;
+        this._PlayerCard.playerCardData.skin                = this.uriParams.pc_skin;
+        this._PlayerCard.playerCardData.position            = this.uriParams.pc_position;
+        this._PlayerCard.playerCardData.scale               = this.uriParams.pc_scale;
+        this._PlayerCard.playerCardData.pos_x               = this.uriParams.pc_pos_x;
+        this._PlayerCard.playerCardData.pos_y               = this.uriParams.pc_pos_y;
+        this._PlayerCard.playerCardData.scoringSystem       = this.uriParams.scoringSystem;
 
-        this._PlayerCard.playerCardData.playerID        = this.uriParams.pc_playerID;
+        this._PlayerCard.playerCardData.playerID            = this.uriParams.pc_playerID;
 
         // SongCard
-        this._SongCard.songCardGames.g_beatSaber        = this.uriParams.g_beatSaber;
-        this._SongCard.songCardGames.g_synthRiders      = this.uriParams.g_synthRiders;
-        this._SongCard.songCardGames.g_audioTrip        = this.uriParams.g_synthRiders;
-        this._SongCard.songCardGames.g_audica           = this.uriParams.g_audica;
+        this._SongCard.songCardGames.g_beatSaber            = this.uriParams.g_beatSaber;
+        this._SongCard.songCardGames.g_synthRiders          = this.uriParams.g_synthRiders;
+        this._SongCard.songCardGames.g_audioTrip            = this.uriParams.g_synthRiders;
+        this._SongCard.songCardGames.g_audica               = this.uriParams.g_audica;
 
-        this._SongCard.songCardData.disabled            = this.uriParams.sc_disabled;
-        this._SongCard.songCardData.alwaysEnabled       = this.uriParams.sc_alwaysEnabled;
-        this._SongCard.songCardData.skin                = this.uriParams.sc_skin;
-        this._SongCard.songCardData.position            = this.uriParams.sc_position;
-        this._SongCard.songCardData.scale               = this.uriParams.sc_scale;
-        this._SongCard.songCardData.pos_x               = this.uriParams.sc_pos_x;
-        this._SongCard.songCardData.pos_y               = this.uriParams.sc_pos_y;
-        this._SongCard.songCardData.scoringSystem       = this.uriParams.scoringSystem;
+        this._SongCard.songCardData.disabled                = this.uriParams.sc_disabled;
+        this._SongCard.songCardData.alwaysEnabled           = this.uriParams.sc_alwaysEnabled;
+        this._SongCard.songCardData.skin                    = this.uriParams.sc_skin;
+        this._SongCard.songCardData.position                = this.uriParams.sc_position;
+        this._SongCard.songCardData.scale                   = this.uriParams.sc_scale;
+        this._SongCard.songCardData.pos_x                   = this.uriParams.sc_pos_x;
+        this._SongCard.songCardData.pos_y                   = this.uriParams.sc_pos_y;
+        this._SongCard.songCardData.scoringSystem           = this.uriParams.scoringSystem;
 
-        this._SongCard.songCardData.displayMiss         = this.uriParams.sc_missDisplay;
-        this._SongCard.songCardData.bigBSR              = this.uriParams.sc_bigBSR;
-        this._SongCard.songCardData.ppMax               = this.uriParams.sc_ppMax;
-        this._SongCard.songCardData.ppEstimated         = this.uriParams.sc_ppEstimated;
+        this._SongCard.songCardData.displayMiss             = this.uriParams.sc_missDisplay;
+        this._SongCard.songCardData.bigBSR                  = this.uriParams.sc_bigBSR;
+        this._SongCard.songCardData.ppMax                   = this.uriParams.sc_ppMax;
+        this._SongCard.songCardData.ppEstimated             = this.uriParams.sc_ppEstimated;
+
+        // Leaderboard
+        this._Leaderboard.leaderboardData.disabled          = this.uriParams.ld_disabled;
+        this._Leaderboard.leaderboardData.skin              = this.uriParams.ld_skin;
+        this._Leaderboard.leaderboardData.position          = this.uriParams.ld_position;
+        this._Leaderboard.leaderboardData.scale             = this.uriParams.ld_scale;
+        this._Leaderboard.leaderboardData.pos_x             = this.uriParams.ld_pos_x;
+        this._Leaderboard.leaderboardData.pos_y             = this.uriParams.ld_pos_y;
+        this._Leaderboard.leaderboardData.playerRendering   = this.uriParams.ld_playerRendering;
     }
 
     /////////////

@@ -56,7 +56,7 @@ export class Template {
         });
     }
 
-    public refreshUI(data: Globals.I_playerCard | Globals.I_songCard | Globals.I_songCardUpdate, module: Globals.E_MODULES): void {
+    public refreshUI(data: Globals.I_playerCard | Globals.I_songCard | Globals.I_songCardUpdate | Globals.I_leaderboard, module: Globals.E_MODULES): void {
         if (data.endedUpdate) {
             for (let[key, value] of Object.entries(data)) {
                 let elementID       = $("#" + key);
@@ -132,6 +132,9 @@ export class Template {
                                 elementID.css("width", value + "%");
                                 break;
                         }
+                        break;
+
+                    case Globals.E_MODULES.LEADERBOARD:
                         break;
                 }
             }
