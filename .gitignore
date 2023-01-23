@@ -1,6 +1,7 @@
 /.idea/
 /node_modules/
 /js/*.js
+/js/debugLeaderboard.ts
 tsconfig.json
 /php/Cache/
 /dist/

@@ -99,12 +99,12 @@ tr > * {
     opacity: 0.85;
 }
 
-.position {
+.Position {
     width: 40px;
 
     font-weight: bold;
 }
-.position, .pseudo {
+.Position, .pseudo {
     font-size: 1.2em;
 }
 
@@ -122,7 +122,7 @@ tr > * {
     border-radius: 50%;
 }
 
-.pseudo {
+.UserName {
     width: 170px;
 
     overflow: hidden;
@@ -130,20 +130,20 @@ tr > * {
     white-space: nowrap;
 }
 
-.score, .percentage, .fcMiss {
+.Score, .Accuracy, .fcMiss {
     text-align: right;
     font-size: 1.1em;
 }
 
-.score {
+.Score {
     width: 90px;
 }
 
-.percentage, .fcMiss {
+.Accuracy, .fcMiss {
     width: 60px;
 }
 
-.percentage:after {
+.Accuracy:after {
     content: "%";
 }
 
@@ -151,7 +151,7 @@ tr > * {
     display: none;
 }
 
-#row-seperator {
+#row-separator {
     width: 580px;
 
     line-height: 23px;
@@ -219,7 +219,9 @@ tr > * {
         background-color: rgba(238, 82, 66, 0.7);
     }
 
-    100% {}
+    100% {
+        background-color: rgba(77, 77, 77, 0.7);
+    }
 }
 /* ======================
    = ANIMATION TAGS end =

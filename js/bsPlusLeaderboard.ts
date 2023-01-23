@@ -16,7 +16,7 @@ export class BSPlusLeaderboard {
     // Private Methods //
     /////////////////////
     private eHandshake(dataHandshake: Globals.I_bsPlusLeaderboardObject): void {
-        console.log("%cBeat Saber " + dataHandshake.GameVersion + " | Protocol Version " + dataHandshake.ProtocolVersion, Globals.SUCCESS_LOG);
+        console.log("%cBeat Saber " + dataHandshake.GameVersion + " | Protocol Leaderboard Version " + dataHandshake.ProtocolVersion, Globals.SUCCESS_LOG);
         console.log("\n\n");
 
         this._leaderboard.leaderboardData.playerLocalId = dataHandshake.LocalUserID;
@@ -46,8 +46,10 @@ export class BSPlusLeaderboard {
                 break;
 
             case "PlayerUpdated":
+                this._leaderboard.updatePlayer(dataEvent.PlayerUpdated, dataEvent._event);
+                break;
             case "Score":
-                this._leaderboard.updatePlayer(dataEvent, dataEvent._event);
+                this._leaderboard.updatePlayer(dataEvent.Score, dataEvent._event);
                 break;
         }
     }

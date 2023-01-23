@@ -1,5 +1,5 @@
-import { Globals } from "./globals";
-import { Tools } from "./tools";
+import { Globals }  from "./globals";
+import { Tools }    from "./tools";
 
 export class Template {
     //////////////////////
@@ -140,6 +140,31 @@ export class Template {
             }
         }
     }
+    public refreshUIMap(data: Map<number, Globals.I_leaderboardPlayer>, module: Globals.E_MODULES): void {
+        for (let [key, value] of data) {
+            let elementRow = $("#row-" + key);
+
+            switch (module) {
+                case Globals.E_MODULES.LEADERBOARD:
+                    for (let [keyValue, valueValue] of Object.entries(value)) {
+                        let elementClass = $("." + keyValue);
+
+                        switch (keyValue) {
+                            case "Position":
+                            case "Score":
+                                elementRow.find(elementClass).text(valueValue);
+                                break;
+                            case "Accuracy":
+                                elementRow.find(elementClass).text((<number>valueValue * 100).toFixed(2));
+                                break;
+                            case "MissCount":
+                                break;
+                        }
+                    }
+                    break;
+            }
+        }
+    }
 
     public moduleScale(module: Globals.E_MODULES, position: number, scale: number): void {
         let element = $("#" + this._prefix(module));
@@ -212,6 +237,164 @@ export class Template {
         }
     }
 
+    ////////////////////////////////
+    // Public Leaderboard Methods //
+    ////////////////////////////////
+    public createRow(playerLUID: number, player: Globals.I_leaderboardPlayer, localPlayer: number, playerNumber: number, playerRender: number): void {
+        const elementLd = $("#leaderboard-overlay");
+
+        if (elementLd.find("#row-" + playerLUID).length) return;
+
+        elementLd.append('<tr id="row-' + playerLUID + '" class="joined">'
+                            + '<td class="Position ion-pound">' + player.Position + '</td>'
+                            + '<td class="avatar">'
+                                + '<div class="innerAvatar"></div>'
+                            + '</td>'
+                            + '<td class="UserName">' + player.UserName + '</td>'
+                            + '<td class="Score">' + player.Score + '</td>'
+                            + '<td class="Accuracy">' + player.Accuracy * 100 + '</td>'
+                            + '<td class="fcMiss ion-android-checkmark-circle"> FC</td>'
+                        + '</tr>'
+        );
+
+        const elementRow = $("#row-" + playerLUID);
+        elementRow.find(".innerAvatar").css("background-image", "url('" + player.UserAvatar + "')");
+
+        if (playerLUID === localPlayer) elementRow.find(".pseudo").addClass("localPlayer");
+
+        (playerNumber > playerRender) ? this.createSeparatorRow() : this.deleteSeparatorRow();
+    }
+    public deleteRow(playerLUID: number, playerNumber: number, playerRender: number): void {
+        const elementLd = $("#leaderboard-overlay");
+        const elementRow = $("#row-" + playerLUID);
+
+        if (!elementLd.find(elementRow).length) return;
+
+        elementRow.addClass("leaved");
+        elementRow.empty().remove();
+
+        (playerNumber > playerRender) ? this.createSeparatorRow() : this.deleteSeparatorRow();
+    }
+    public createSeparatorRow(): void {
+        const elementLd = $("#leaderboard-overlay");
+
+        if (elementLd.find("#row-separator").length) return;
+
+        elementLd.append('<tr id="row-separator">'
+                            + '<td class="separator ion-more">'
+                                + '<div class="playerLocalName localPlayer"></div>'
+                            + '</td>'
+                        + '</tr>'
+        );
+    }
+    public deleteSeparatorRow(): void {
+        const elementLd = $("#leaderboard-overlay");
+        const elementRow = $("#row-separator");
+
+        if (!elementLd.find(elementRow).length) return;
+
+        elementRow.empty().remove();
+    }
+
+    public sortingRows(player: Map<number, Globals.I_leaderboardPlayer>, localPlayer: number, playerNumber: number, playerRender: number, positionCSS: number): void {
+        const elementLd = $("#leaderboard-overlay");
+        const positionCSSString = [Globals.E_POSITION.TOP_LEFT, Globals.E_POSITION.TOP_RIGHT].includes(positionCSS) ? "top" : "bottom";
+        let iteration = 0;
+        let rowTotalHeight = 0;
+
+        for (let [key, value] of player) {
+            iteration++;
+
+            if (elementLd.find("#row-" + key).length) {
+                let elementRow = $("#row-" + key);
+
+                if (value.Spectating) {
+                    elementRow.css("display", "none");
+                    iteration--;
+                    continue;
+                }
+
+                if (playerRender > 1) {
+                    if (iteration < playerRender || (iteration === playerRender && playerRender > playerNumber)) {
+                        this.deleteSeparatorRow();
+
+                        elementRow.css("display", "inline-flex");
+                        elementRow.css(positionCSSString, rowTotalHeight);
+
+                        rowTotalHeight += elementRow.height()! + 3;
+                    } else if (iteration === playerRender && playerRender < playerNumber) {
+                        this.createSeparatorRow();
+
+                        const elementSeparatorRow = $("#row-separator");
+
+                        elementSeparatorRow.css(positionCSSString, rowTotalHeight);
+                        rowTotalHeight += elementSeparatorRow.height()! + 3;
+
+                        elementRow.css("display", "none");
+                    } else if (iteration > playerRender && iteration !== playerNumber) {
+                        elementRow.css("display", "none");
+                    } else if (iteration === playerNumber) {
+                        elementRow.css("display", "inline-flex");
+                        elementRow.css(positionCSSString, rowTotalHeight);
+
+                        rowTotalHeight += elementRow.height()! + 3;
+                    }
+                } else {
+                    if (playerNumber > 1 && localPlayer === key) {
+                        this.createSeparatorRow();
+                        rowTotalHeight += $("#row-separator").height()! + 3;
+                    } else this.deleteSeparatorRow();
+
+                    if (localPlayer !== key) elementRow.css("display", "none");
+                    else {
+                        elementRow.css("display", "inline-flex");
+                        elementRow.css(positionCSSString, rowTotalHeight);
+                    }
+                }
+            }
+
+            if (localPlayer === key) {
+                if (elementLd.find("#row-separator").length) {
+                    const elementLocalPlayer = $(".playerLocalName");
+
+                    if (iteration > playerRender && iteration < playerNumber)   elementLocalPlayer.addClass("ion-pound").text(value.Position + " " + value.UserName);
+                    else                                                        elementLocalPlayer.removeClass("ion-pound").text("");
+                }
+            }
+        }
+    }
+
+    public joinClass(key: number, value: Globals.I_leaderboardPlayer) {
+        const element = $("#row-" + key);
+
+        if (value.Joined)   element.removeClass("joined").addClass("joined");
+        else                element.removeClass("joined");
+    }
+    public missClass(key: number, value: Globals.I_leaderboardPlayer) {
+        const element = $("#row-" + key);
+
+        if (value.Missed)   element.removeClass("miss").addClass("miss");
+        else                element.removeClass("miss");
+    }
+    public positionClass(key: number, value: Globals.I_leaderboardPlayer) {
+        const element = $("#row-" + key);
+
+        element.removeClass("first second third");
+
+        if (value.Position === 1)   element.addClass("first");
+        if (value.Position === 2)   element.addClass("second");
+        if (value.Position === 3)   element.addClass("third");
+    }
+
+    public missCalculation(key: number, value: Globals.I_leaderboardPlayer) {
+        const elementMiss = $("#row-" + key).find(".fcMiss");
+
+        elementMiss.removeClass("ion-android-checkmark-circle ion-android-cancel")
+
+        if (value.MissCount === 0)  elementMiss.addClass("ion-android-checkmark-circle").text(" FC");
+        else                        elementMiss.addClass("ion-android-cancel").text(" " + value.MissCount);
+    }
+
     /////////////////////////
     // Public Skin Methods //
     /////////////////////////
@@ -237,15 +420,13 @@ export class Template {
     // Public Setup Methods //
     //////////////////////////
     public hideSetup(display: boolean): void {
-        if (display)    $("#games-setup").addClass("hidden");
-        else            $("#games-setup").removeClass("hidden");
+        const element = $("#games-setup");
+
+        if (display)    element.addClass("hidden");
+        else            element.removeClass("hidden");
     }
     public makeElementActive(element?: JQuery): void {
         $("li").removeClass("active");
         if (element !== undefined) element.addClass("active");
-    }
-    public makeHidden(displayed: boolean): void {
-        if (!displayed) $("#setup").removeClass("hidden");
-        else            $("#setup").addClass("hidden");
     }
 }
