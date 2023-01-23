@@ -1,22 +1,26 @@
-import { Globals }      from "./globals";
-import { Tools }        from "./tools";
-import { Template }     from "./template";
-import { Parameters }   from "./parameters";
-import { PlayerCard }   from "./playerCard";
-import { SongCard }     from "./songCard";
-import { Plugins }      from "./plugins";
+import { Globals }          from "./globals";
+import { Tools }            from "./tools";
+import { Template }         from "./template";
+import { Parameters }       from "./parameters";
+import { PlayerCard }       from "./playerCard";
+import { SongCard }         from "./songCard";
+import { Plugins }          from "./plugins";
+import { Leaderboard }      from "./leaderboard";
+import { DebugLeaderboard } from "./debugLeaderboard";
 
 export class Setup {
 
     //////////////////////
     // @Class Variables //
     //////////////////////
-    private _tools:         Tools;
-    private _template:      Template;
-    private _parameters:    Parameters;
-    private _playerCard:    PlayerCard;
-    private _songCard:      SongCard;
-    private _plugins:       Plugins;
+    private _tools:             Tools;
+    private _template:          Template;
+    private _parameters:        Parameters;
+    private _playerCard:        PlayerCard;
+    private _songCard:          SongCard;
+    private _plugins:           Plugins;
+    private _leaderboard:       Leaderboard;
+    private _debugLeaderboard:  DebugLeaderboard;
 
     ///////////////////////
     // Private Variables //
@@ -26,13 +30,15 @@ export class Setup {
     private elements:       Map<string, JQuery>;
 
     constructor() {
-        this._tools         = new Tools();
-        this._template      = new Template();
-        this._parameters    = Parameters.Instance;
-        this._playerCard    = PlayerCard.Instance;
-        this._songCard      = SongCard.Instance;
-        this._plugins       = Plugins.Instance;
-        this.elements       = new Map();
+        this._tools             = new Tools();
+        this._template          = new Template();
+        this._parameters        = Parameters.Instance;
+        this._playerCard        = PlayerCard.Instance;
+        this._songCard          = SongCard.Instance;
+        this._plugins           = Plugins.Instance;
+        this._leaderboard       = Leaderboard.Instance;
+        this._debugLeaderboard  = new DebugLeaderboard();
+        this.elements           = new Map();
 
         $("#setupButton").on("click", async () => {
             if (!this.isDisplayed) {
@@ -185,7 +191,7 @@ export class Setup {
             this.elements.get("songSettings")?.addClass("disabled");
         }
 
-        /*if (!this._parameters.uriParams.ld_disabled) {
+        if (!this._parameters.uriParams.ld_disabled) {
             this.elements.get("leaderboardSettings")?.removeClass("disabled");
 
             this.elements.get("leaderboardSettings")?.on("click", async () => {
@@ -206,16 +212,16 @@ export class Setup {
             });
         } else {
             this.elements.get("leaderboardSettings")?.addClass("disabled");
-        }*/
+        }
     }
 
     private elementsBuilder() {
         // Global Overlay
         /*--------------------------------------------------------------------------------------------------------------*/
         // Global filled elements
-        this.elements.set("playerCard-overlay",   $("#playerCard-overlay"));
-        this.elements.set("songCard-overlay",   $("#songCard-overlay"));
-        /*this.elements.set("leaderboard-overlay",   $("#leaderboard-overlay"));*/
+        this.elements.set("playerCard-overlay",  $("#playerCard-overlay"));
+        this.elements.set("songCard-overlay",    $("#songCard-overlay"));
+        this.elements.set("leaderboard-overlay", $("#leaderboard-overlay"));
         /*--------------------------------------------------------------------------------------------------------------*/
 
         // Globals Setup
@@ -237,7 +243,7 @@ export class Setup {
         this.elements.set("overlaySettings",            $(".overlaySettings"));
         this.elements.set("playerSettings",             $(".playerSettings"));
         this.elements.set("songSettings",               $(".songSettings"));
-        /*this.elements.set("leaderboardSettings",        $(".leaderboardSettings"));*/
+        this.elements.set("leaderboardSettings",        $(".leaderboardSettings"));
 
         // Other menu button
         this.elements.set("customURITypeScript", $("#customURITypeScript"));
@@ -272,7 +278,7 @@ export class Setup {
         /******************************************************************************/
         this.elements.set("playerCardSwitch",   $("#playerCardSwitch"));
         this.elements.set("songCardSwitch",     $("#songCardSwitch"));
-        /*this.elements.set("leaderboardSwitch",  $("#leaderboardSwitch"));*/
+        this.elements.set("leaderboardSwitch",  $("#leaderboardSwitch"));
         /******************************************************************************/
 
         // Player Card Settings
@@ -294,9 +300,9 @@ export class Setup {
         this.elements.set("switchSongCardPreview",  $("#switchSongCardPreview"));
         this.elements.set("songCardSkin",           $("#songCardSkin"));
         this.elements.set("songCardPosition",       $("#songCardPosition"));
-        this.elements.set("songCardPosXReset",        $("#songCardPosXReset"));
+        this.elements.set("songCardPosXReset",      $("#songCardPosXReset"));
         this.elements.set("songCardPosX",           $("#songCardPosX"));
-        this.elements.set("songCardPosYReset",        $("#songCardPosYReset"));
+        this.elements.set("songCardPosYReset",      $("#songCardPosYReset"));
         this.elements.set("songCardPosY",           $("#songCardPosY"));
         this.elements.set("songCardScale",          $("#songCardScale"));
         this.elements.set("missDisplay",            $("#missDisplay"));
@@ -307,13 +313,16 @@ export class Setup {
 
         // Leaderboard Settings
         /******************************************************************************/
-        /*this.elements.set("switchLeaderboardPreview", $("#switchLeaderboardPreview"));
-        this.elements.set("leaderboardPosition",        $("#leaderboardPosition"));
-        this.elements.set("leaderboardPosXReset",       $("#leaderboardPosXReset"));
-        this.elements.set("leaderboardPosX",            $("#leaderboardPosX"));
-        this.elements.set("leaderboardPosYReset",       $("#leaderboardPosYReset"));
-        this.elements.set("leaderboardPosY",            $("#leaderboardPosY"));
-        this.elements.set("leaderboardScale",           $("#leaderboardScale"));*/
+        this.elements.set("switchLeaderboardPreview",       $("#switchLeaderboardPreview"));
+        this.elements.set("leaderboardPosition",            $("#leaderboardPosition"));
+        this.elements.set("leaderboardPosXReset",           $("#leaderboardPosXReset"));
+        this.elements.set("leaderboardPosX",                $("#leaderboardPosX"));
+        this.elements.set("leaderboardPosYReset",           $("#leaderboardPosYReset"));
+        this.elements.set("leaderboardPosY",                $("#leaderboardPosY"));
+        this.elements.set("leaderboardScale",               $("#leaderboardScale"));
+        this.elements.set("leaderboardPlayerRender",        $("#leaderboardPlayerRender"));
+        this.elements.set("leaderboardPlayerRenderReset",   $("#leaderboardPlayerRenderReset"));
+        this.elements.set("playerRenderingNumber",          $(".playerRenderingNumber"));
         /******************************************************************************/
         /*==========================================================================================*/
         /*--------------------------------------------------------------------------------------------------------------*/
@@ -378,10 +387,13 @@ export class Setup {
 
         // Leaderboard Settings
         /******************************************************************************/
-        this.elements.get("leaderboardPosition")?.  val(this._parameters.uriParams.ld_position);
-        this.elements.get("leaderboardPosX")?.      val(this._parameters.uriParams.ld_pos_x);
-        this.elements.get("leaderboardPosY")?.      val(this._parameters.uriParams.ld_pos_y);
-        this.elements.get("leaderboardScale")?.     val(this._parameters.uriParams.ld_scale);
+        this.elements.get("switchLeaderboardPreview")?. prop("checked", this._leaderboard.leaderboardData.display);
+        this.elements.get("leaderboardPosition")?.      val(this._parameters.uriParams.ld_position);
+        this.elements.get("leaderboardPosX")?.          val(this._parameters.uriParams.ld_pos_x);
+        this.elements.get("leaderboardPosY")?.          val(this._parameters.uriParams.ld_pos_y);
+        this.elements.get("leaderboardScale")?.         val(this._parameters.uriParams.ld_scale);
+        this.elements.get("leaderboardPlayerRender")?.  val(this._parameters.uriParams.ld_playerRendering);
+        this.elements.get("playerRenderingNumber")?.    val(this._parameters.uriParams.ld_playerRendering);
         /******************************************************************************/
         /*==========================================================================================*/
         /*--------------------------------------------------------------------------------------------------------------*/
@@ -393,33 +405,40 @@ export class Setup {
         this.elements.get("ScoringSystemSS")?.off("click");
         this.elements.get("ScoringSystemBL")?.off("click");
 
-        this.elements.get("switchBeatSaber")?.off("click");
+        this.elements.get("switchBeatSaber")?.  off("click");
         this.elements.get("switchSynthRiders")?.off("click");
-        this.elements.get("switchAudioTrip")?.off("click");
-        this.elements.get("switchAudica")?.off("click");
+        this.elements.get("switchAudioTrip")?.  off("click");
+        this.elements.get("switchAudica")?.     off("click");
 
-        this.elements.get("checkBsPlus")?.off("click");
-        this.elements.get("checkDatapuller")?.off("click");
-        this.elements.get("checkHttpSiraStatus")?.off("click");
+        this.elements.get("checkBsPlus")?.          off("click");
+        this.elements.get("checkDatapuller")?.      off("click");
+        this.elements.get("checkHttpSiraStatus")?.  off("click");
 
-        this.elements.get("playerCardSwitch")?.off("click");
-        this.elements.get("songCardSwitch")?.off("click");
-        /*this.elements.get("leaderboardSwitch")?.off("click");*/
+        this.elements.get("playerCardSwitch")?. off("click");
+        this.elements.get("songCardSwitch")?.   off("click");
+        this.elements.get("leaderboardSwitch")?.off("click");
 
-        this.elements.get("switchPlayerCardPreview")?.off("click");
-        this.elements.get("playerIdChanger")?.off("click");
-        this.elements.get("playerCardSkin")?.off("change");
-        this.elements.get("playerCardPosition")?.off("change");
-        this.elements.get("playerCardPosX")?.off("input");
-        this.elements.get("playerCardPosY")?.off("input");
-        this.elements.get("playerCardScale")?.off("input");
+        this.elements.get("switchPlayerCardPreview")?.  off("click");
+        this.elements.get("playerIdChanger")?.          off("click");
+        this.elements.get("playerCardSkin")?.           off("change");
+        this.elements.get("playerCardPosition")?.       off("change");
+        this.elements.get("playerCardPosX")?.           off("input");
+        this.elements.get("playerCardPosY")?.           off("input");
+        this.elements.get("playerCardScale")?.          off("input");
 
         this.elements.get("switchSongCardPreview")?.off("click");
-        this.elements.get("songCardSkin")?.off("change");
-        this.elements.get("songCardPosition")?.off("change");
-        this.elements.get("songCardPosX")?.off("input");
-        this.elements.get("songCardPosY")?.off("input");
-        this.elements.get("songCardScale")?.off("input");
+        this.elements.get("songCardSkin")?.         off("change");
+        this.elements.get("songCardPosition")?.     off("change");
+        this.elements.get("songCardPosX")?.         off("input");
+        this.elements.get("songCardPosY")?.         off("input");
+        this.elements.get("songCardScale")?.        off("input");
+
+        this.elements.get("switchLeaderboardPreview")?. off("click");
+        this.elements.get("leaderboardPosition")?.      off("change");
+        this.elements.get("leaderboardPosX")?.          off("input");
+        this.elements.get("leaderboardPosY")?.          off("input");
+        this.elements.get("leaderboardScale")?.         off("input");
+        this.elements.get("leaderboardPlayerRender")?.  off("input");
 
         this.elements.get("customURITypeScript")?.off("click");
     }
@@ -554,7 +573,7 @@ export class Setup {
             this.elementsBuilder();
             this.menuAction();
         });
-        /*this.elements.get("leaderboardSwitch")?.on("click", async () => {
+        this.elements.get("leaderboardSwitch")?.on("click", async () => {
             this._parameters.uriParams.ld_disabled = !this.elements.get("leaderboardSwitch")?.prop("checked");
             this._parameters.assocValue();
 
@@ -562,7 +581,10 @@ export class Setup {
 
             this.elements.get("menuSetup")?.empty();
             await this._template.loadSkin(Globals.E_MODULES.MENU_SETUP, this.skinSettings, "overlayMenu.html");
-        });*/
+
+            this.elementsBuilder();
+            this.menuAction();
+        });
 
         this.elements.get("switchPlayerCardPreview")?.on("click", async () => {
             if (this.elements.get("switchPlayerCardPreview")?.prop("checked")) {
@@ -695,7 +717,7 @@ export class Setup {
             }
         });
         this.elements.get("songCardPosXReset")?.on("click", async () => {
-            this.elements.get("songCardPosXReset")?.val("0");
+            this.elements.get("songCardPosX")?.val("0");
             this._parameters.uriParams.sc_pos_x = 0;
             this._parameters.assocValue();
         });
@@ -710,7 +732,7 @@ export class Setup {
             }
         });
         this.elements.get("songCardPosYReset")?.on("click", async () => {
-            this.elements.get("songCardPosYReset")?.val("0");
+            this.elements.get("songCardPosY")?.val("0");
             this._parameters.uriParams.sc_pos_y = 0;
             this._parameters.assocValue();
         });
@@ -750,6 +772,84 @@ export class Setup {
             this._parameters.uriParams.sc_ppEstimated = this.elements.get("ppEstimated")?.prop("checked") === true;
             this._parameters.assocValue();
         });*/
+
+        this.elements.get("switchLeaderboardPreview")?.on("click", async () => {
+            if (this.elements.get("switchLeaderboardPreview")?.prop("checked")) {
+                await this._template.loadSkin(Globals.E_MODULES.LEADERBOARD, this._leaderboard.leaderboardData.skin);
+                this._leaderboard.leaderboardData.display = true;
+                this._debugLeaderboard.play();
+            } else {
+                this._leaderboard.leaderboardData.display = false;
+                this._debugLeaderboard.stop();
+            }
+        });
+        this.elements.get("leaderboardPosition")?.on("change", async () => {
+            let leaderboardPositionValue = this.elements.get("leaderboardPosition")?.val();
+
+            if ((leaderboardPositionValue !== undefined) && (typeof leaderboardPositionValue === "string")) {
+                if (this._parameters.parseParameters("ld_position", leaderboardPositionValue)) {
+                    this._parameters.uriParams.ld_position = Number(leaderboardPositionValue);
+                    this._parameters.assocValue();
+                }
+            }
+        });
+        this.elements.get("leaderboardPosXReset")?.on("click", async () => {
+            this.elements.get("leaderboardPosX")?.val("0");
+            this._parameters.uriParams.ld_pos_x = 0;
+            this._parameters.assocValue();
+        });
+        this.elements.get("leaderboardPosX")?.on("input", () => {
+            let leaderboardPosXValue = this.elements.get("leaderboardPosX")?.val();
+
+            if ((leaderboardPosXValue !== undefined) && (typeof leaderboardPosXValue === "string")) {
+                if (this._parameters.parseParameters("ld_pos_x", leaderboardPosXValue)) {
+                    this._parameters.uriParams.ld_pos_x = Number(leaderboardPosXValue);
+                    this._parameters.assocValue();
+                }
+            }
+        });
+        this.elements.get("leaderboardPosYReset")?.on("click", async () => {
+            this.elements.get("leaderboardPosY")?.val("0");
+            this._parameters.uriParams.ld_pos_y = 0;
+            this._parameters.assocValue();
+        });
+        this.elements.get("leaderboardPosY")?.on("input", () => {
+            let leaderboardPosYValue = this.elements.get("leaderboardPosY")?.val();
+
+            if ((leaderboardPosYValue !== undefined) && (typeof leaderboardPosYValue === "string")) {
+                if (this._parameters.parseParameters("ld_pos_y", leaderboardPosYValue)) {
+                    this._parameters.uriParams.ld_pos_y = Number(leaderboardPosYValue);
+                    this._parameters.assocValue();
+                }
+            }
+        });
+        this.elements.get("leaderboardScale")?.on("input", () => {
+            let leaderboardScaleValue = this.elements.get("leaderboardScale")?.val();
+
+            if ((leaderboardScaleValue !== undefined) && (typeof leaderboardScaleValue === "string")) {
+                if (this._parameters.parseParameters("ld_scale", leaderboardScaleValue)) {
+                    this._parameters.uriParams.ld_scale = Number(leaderboardScaleValue);
+                    this._parameters.assocValue();
+                }
+            }
+        });
+        this.elements.get("leaderboardPlayerRender")?.on("input", () => {
+            let leaderboardPlayerRenderValue = this.elements.get("leaderboardPlayerRender")?.val();
+
+            if ((leaderboardPlayerRenderValue !== undefined) && (typeof leaderboardPlayerRenderValue === "string")) {
+                if (this._parameters.parseParameters("ld_playerRendering", leaderboardPlayerRenderValue)) {
+                    this._parameters.uriParams.ld_playerRendering = Number(leaderboardPlayerRenderValue);
+                    this.elements.get("playerRenderingNumber")?.text(leaderboardPlayerRenderValue);
+                    this._parameters.assocValue();
+                }
+            }
+        });
+        this.elements.get("leaderboardPlayerRenderReset")?.on("click", async () => {
+            this.elements.get("leaderboardPlayerRender")?.val("5");
+            this.elements.get("playerRenderingNumber")?.text("5");
+            this._parameters.uriParams.ld_playerRendering = 5;
+            this._parameters.assocValue();
+        });
 
         this.elements.get("customURITypeScript")?.on("click", async () => {
             await this.urlTextBuilder();

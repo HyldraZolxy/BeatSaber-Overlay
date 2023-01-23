@@ -193,18 +193,21 @@ export class Parameters {
             case "scsk": // OLD
             case "pc_skin":
             case "sc_skin":
+            case "ld_skin":
                 return Globals.SKIN_AVAILABLE[Globals.E_MODULES.PLAYERCARD].hasOwnProperty(<string>value) || Globals.SKIN_AVAILABLE[Globals.E_MODULES.SONGCARD].hasOwnProperty(<string>value);
 
             case "pcpos": // OLD
             case "scpos": // OLD
             case "pc_position":
             case "sc_position":
+            case "ld_position":
                 return <string>value in Globals.E_POSITION;
 
             case "pcsc": // OLD
             case "scsc": // OLD
             case "pc_scale":
             case "sc_scale":
+            case "ld_scale":
                 return RegExp(/^[+-]?\d+(\.\d+)?$/).test(<string>value);
 
             default: return false;

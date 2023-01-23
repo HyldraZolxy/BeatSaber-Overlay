@@ -150,6 +150,10 @@ input:checked + .slider:before {
     font-weight: bold;
 }
 
+#module span p {
+    display: inline-block;
+}
+
 #module label .switch {
     top: 0;
     right: 0;

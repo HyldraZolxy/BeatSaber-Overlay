@@ -241,7 +241,7 @@ export class Template {
     // Public Leaderboard Methods //
     ////////////////////////////////
     public createRow(playerLUID: number, player: Globals.I_leaderboardPlayer, localPlayer: number, playerNumber: number, playerRender: number): void {
-        const elementLd = $("#leaderboard-overlay");
+        const elementLd = $("#leaderboardTable");
 
         if (elementLd.find("#row-" + playerLUID).length) return;
 
@@ -265,7 +265,7 @@ export class Template {
         (playerNumber > playerRender) ? this.createSeparatorRow() : this.deleteSeparatorRow();
     }
     public deleteRow(playerLUID: number, playerNumber: number, playerRender: number): void {
-        const elementLd = $("#leaderboard-overlay");
+        const elementLd = $("#leaderboardTable");
         const elementRow = $("#row-" + playerLUID);
 
         if (!elementLd.find(elementRow).length) return;
@@ -276,7 +276,7 @@ export class Template {
         (playerNumber > playerRender) ? this.createSeparatorRow() : this.deleteSeparatorRow();
     }
     public createSeparatorRow(): void {
-        const elementLd = $("#leaderboard-overlay");
+        const elementLd = $("#leaderboardTable");
 
         if (elementLd.find("#row-separator").length) return;
 
@@ -288,7 +288,7 @@ export class Template {
         );
     }
     public deleteSeparatorRow(): void {
-        const elementLd = $("#leaderboard-overlay");
+        const elementLd = $("#leaderboardTable");
         const elementRow = $("#row-separator");
 
         if (!elementLd.find(elementRow).length) return;
@@ -297,7 +297,7 @@ export class Template {
     }
 
     public sortingRows(player: Map<number, Globals.I_leaderboardPlayer>, localPlayer: number, playerNumber: number, playerRender: number, positionCSS: number): void {
-        const elementLd = $("#leaderboard-overlay");
+        const elementLd = $("#leaderboardTable");
         const positionCSSString = [Globals.E_POSITION.TOP_LEFT, Globals.E_POSITION.TOP_RIGHT].includes(positionCSS) ? "top" : "bottom";
         let iteration = 0;
         let rowTotalHeight = 0;
@@ -312,6 +312,16 @@ export class Template {
                     elementRow.css("display", "none");
                     iteration--;
                     continue;
+                }
+
+                if (positionCSSString === "top") {
+                    if (elementLd.find("#row-separator").length) $("#row-separator").css("bottom", "");
+
+                    elementRow.css("bottom", "");
+                } else {
+                    if (elementLd.find("#row-separator").length) $("#row-separator").css("top", "");
+
+                    elementRow.css("top", "");
                 }
 
                 if (playerRender > 1) {

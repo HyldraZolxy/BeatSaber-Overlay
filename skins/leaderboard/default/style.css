@@ -24,15 +24,15 @@
 }
 
 .first {
-    background-color: rgba(196, 143, 13, 0.7);
+    background-color: rgba(196, 143, 13, 0.7) !important;
 }
 
 .second {
-    background-color: rgba(175, 175, 175, 0.7);
+    background-color: rgba(175, 175, 175, 0.7) !important;
 }
 
 .third {
-    background-color: rgba(136, 81, 37, 0.7);
+    background-color: rgba(136, 81, 37, 0.7) !important;
 }
 
 .miss {
@@ -60,7 +60,7 @@
 /* =================================
    = LEADERBOARD TAGS / Rows start =
    ================================= */
-tr {
+#leaderboardTable tr {
     margin-bottom: 3px;
 
     display: inline-flex;
@@ -78,14 +78,14 @@ tr {
 
     transition-duration: 0.5s;
 }
-#leaderboard-overlay.top-left tr, #leaderboard-overlay.bottom-left tr {
+#leaderboard-overlay.top-left #leaderboardTable tr, #leaderboard-overlay.bottom-left #leaderboardTable tr {
     left: 0;
 }
-#leaderboard-overlay.top-right tr, #leaderboard-overlay.bottom-right tr {
+#leaderboard-overlay.top-right #leaderboardTable tr, #leaderboard-overlay.bottom-right #leaderboardTable tr {
     right: 0;
 }
 
-tr > * {
+#leaderboardTable tr > * {
     margin: 7px 10px;
     display: inline-block;
 }
@@ -154,9 +154,9 @@ tr > * {
 #row-separator {
     width: 580px;
 
-    line-height: 23px;
+    line-height: 23px !important;
 
-    background-color: rgba(84, 76, 135, 0.7);
+    background-color: rgba(84, 76, 135, 0.7) !important;
 }
 /* ===============================
    = LEADERBOARD TAGS / Rows end =

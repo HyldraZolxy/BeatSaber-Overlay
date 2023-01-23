@@ -1,10 +1,10 @@
 console.time("Load time");
 
-import { Globals }      from "./globals";
-import { Parameters }   from "./parameters";
-import { UI }           from "./ui";
-import { Plugins }      from "./plugins";
-import { Setup }        from "./setup";
+import { Globals }          from "./globals";
+import { Parameters }       from "./parameters";
+import { UI }               from "./ui";
+import { Plugins }          from "./plugins";
+import { Setup }            from "./setup";
 
 class Init {
 
