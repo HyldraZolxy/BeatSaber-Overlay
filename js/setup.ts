@@ -777,7 +777,7 @@ export class Setup {
             if (this.elements.get("switchLeaderboardPreview")?.prop("checked")) {
                 await this._template.loadSkin(Globals.E_MODULES.LEADERBOARD, this._leaderboard.leaderboardData.skin);
                 this._leaderboard.leaderboardData.display = true;
-                this._debugLeaderboard.play();
+                this._debugLeaderboard.play(this._parameters.uriParams.pc_playerID);
             } else {
                 this._leaderboard.leaderboardData.display = false;
                 this._debugLeaderboard.stop();

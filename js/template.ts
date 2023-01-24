@@ -350,15 +350,17 @@ export class Template {
                         rowTotalHeight += elementRow.height()! + 3;
                     }
                 } else {
-                    if (playerNumber > 1 && localPlayer === key) {
-                        this.createSeparatorRow();
-                        rowTotalHeight += $("#row-separator").height()! + 3;
-                    } else this.deleteSeparatorRow();
-
                     if (localPlayer !== key) elementRow.css("display", "none");
                     else {
                         elementRow.css("display", "inline-flex");
                         elementRow.css(positionCSSString, rowTotalHeight);
+
+                        if (playerNumber > 1) {
+                            if (!elementLd.find("#row-separator").length) {
+                                this.createSeparatorRow();
+                                rowTotalHeight += $("#row-separator").height()! + 3;
+                            }
+                        } else this.deleteSeparatorRow();
                     }
                 }
             }
