@@ -115,10 +115,6 @@ export class Parameters {
         this._Leaderboard   = Leaderboard.Instance;
 
         this.findParameters(new URLSearchParams(Globals.URI_NAV_SEARCH));
-
-        (async () => {
-            console.log(this.uriParams);
-        })();
     }
 
     /////////////////////

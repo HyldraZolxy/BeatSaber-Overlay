@@ -87,7 +87,6 @@ export class Setup {
                 await this._template.loadSkin(Globals.E_MODULES.OPT_SETUP, this.skinSettings, "indexOptions.html");
 
                 await (async () => {
-                    console.log("3");
                     this.setupAction();
                     this._template.makeElementActive();
                 })();
