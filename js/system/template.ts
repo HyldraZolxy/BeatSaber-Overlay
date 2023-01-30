@@ -1,7 +1,9 @@
-import { Globals }  from "./globals";
-import { Tools }    from "./tools";
+import { Globals }                              from "../globals";
+import { Tools }                                from "./tools";
+import { I_leaderboard, I_leaderboardPlayer }   from "../modules/leaderboard";
 
 export class Template {
+
     //////////////////////
     // @Class Variables //
     //////////////////////
@@ -25,40 +27,62 @@ export class Template {
         this._tools = new Tools();
     }
 
+    /////////////////////
+    // Private Methods //
+    /////////////////////
+    private async filesRows(URI: string): Promise<string> {
+        return await fetch(URI, {
+            method: "GET"
+        }).then(content => content.text());
+    }
+    private assocRowsData(data: string, player: I_leaderboardPlayer, playerLUID: number): string {
+        let content = data;
+        content = content.replace("{playerLUID}",       String(playerLUID));
+        content = content.replace("{playerPosition}",   String(player.Position));
+        content = content.replace("{playerUserName}",   player.UserName);
+        content = content.replace("{playerScore}",      String(player.Score));
+        content = content.replace("{playerAccuracy}",   String(player.Accuracy * 100));
+
+        return content;
+    }
+
     ////////////////////
     // Public Methods //
     ////////////////////
     public async loadSkin(module: Globals.E_MODULES, skinName: string, fileName?: string): Promise<unknown> {
         return new Promise(resolve => {
-            let skin        = (Globals.SKIN_AVAILABLE[module].hasOwnProperty(skinName) ? Globals.SKIN_AVAILABLE[module][skinName] : Globals.SKIN_AVAILABLE[module]["default"]);
-            let skinPath    = skin[0];
+            let skinPath!: string;
+
+            let skin = this._tools.getModuleSkin(this._tools.moduleStringConverter(module), skinName);
+            if (skin) skinPath = skin[0];
 
             if (!fileName) {
-                $("link[rel=stylesheet][href*=\"./skins/" + this._tools.moduleStringConverter(module) + "\"]").remove();
+                if (skin) {
+                    $("link[rel=stylesheet][href*=\"./skins/" + this._tools.moduleStringConverter(module) + "\"]").remove();
 
-                for (let i = 1; i < skin.length; i++) {
-                    if (skin[i] === "style.css") {
-                        $("head").append("<link rel=\"stylesheet\" href=\"" + skinPath + skin[i] + "\" type=\"text/css\" />");
-                        continue;
-                    }
-
-                    if (module === Globals.E_MODULES.MENU_SETUP || module === Globals.E_MODULES.OPT_SETUP) {
-                        if (skin[i] === "indexMenu.html" || skin[i] === "indexOptions.html") {
-                            $("#" + this._prefix(module)).load(skinPath + skin[i]);
+                    for (let i = 1; i < skin.length; i++) {
+                        if (skin[i] === "style.css") {
+                            $("head").append("<link rel=\"stylesheet\" href=\"" + skinPath + skin[i] + "\" type=\"text/css\" />");
+                            continue;
                         }
-                    } else {
-                        $("#" + this._prefix(module)).load(skinPath + skin[i]);
+
+                        if (    skin[i] === "index.html"
+                            ||  skin[i] === "indexMenu.html"
+                            ||  skin[i] === "indexOptions.html"
+                        ) $("#" + this._prefix(module)).load(skinPath + skin[i]);
                     }
                 }
-            } else if (skin.includes(fileName)) $("#" + this._prefix(module)).load(skinPath + fileName);
+            } else {
+                if (skin && fileName && skin.includes(fileName)) $("#" + this._prefix(module)).load(skinPath + fileName);
+            }
 
             setTimeout(() => resolve(""), 5);
         });
     }
 
-    public refreshUI(data: Globals.I_playerCard | Globals.I_songCard | Globals.I_songCardUpdate | Globals.I_leaderboard, module: Globals.E_MODULES): void {
+    public refreshUI(data: Globals.I_playerCard | Globals.I_songCard | Globals.I_songCardUpdate | I_leaderboard, module: Globals.E_MODULES): void {
         if (data.endedUpdate) {
-            for (let[key, value] of Object.entries(data)) {
+            for (let [key, value] of Object.entries(data)) {
                 let elementID       = $("#" + key);
                 let elementClass    = $("." + key)
 
@@ -114,17 +138,15 @@ export class Template {
                                 break;
 
                             case "qualified":
-                                elementID.css("display", (value) ? "inline-block" : "none");
-                                break;
                             case "ranked":
                                 elementID.css("display", (value) ? "inline-block" : "none");
                                 break;
 
                             case "accuracyToLetterClass":
-                                elementClass.removeClass("ss s a b c de").addClass(value as string);
+                                elementClass.removeClass("ss s a b c de").addClass(value);
                                 break;
                             case "difficultyClass":
-                                elementClass.removeClass("ExpertPlus Expert Hard Normal Easy").addClass(value as string);
+                                elementClass.removeClass("ExpertPlus Expert Hard Normal Easy").addClass(value);
                                 break;
 
                             case "health":
@@ -140,7 +162,7 @@ export class Template {
             }
         }
     }
-    public refreshUIMap(data: Map<number, Globals.I_leaderboardPlayer>, module: Globals.E_MODULES): void {
+    public refreshUIMap(data: Map<number, I_leaderboardPlayer>, module: Globals.E_MODULES): void {
         for (let [key, value] of data) {
             let elementRow = $("#row-" + key);
 
@@ -155,9 +177,10 @@ export class Template {
                                 elementRow.find(elementClass).text(valueValue);
                                 break;
                             case "Accuracy":
-                                elementRow.find(elementClass).text((<number>valueValue * 100).toFixed(2));
+                                elementRow.find(elementClass).text((Number(valueValue) * 100).toFixed(2));
                                 break;
                             case "MissCount":
+                                this.missCalculation(key, value);
                                 break;
                         }
                     }
@@ -170,7 +193,7 @@ export class Template {
         let element = $("#" + this._prefix(module));
 
         element.css("transform-origin", this._tools.positionStringConverter(position).replace(/(-)/g, " "));
-        element.css("transform", "scale(" + scale + ")");
+        element.css("transform",        "scale(" + scale + ")");
     }
     public moduleCorners(module: Globals.E_MODULES, position: number): void {
         let element = $("#" + this._prefix(module));
@@ -240,33 +263,36 @@ export class Template {
     ////////////////////////////////
     // Public Leaderboard Methods //
     ////////////////////////////////
-    public createRow(playerLUID: number, player: Globals.I_leaderboardPlayer, localPlayer: number, playerNumber: number, playerRender: number): void {
+    public async createRow(playerLUID: number, player: I_leaderboardPlayer, localPlayer: number, playerNumber: number, playerRender: number, skinName: string): Promise<void> {
         const elementLd = $("#leaderboardTable");
 
         if (elementLd.find("#row-" + playerLUID).length) return;
 
-        elementLd.append('<tr id="row-' + playerLUID + '" class="joined">'
-                            + '<td class="Position ion-pound">' + player.Position + '</td>'
-                            + '<td class="avatar">'
-                                + '<div class="innerAvatar"></div>'
-                            + '</td>'
-                            + '<td class="UserName">' + player.UserName + '</td>'
-                            + '<td class="Score">' + player.Score + '</td>'
-                            + '<td class="Accuracy">' + player.Accuracy * 100 + '</td>'
-                            + '<td class="fcMiss ion-android-checkmark-circle"> FC</td>'
-                        + '</tr>'
-        );
+        let skin = this._tools.getModuleSkin(this._tools.moduleStringConverter(Globals.E_MODULES.LEADERBOARD), skinName);
+
+        if (skin?.includes("rows.html")) {
+            let content = await this.filesRows(skin[0] + "rows.html");
+
+            elementLd.append(this.assocRowsData(content, player, playerLUID));
+        } else {
+            skin = this._tools.getModuleSkin(this._tools.moduleStringConverter(Globals.E_MODULES.LEADERBOARD), "default");
+
+            if (skin) {
+                let content = await this.filesRows(skin[0] + "rows.html");
+                elementLd.append(this.assocRowsData(content, player, playerLUID));
+            }
+        }
 
         const elementRow = $("#row-" + playerLUID);
         elementRow.find(".innerAvatar").css("background-image", "url('" + player.UserAvatar + "')");
 
-        if (playerLUID === localPlayer) elementRow.find(".pseudo").addClass("localPlayer");
+        if (playerLUID === localPlayer) elementRow.find(".UserName").addClass("localPlayer");
 
         (playerNumber > playerRender) ? this.createSeparatorRow() : this.deleteSeparatorRow();
     }
     public deleteRow(playerLUID: number, playerNumber: number, playerRender: number): void {
-        const elementLd = $("#leaderboardTable");
-        const elementRow = $("#row-" + playerLUID);
+        const elementLd     = $("#leaderboardTable");
+        const elementRow    = $("#row-" + playerLUID);
 
         if (!elementLd.find(elementRow).length) return;
 
@@ -288,19 +314,19 @@ export class Template {
         );
     }
     public deleteSeparatorRow(): void {
-        const elementLd = $("#leaderboardTable");
-        const elementRow = $("#row-separator");
+        const elementLd     = $("#leaderboardTable");
+        const elementRow    = $("#row-separator");
 
         if (!elementLd.find(elementRow).length) return;
 
         elementRow.empty().remove();
     }
 
-    public sortingRows(player: Map<number, Globals.I_leaderboardPlayer>, localPlayer: number, playerNumber: number, playerRender: number, positionCSS: number): void {
-        const elementLd = $("#leaderboardTable");
+    public sortingRows(player: Map<number, I_leaderboardPlayer>, localPlayer: number, playerNumber: number, playerRender: number, positionCSS: number): void {
+        const elementLd         = $("#leaderboardTable");
         const positionCSSString = [Globals.E_POSITION.TOP_LEFT, Globals.E_POSITION.TOP_RIGHT].includes(positionCSS) ? "top" : "bottom";
-        let iteration = 0;
-        let rowTotalHeight = 0;
+        let iteration           = 0;
+        let rowTotalHeight      = 0;
 
         for (let [key, value] of player) {
             iteration++;
@@ -355,10 +381,18 @@ export class Template {
                         elementRow.css("display", "inline-flex");
                         elementRow.css(positionCSSString, rowTotalHeight);
 
+                        rowTotalHeight += elementRow.height()! + 3;
+
                         if (playerNumber > 1) {
                             if (!elementLd.find("#row-separator").length) {
                                 this.createSeparatorRow();
                                 rowTotalHeight += $("#row-separator").height()! + 3;
+                            } else {
+                                const elementSeparatorRow = $("#row-separator");
+
+                                elementSeparatorRow.css(positionCSSString, rowTotalHeight);
+
+                                rowTotalHeight += elementSeparatorRow.height()! + 3;
                             }
                         } else this.deleteSeparatorRow();
                     }
@@ -369,26 +403,26 @@ export class Template {
                 if (elementLd.find("#row-separator").length) {
                     const elementLocalPlayer = $(".playerLocalName");
 
-                    if (iteration > playerRender && iteration < playerNumber)   elementLocalPlayer.addClass("ion-pound").text(value.Position + " " + value.UserName);
-                    else                                                        elementLocalPlayer.removeClass("ion-pound").text("");
+                    if (iteration > playerRender && iteration < playerNumber && playerRender > 1)   elementLocalPlayer.addClass("ion-pound").text(value.Position + " " + value.UserName);
+                    else                                                                            elementLocalPlayer.removeClass("ion-pound").text("");
                 }
             }
         }
     }
 
-    public joinClass(key: number, value: Globals.I_leaderboardPlayer) {
+    public joinClass(key: number, value: I_leaderboardPlayer) {
         const element = $("#row-" + key);
 
         if (value.Joined)   element.removeClass("joined").addClass("joined");
         else                element.removeClass("joined");
     }
-    public missClass(key: number, value: Globals.I_leaderboardPlayer) {
+    public missClass(key: number, value: I_leaderboardPlayer) {
         const element = $("#row-" + key);
 
         if (value.Missed)   element.removeClass("miss").addClass("miss");
         else                element.removeClass("miss");
     }
-    public positionClass(key: number, value: Globals.I_leaderboardPlayer) {
+    public positionClass(key: number, value: I_leaderboardPlayer) {
         const element = $("#row-" + key);
 
         element.removeClass("first second third");
@@ -398,10 +432,10 @@ export class Template {
         if (value.Position === 3)   element.addClass("third");
     }
 
-    public missCalculation(key: number, value: Globals.I_leaderboardPlayer) {
+    public missCalculation(key: number, value: I_leaderboardPlayer) {
         const elementMiss = $("#row-" + key).find(".fcMiss");
 
-        elementMiss.removeClass("ion-android-checkmark-circle ion-android-cancel")
+        elementMiss.removeClass("ion-android-checkmark-circle ion-android-cancel");
 
         if (value.MissCount === 0)  elementMiss.addClass("ion-android-checkmark-circle").text(" FC");
         else                        elementMiss.addClass("ion-android-cancel").text(" " + value.MissCount);

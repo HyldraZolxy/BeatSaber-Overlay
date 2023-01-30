@@ -1,5 +1,46 @@
-import { Globals }  from "./globals";
-import { Template } from "./template";
+import { Globals }                      from "../globals";
+import { Template }                     from "../system/template";
+import { I_bsPlusLeaderboardObject }    from "../games/beatSaber/bsPlusLeaderboard";
+
+export interface I_leaderboard {
+    disabled            : boolean;                                                          // Is leaderboard enabled?
+    display             : boolean;                                                          // Is leaderboard displayed?
+    needUpdate          : boolean;                                                          // Is leaderboard need update?
+    endedUpdate         : boolean;                                                          // Is leaderboard updated?
+    skin                : string;                                                           // Skin of the leaderboard
+    position            : number;                                                           // Position of the leaderboard
+    scale               : number;                                                           // Scale of the leaderboard
+    pos_x               : number;                                                           // Pos X of the leaderboard
+    pos_y               : number;                                                           // Pos Y of the leaderboard
+    playerRendering     : number;                                                           // Number of row rendered on the leaderboard
+
+    playerLocalId       : string;                                                           // Local player ID
+    playerLocalLUID     : number;                                                           // Local player UID
+    playerLocalName     : string;                                                           // Local player name
+    playerLocalPosition : number;                                                           // Local player position in the leaderboard
+
+    roomState           : "None" | "SelectingSong" | "WarmingUp" | "Playing" | "Results";   // State of the room
+}
+export interface I_leaderboardPlayer {
+    [key: string]       : string|number|boolean;
+
+    UserID      : string;   // Player ID (ScoreSaber)
+    UserName    : string;   // Player name
+    UserAvatar  : string;   // Player avatar (ScoreSaber link)
+
+    Position    : number;   // Player position in the leaderboard
+    Score       : number;   // Player score
+    Accuracy    : number;   // Player accuracy
+    Combo       : number;   // Player combo
+    MissCount   : number;   // Player miss count
+
+    Joined      : boolean;  // Is player just joined?
+    Leaved      : boolean;  // Is player just left?
+    Failed      : boolean;  // Is player failed?
+    Deleted     : boolean;  // Is player quit the map?
+    Missed      : boolean;  // Is player just miss a note ?
+    Spectating  : boolean;  // Is player spectating?
+}
 
 export class Leaderboard {
 
@@ -11,24 +52,24 @@ export class Leaderboard {
     //////////////////////
     // @Class Variables //
     //////////////////////
-    private _template:      Template;
+    private _template: Template;
 
     ///////////////////////
     // Private Variables //
     ///////////////////////
-    private readonly _leaderboardMap: Map<number, Globals.I_leaderboardPlayer>;
+    private readonly _leaderboardMap: Map<number, I_leaderboardPlayer>;
 
     //////////////////////
     // Public Variables //
     //////////////////////
     public leaderboardGames: Globals.I_gamesSupported = {
-        g_beatSaber     : true,
-        g_synthRiders   : false,
-        g_audioTrip     : false,
-        g_audica        : false
+        beatSaber     : true,
+        synthRiders   : false,
+        audioTrip     : false,
+        audica        : false
     };
-    public leaderboardData: Globals.I_leaderboard = {
-        disabled            : false,
+    public leaderboardData: I_leaderboard = {
+        disabled            : true,
         display             : false,
         needUpdate          : true,
         endedUpdate         : false,
@@ -61,7 +102,7 @@ export class Leaderboard {
         return playerAccuracy * (playerDeleted ? 0.01 : 1);
     }
 
-    private sortLeaderboard(sortBy: keyof Globals.I_leaderboardPlayer, sortOrder: "asc" | "desc"): Map<number, Globals.I_leaderboardPlayer> {
+    private sortLeaderboard(sortBy: keyof I_leaderboardPlayer, sortOrder: "asc" | "desc"): Map<number, I_leaderboardPlayer> {
         let rankPosition = 1;
 
         const leaderboardSorted = new Map([...this._leaderboardMap].sort((a, b) => sortOrder === "asc" ? (a[1][sortBy] as any) - (b[1][sortBy] as any) : (b[1][sortBy] as any) - (a[1][sortBy] as any)));
@@ -86,15 +127,13 @@ export class Leaderboard {
     public refreshLeaderboard(): void {
         let leaderboardSorted = this._leaderboardMap;
 
-        if (!this.leaderboardGames.g_beatSaber || this.leaderboardData.disabled) {
+        if (!this.leaderboardGames.beatSaber || this.leaderboardData.disabled) {
             this.leaderboardData.disabled = true;
             return;
         }
 
         if (this.leaderboardData.roomState === "None") return;
-        if (this.leaderboardData.roomState === "Playing" || this.leaderboardData.roomState === "Results") {
-            leaderboardSorted = this.sortLeaderboard("Accuracy", "desc");
-        }
+        if (this.leaderboardData.roomState === "Playing" || this.leaderboardData.roomState === "Results") leaderboardSorted = this.sortLeaderboard("Accuracy", "desc");
 
         this._template.refreshUI(this.leaderboardData, Globals.E_MODULES.LEADERBOARD);
         this._template.refreshUIMap(this._leaderboardMap, Globals.E_MODULES.LEADERBOARD);
@@ -108,7 +147,6 @@ export class Leaderboard {
         for (let [key, value] of this._leaderboardMap) {
             this._template.joinClass(key, value);
             this._template.missClass(key, value);
-            this._template.missCalculation(key, value);
             this._template.positionClass(key, value);
 
             this._leaderboardMap.get(key)!.Joined = false;
@@ -116,7 +154,7 @@ export class Leaderboard {
         }
     }
 
-    public addPlayer(player: Globals.I_bsPlusLeaderboardObject): void {
+    public addPlayer(player: I_bsPlusLeaderboardObject): void {
         this._leaderboardMap.set(player.PlayerJoined.LUID, {
             UserID      : player.PlayerJoined.UserID,
             UserName    : player.PlayerJoined.UserName,
@@ -124,7 +162,7 @@ export class Leaderboard {
 
             Position    : 0,
             Score       : 0,
-            Accuracy    : 1,
+            Accuracy    : 0,
             Combo       : 0,
             MissCount   : 0,
 
@@ -142,19 +180,18 @@ export class Leaderboard {
                                     this._leaderboardMap.get(player.PlayerJoined.LUID)!,
                                     this.leaderboardData.playerLocalLUID,
                                     this._leaderboardMap.size,
-                                    this.leaderboardData.playerRendering
+                                    this.leaderboardData.playerRendering,
+                                    this.leaderboardData.skin
         );
     }
     public deletePlayer(playerLUID: number): void {
         this._leaderboardMap.delete(playerLUID);
         this._template.deleteRow(playerLUID, this._leaderboardMap.size, this.leaderboardData.playerRendering);
     }
-    public updatePlayer(player: Globals.I_bsPlusLeaderboardObject["PlayerUpdated"] | Globals.I_bsPlusLeaderboardObject["Score"], event: "PlayerUpdated" | "Score"): void {
+    public updatePlayer(player: I_bsPlusLeaderboardObject["PlayerUpdated"] | I_bsPlusLeaderboardObject["Score"], event: "PlayerUpdated" | "Score"): void {
         const playerLUID = (event === "PlayerUpdated" || event === "Score") ? player.LUID : null;
 
-        Object.entries(player).forEach(entry => {
-            let [key, value] = entry;
-
+        for (let [key, value] of Object.entries(player)) {
             if (key === "LUID") return;
             if (playerLUID !== null) {
                 if (key === "MissCount" && this._leaderboardMap.get(playerLUID)?.MissCount !== value) this._leaderboardMap.get(playerLUID)!.Missed = true;
@@ -162,7 +199,7 @@ export class Leaderboard {
 
                 this._leaderboardMap.get(playerLUID)![key] = value;
             }
-        });
+        }
     }
 
     public roomLeaved(): void {

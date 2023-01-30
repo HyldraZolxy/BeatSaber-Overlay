@@ -1,5 +1,5 @@
 {
-    "name": "MultiGames-Overlay",
+    "name": "multigames-overlay",
     "version": "3.0.0",
     "description": "Overlay multi games - Beat Saber, SynthRiders, AudioTrip and Audica",
     "main": "init.js",

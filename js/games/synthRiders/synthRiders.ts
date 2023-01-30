@@ -1,20 +1,49 @@
-import { Globals }      from "./globals";
-import { PlayerCard }   from "./playerCard";
-import { SongCard }     from "./songCard";
+import { Globals }      from "../../globals";
+import { PlayerCard }   from "../../modules/playerCard";
+import { SongCard }     from "../../modules/songCard";
+
+interface I_synthRidersObject {
+    eventType           : "SongStart" | "SongEnd" | "PlayTime" | "NoteHit" | "NoteMiss" | "EnterSpecial" | "CompleteSpecial" | "FailSpecial" | "SceneChange" | "ReturnToMenu";
+    data: {                                 // Possibly empty object {}
+        song            : string;           // Song title
+        difficulty      : string;           // Song difficulty
+        author          : string;           // Song artist/author
+        beatMapper      : string;           // Map creator
+        length          : number;           // Song length in seconds
+        bpm             : number;           // Song beats per minute
+        albumArt        : null | string;    // Album URL (Can be empty if the covert is not available)
+
+        perfect         : number;           // Number of perfect hits
+        normal          : number;           // Number of normal hits
+        bad             : number;           // Number of bad hits
+        fail            : number;           // Number of failed hits
+        highestCombo    : number;           // Highest number of consecutive hits during song
+
+        playTimeMS      : number;           // Current play time position, in milliseconds.
+
+        score           : number;           // Total score after the note is hit
+        combo           : number;           // Number of consecutive hits made so far. This resets after a note miss.
+        multiplier      : number;           // Current score multiplier. Runs from 1 to 6.
+        completed       : number;           // Running total of all notes hit (perfect + normal + bad, no fails)
+        lifeBarPercent  : number;           // A number between 0 and 1 indicating life bar percentage.
+
+        sceneName       : string;           // Name of scene being entered
+    };
+}
 
 export class SynthRiders {
 
     //////////////////////
     // @Class Variables //
     //////////////////////
-    private _playerCard:    PlayerCard;
-    private _songCard:      SongCard;
+    private _playerCard : PlayerCard;
+    private _songCard   : SongCard;
 
     ///////////////////////
     // Private Variables //
     ///////////////////////
-    private helloEvent      = true;
-    private noteMiss        = 0;
+    private helloEvent  = true;
+    private noteMiss    = 0;
 
     constructor() {
         this._playerCard    = PlayerCard.Instance;
@@ -33,7 +62,7 @@ export class SynthRiders {
         }
     }
 
-    private eHandler(dataEvent: Globals.I_synthRidersObject): void {
+    private eHandler(dataEvent: I_synthRidersObject): void {
         switch(dataEvent.eventType) {
             case "SongStart":
                 this.mapInfoParser(dataEvent);
@@ -44,8 +73,6 @@ export class SynthRiders {
                     this._songCard.songCardData.inProgress  = true;
                     this._songCard.songCardData.finished    = false;
                 }
-
-                this._playerCard.playerCardData.display = false;
                 break;
 
             case "SongEnd":
@@ -55,8 +82,6 @@ export class SynthRiders {
                     this._songCard.songCardData.inProgress  = false;
                     this._songCard.songCardData.finished    = true;
                 }
-
-                this._playerCard.playerCardData.display = false;
                 break;
 
             case "NoteHit":
@@ -74,15 +99,13 @@ export class SynthRiders {
                     this._songCard.songCardData.inProgress  = false;
                     this._songCard.songCardData.finished    = true;
                 }
-
-                this._playerCard.playerCardData.display = false;
                 break;
         }
 
         this.eHandshake();
     }
 
-    private mapInfoParser(dataEvent: Globals.I_synthRidersObject): void {
+    private mapInfoParser(dataEvent: I_synthRidersObject): void {
         this._songCard.songCardData.needUpdate      = false;
 
         this._songCard.songCardPerformance.time     = 0;
@@ -103,7 +126,7 @@ export class SynthRiders {
         this._songCard.songCardData.cover           = (dataEvent.data.albumArt !== null) ? "data:image/png;base64," + dataEvent.data.albumArt : "./pictures/default/notFound.jpg";
     }
 
-    private scoreParser(dataEvent: Globals.I_synthRidersObject): void {
+    private scoreParser(dataEvent: I_synthRidersObject): void {
         this._songCard.songCardPerformance.combo    = dataEvent.data.combo;
         this._songCard.songCardPerformance.miss     = this.noteMiss;
         this._songCard.songCardPerformance.health   = dataEvent.data.lifeBarPercent;
@@ -114,7 +137,7 @@ export class SynthRiders {
     // Public Methods //
     ////////////////////
     public dataParser(data: string): void {
-        let dataParsed: Globals.I_synthRidersObject = JSON.parse(data);
+        let dataParsed: I_synthRidersObject = JSON.parse(data);
         this.eHandler(dataParsed);
     }
 }

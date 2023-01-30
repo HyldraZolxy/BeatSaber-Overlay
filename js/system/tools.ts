@@ -1,4 +1,4 @@
-import { Globals } from "./globals";
+import { Globals } from "../globals";
 
 export class Tools {
 
@@ -12,7 +12,6 @@ export class Tools {
         })
         .then(response => response.json());
     }
-
     public async postMethod(URI: string, parameters: any, options?: any): Promise<any> {
         return await fetch(URI, {
             method: "POST",
@@ -27,8 +26,8 @@ export class Tools {
             case 0:     return "playerCard";
             case 1:     return "songCard";
             case 2:     return "leaderboard";
-            case 3:     return "setup";
-            case 4:     return "setup";
+            case 3:     return "menuSetup";
+            case 4:     return "optionSetup";
             default:    return "";
         }
     }
@@ -42,7 +41,6 @@ export class Tools {
             default:                                return "top-right";
         }
     }
-
     public positionNumberConverter(position: string): number {
         switch (position) {
             case "top-left":        return Globals.E_POSITION.TOP_LEFT;
@@ -51,5 +49,24 @@ export class Tools {
             case "bottom-right":    return Globals.E_POSITION.BOTTOM_RIGHT;
             default:                return Globals.E_POSITION.TOP_LEFT;
         }
+    }
+
+    // Thanks, @HardCPP, for the function :thumb:
+    public getModuleSkin(module: string, skin: string): string[] | null {
+        let moduleSkins: {} | null = null;
+
+        switch (module) {
+            case "playerCard"   : moduleSkins = Globals.SKIN_AVAILABLE[Globals.E_MODULES.PLAYERCARD];   break;
+            case "songCard"     : moduleSkins = Globals.SKIN_AVAILABLE[Globals.E_MODULES.SONGCARD];     break;
+            case "leaderboard"  : moduleSkins = Globals.SKIN_AVAILABLE[Globals.E_MODULES.LEADERBOARD];  break;
+            case "menuSetup"    : moduleSkins = Globals.SKIN_AVAILABLE[Globals.E_MODULES.MENU_SETUP];   break;
+            case "optionSetup"  : moduleSkins = Globals.SKIN_AVAILABLE[Globals.E_MODULES.OPT_SETUP];    break;
+        }
+
+        if (moduleSkins === null) return null;
+        if (moduleSkins.hasOwnProperty(skin)) return moduleSkins[skin as keyof typeof moduleSkins];
+        if (moduleSkins.hasOwnProperty("default")) return moduleSkins["default" as keyof typeof moduleSkins];
+
+        return null;
     }
 }

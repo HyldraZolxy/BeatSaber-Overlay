@@ -1,33 +1,33 @@
-import { Globals }          from "./globals";
-import { Tools }            from "./tools";
-import { Template }         from "./template";
-import { Parameters }       from "./parameters";
+import { Globals }          from "../globals";
+import { Tools }            from "../system/tools";
+import { Template }         from "../system/template";
+import { Parameters }       from "../system/parameters";
 import { PlayerCard }       from "./playerCard";
 import { SongCard }         from "./songCard";
-import { Plugins }          from "./plugins";
+import { Plugins }          from "../system/plugins";
 import { Leaderboard }      from "./leaderboard";
-import { DebugLeaderboard } from "./debugLeaderboard";
+import { DebugLeaderboard } from "../system/debugLeaderboard";
 
 export class Setup {
 
     //////////////////////
     // @Class Variables //
     //////////////////////
-    private _tools:             Tools;
-    private _template:          Template;
-    private _parameters:        Parameters;
-    private _playerCard:        PlayerCard;
-    private _songCard:          SongCard;
-    private _plugins:           Plugins;
-    private _leaderboard:       Leaderboard;
-    private _debugLeaderboard:  DebugLeaderboard;
+    private _tools              : Tools;
+    private _template           : Template;
+    private _parameters         : Parameters;
+    private _playerCard         : PlayerCard;
+    private _songCard           : SongCard;
+    private _plugins            : Plugins;
+    private _leaderboard        : Leaderboard;
+    private _debugLeaderboard   : DebugLeaderboard;
 
     ///////////////////////
     // Private Variables //
     ///////////////////////
     private skinSettings    = "default";
     private isDisplayed     = false;
-    private elements:       Map<string, JQuery>;
+    private elements        : Map<string, JQuery>;
 
     constructor() {
         this._tools             = new Tools();
@@ -74,10 +74,8 @@ export class Setup {
                 this._template.hideSetup(true);
                 this.elements.get("optionsSetup")?.empty();
                 this.elements.get("menuSetup")?.empty();
-                this._template.makeElementActive();
             }
         });
-
         this.elements.get("returnButton")?.on("click", async () => {
             if (this.isDisplayed) {
                 this.elements.get("menuSetup")?.empty();
@@ -88,7 +86,6 @@ export class Setup {
 
                 await (async () => {
                     this.setupAction();
-                    this._template.makeElementActive();
                 })();
             }
         });
@@ -109,7 +106,6 @@ export class Setup {
                 }
             }
         });
-
         this.elements.get("gamesAndPluginsSettings")?.on("click", async () => {
             if (this.isDisplayed) {
                 if (!this.elements.get("gamesAndPluginsSettings")?.hasClass("active")) {
@@ -126,7 +122,6 @@ export class Setup {
                 }
             }
         });
-
         this.elements.get("overlaySettings")?.on("click", async () => {
             if (this.isDisplayed) {
                 if (!this.elements.get("overlaySettings")?.hasClass("active")) {
@@ -144,9 +139,8 @@ export class Setup {
             }
         });
 
-        if (!this._parameters.uriParams.pc_disabled) {
+        if (!this._parameters.uriParams.playerCard.disabled) {
             this.elements.get("playerSettings")?.removeClass("disabled");
-
             this.elements.get("playerSettings")?.on("click", async () => {
                 if (this.isDisplayed) {
                     if (!this.elements.get("playerSettings")?.hasClass("active")) {
@@ -167,9 +161,8 @@ export class Setup {
             this.elements.get("playerSettings")?.addClass("disabled");
         }
 
-        if (!this._parameters.uriParams.sc_disabled) {
+        if (!this._parameters.uriParams.songCard.disabled) {
             this.elements.get("songSettings")?.removeClass("disabled");
-
             this.elements.get("songSettings")?.on("click", async () => {
                 if (this.isDisplayed) {
                     if (!this.elements.get("songSettings")?.hasClass("active")) {
@@ -190,9 +183,8 @@ export class Setup {
             this.elements.get("songSettings")?.addClass("disabled");
         }
 
-        if (!this._parameters.uriParams.ld_disabled) {
+        if (!this._parameters.uriParams.leaderboard.disabled) {
             this.elements.get("leaderboardSettings")?.removeClass("disabled");
-
             this.elements.get("leaderboardSettings")?.on("click", async () => {
                 if (this.isDisplayed) {
                     if (!this.elements.get("leaderboardSettings")?.hasClass("active")) {
@@ -245,7 +237,8 @@ export class Setup {
         this.elements.set("leaderboardSettings",        $(".leaderboardSettings"));
 
         // Other menu button
-        this.elements.set("customURITypeScript", $("#customURITypeScript"));
+        this.elements.set("customURITypeScript",    $("#customURITypeScript"));
+        this.elements.set("resetToken",             $("#resetToken"));
         /*--------------------------------------------------------------------------------------------------------------*/
 
         // Options Setup
@@ -332,21 +325,21 @@ export class Setup {
         /*--------------------------------------------------------------------------------------------------------------*/
         // General Settings
         /*==========================================================================================*/
-        this.elements.get("ip")?.               attr("placeholder", this._parameters.uriParams.ip);
-        this.elements.get("ScoringSystemSS")?.  prop("checked",     (this._parameters.uriParams.scoringSystem === 1));
-        this.elements.get("ScoringSystemBL")?.  prop("checked",     (this._parameters.uriParams.scoringSystem === 2));
+        this.elements.get("ip")?.               attr("placeholder", this._parameters.uriParams.general.ip);
+        this.elements.get("ScoringSystemSS")?.  prop("checked",     (this._parameters.uriParams.general.scoringSystem === 1));
+        this.elements.get("ScoringSystemBL")?.  prop("checked",     (this._parameters.uriParams.general.scoringSystem === 2));
         /*==========================================================================================*/
 
         // Games and Plugins Settings
         /*==========================================================================================*/
-        this.elements.get("switchBeatSaber")?.      prop("checked", this._parameters.uriParams.g_beatSaber);
-        this.elements.get("checkBsPlus")?.          prop("checked", this._parameters.uriParams.p_beatSaberPlus);
-        this.elements.get("checkBsPlusMp")?.        prop("checked", this._parameters.uriParams.p_beatSaberPlusLeaderboard);
-        this.elements.get("checkDatapuller")?.      prop("checked", this._parameters.uriParams.p_dataPuller);
-        this.elements.get("checkHttpSiraStatus")?.  prop("checked", this._parameters.uriParams.p_httpSiraStatus);
-        this.elements.get("switchSynthRiders")?.    prop("checked", this._parameters.uriParams.g_synthRiders);
-        this.elements.get("switchAudioTrip")?.      prop("checked", this._parameters.uriParams.g_audioTrip);
-        this.elements.get("switchAudica")?.         prop("checked", this._parameters.uriParams.g_audica);
+        this.elements.get("switchBeatSaber")?.      prop("checked", this._parameters.uriParams.games.beatSaber);
+        this.elements.get("checkBsPlus")?.          prop("checked", this._parameters.uriParams.plugins.beatSaberPlugins.beatSaberPlus);
+        this.elements.get("checkBsPlusMp")?.        prop("checked", this._parameters.uriParams.plugins.beatSaberPlugins.beatSaberPlusLeaderboard);
+        this.elements.get("checkDatapuller")?.      prop("checked", this._parameters.uriParams.plugins.beatSaberPlugins.dataPuller);
+        this.elements.get("checkHttpSiraStatus")?.  prop("checked", this._parameters.uriParams.plugins.beatSaberPlugins.httpSiraStatus);
+        this.elements.get("switchSynthRiders")?.    prop("checked", this._parameters.uriParams.games.synthRiders);
+        this.elements.get("switchAudioTrip")?.      prop("checked", this._parameters.uriParams.games.audioTrip);
+        this.elements.get("switchAudica")?.         prop("checked", this._parameters.uriParams.games.audica);
         /*==========================================================================================*/
 
         // Overlay Settings
@@ -354,45 +347,45 @@ export class Setup {
 
         // General Settings
         /******************************************************************************/
-        this.elements.get("playerCardSwitch")?. prop("checked", !this._parameters.uriParams.pc_disabled);
-        this.elements.get("songCardSwitch")?.   prop("checked", !this._parameters.uriParams.sc_disabled);
-        this.elements.get("leaderboardSwitch")?.prop("checked", !this._parameters.uriParams.ld_disabled);
+        this.elements.get("playerCardSwitch")?. prop("checked", !this._parameters.uriParams.playerCard.disabled);
+        this.elements.get("songCardSwitch")?.   prop("checked", !this._parameters.uriParams.songCard.disabled);
+        this.elements.get("leaderboardSwitch")?.prop("checked", !this._parameters.uriParams.leaderboard.disabled);
         /******************************************************************************/
 
         // Player Card Settings
         /******************************************************************************/
         this.elements.get("switchPlayerCardPreview")?.  prop("checked",     this._playerCard.playerCardData.display);
-        this.elements.get("playerId")?.                 attr("placeholder", (this._parameters.uriParams.pc_playerID === "0") ? "https://scoresaber.com/u/" + this._parameters.uriParams.pc_playerID : this._parameters.uriParams.pc_playerID);
-        this.elements.get("playerCardSkin")?.           val(this._parameters.uriParams.pc_skin);
-        this.elements.get("playerCardPosition")?.       val(this._parameters.uriParams.pc_position);
-        this.elements.get("playerCardPosX")?.           val(this._parameters.uriParams.pc_pos_x);
-        this.elements.get("playerCardPosY")?.           val(this._parameters.uriParams.pc_pos_y);
-        this.elements.get("playerCardScale")?.          val(this._parameters.uriParams.pc_scale);
+        this.elements.get("playerId")?.                 attr("placeholder", (this._parameters.uriParams.playerCard.playerID === "0") ? "https://scoresaber.com/u/" + this._parameters.uriParams.playerCard.playerID : this._parameters.uriParams.playerCard.playerID);
+        this.elements.get("playerCardSkin")?.           val(this._parameters.uriParams.playerCard.skin);
+        this.elements.get("playerCardPosition")?.       val(this._parameters.uriParams.playerCard.position);
+        this.elements.get("playerCardPosX")?.           val(this._parameters.uriParams.playerCard.pos_x);
+        this.elements.get("playerCardPosY")?.           val(this._parameters.uriParams.playerCard.pos_y);
+        this.elements.get("playerCardScale")?.          val(this._parameters.uriParams.playerCard.scale);
         /******************************************************************************/
 
         // Song Card Settings
         /******************************************************************************/
         this.elements.get("switchSongCardPreview")?.prop("checked", this._songCard.songCardData.display);
-        this.elements.get("songCardSkin")?.         val(this._parameters.uriParams.sc_skin);
-        this.elements.get("songCardPosition")?.     val(this._parameters.uriParams.sc_position);
-        this.elements.get("songCardPosX")?.         val(this._parameters.uriParams.sc_pos_x);
-        this.elements.get("songCardPosY")?.         val(this._parameters.uriParams.sc_pos_y);
-        this.elements.get("songCardScale")?.        val(this._parameters.uriParams.sc_scale);
-        this.elements.get("missDisplay")?.          prop("checked", this._parameters.uriParams.sc_missDisplay);
-        this.elements.get("bigBSR")?.               prop("checked", this._parameters.uriParams.sc_bigBSR);
-        this.elements.get("ppMax")?.                prop("checked", this._parameters.uriParams.sc_ppMax);
-        this.elements.get("ppEstimated")?.          prop("checked", this._parameters.uriParams.sc_ppEstimated);
+        this.elements.get("songCardSkin")?.         val(this._parameters.uriParams.songCard.skin);
+        this.elements.get("songCardPosition")?.     val(this._parameters.uriParams.songCard.position);
+        this.elements.get("songCardPosX")?.         val(this._parameters.uriParams.songCard.pos_x);
+        this.elements.get("songCardPosY")?.         val(this._parameters.uriParams.songCard.pos_y);
+        this.elements.get("songCardScale")?.        val(this._parameters.uriParams.songCard.scale);
+        this.elements.get("missDisplay")?.          prop("checked", this._parameters.uriParams.songCard.missDisplay);
+        this.elements.get("bigBSR")?.               prop("checked", this._parameters.uriParams.songCard.bigBSR);
+        this.elements.get("ppMax")?.                prop("checked", this._parameters.uriParams.songCard.ppMax);
+        this.elements.get("ppEstimated")?.          prop("checked", this._parameters.uriParams.songCard.ppEstimated);
         /******************************************************************************/
 
         // Leaderboard Settings
         /******************************************************************************/
         this.elements.get("switchLeaderboardPreview")?. prop("checked", this._leaderboard.leaderboardData.display);
-        this.elements.get("leaderboardPosition")?.      val(this._parameters.uriParams.ld_position);
-        this.elements.get("leaderboardPosX")?.          val(this._parameters.uriParams.ld_pos_x);
-        this.elements.get("leaderboardPosY")?.          val(this._parameters.uriParams.ld_pos_y);
-        this.elements.get("leaderboardScale")?.         val(this._parameters.uriParams.ld_scale);
-        this.elements.get("leaderboardPlayerRender")?.  val(this._parameters.uriParams.ld_playerRendering);
-        this.elements.get("playerRenderingNumber")?.    val(this._parameters.uriParams.ld_playerRendering);
+        this.elements.get("leaderboardPosition")?.      val(this._parameters.uriParams.leaderboard.position);
+        this.elements.get("leaderboardPosX")?.          val(this._parameters.uriParams.leaderboard.pos_x);
+        this.elements.get("leaderboardPosY")?.          val(this._parameters.uriParams.leaderboard.pos_y);
+        this.elements.get("leaderboardScale")?.         val(this._parameters.uriParams.leaderboard.scale);
+        this.elements.get("leaderboardPlayerRender")?.  val(this._parameters.uriParams.leaderboard.playerRendering);
+        this.elements.get("playerRenderingNumber")?.    val(this._parameters.uriParams.leaderboard.playerRendering);
         /******************************************************************************/
         /*==========================================================================================*/
         /*--------------------------------------------------------------------------------------------------------------*/
@@ -410,6 +403,7 @@ export class Setup {
         this.elements.get("switchAudica")?.     off("click");
 
         this.elements.get("checkBsPlus")?.          off("click");
+        this.elements.get("checkBsPlusMp")?.        off("click");
         this.elements.get("checkDatapuller")?.      off("click");
         this.elements.get("checkHttpSiraStatus")?.  off("click");
 
@@ -439,7 +433,8 @@ export class Setup {
         this.elements.get("leaderboardScale")?.         off("input");
         this.elements.get("leaderboardPlayerRender")?.  off("input");
 
-        this.elements.get("customURITypeScript")?.off("click");
+        this.elements.get("customURITypeScript")?.  off("click");
+        this.elements.get("resetToken")?.           off("click");
     }
     private elementsOnEvent() {
         this.elements.get("ipChanger")?.on("click", async () => {
@@ -447,7 +442,7 @@ export class Setup {
 
             if ((ipValue !== undefined) && (typeof ipValue === "string")) {
                 if (this._parameters.parseParameters("ip", ipValue)) {
-                    this._parameters.uriParams.ip = ipValue;
+                    this._parameters.uriParams.general.ip = ipValue;
 
                     this._parameters.assocValue();
 
@@ -459,11 +454,11 @@ export class Setup {
 
         this.elements.get("ScoringSystemSS")?.on("click", async () => {
             if (this.elements.get("ScoringSystemSS")?.prop("checked") === true) {
-                this._parameters.uriParams.scoringSystem = 1;
+                this._parameters.uriParams.general.scoringSystem = 1;
                 this._parameters.assocValue();
                 this.elements.get("ScoringSystemBL")?.prop("checked", false);
             } else {
-                this._parameters.uriParams.scoringSystem = 2;
+                this._parameters.uriParams.general.scoringSystem = 2;
                 this._parameters.assocValue();
                 this.elements.get("ScoringSystemBL")?.prop("checked", true);
             }
@@ -478,11 +473,11 @@ export class Setup {
         });
         this.elements.get("ScoringSystemBL")?.on("click", async () => {
             if (this.elements.get("ScoringSystemBL")?.prop("checked") === true) {
-                this._parameters.uriParams.scoringSystem = 2;
+                this._parameters.uriParams.general.scoringSystem = 2;
                 this._parameters.assocValue();
                 this.elements.get("ScoringSystemSS")?.prop("checked", false);
             } else {
-                this._parameters.uriParams.scoringSystem = 1;
+                this._parameters.uriParams.general.scoringSystem = 1;
                 this._parameters.assocValue();
                 this.elements.get("ScoringSystemSS")?.prop("checked", true);
             }
@@ -497,55 +492,60 @@ export class Setup {
         });
 
         this.elements.get("switchBeatSaber")?.on("click", async () => {
-            this._parameters.uriParams.g_beatSaber = this.elements.get("switchBeatSaber")?.prop("checked") === true;
+            this._parameters.uriParams.games.beatSaber = this.elements.get("switchBeatSaber")?.prop("checked") === true;
 
             await this._plugins.removeConnection();
             await this._plugins.connection();
         });
         this.elements.get("switchSynthRiders")?.on("click", async () => {
-            this._parameters.uriParams.g_synthRiders = this.elements.get("switchSynthRiders")?.prop("checked") === true;
-            this._parameters.uriParams.p_synthRiders = this.elements.get("switchSynthRiders")?.prop("checked") === true;
+            this._parameters.uriParams.games.synthRiders = this.elements.get("switchSynthRiders")?.prop("checked") === true;
+            this._parameters.uriParams.plugins.synthRidersPlugins.synthRiders = this.elements.get("switchSynthRiders")?.prop("checked") === true;
 
             await this._plugins.removeConnection();
             await this._plugins.connection();
         });
         this.elements.get("switchAudioTrip")?.on("click", async () => {
-            this._parameters.uriParams.g_audioTrip = this.elements.get("switchAudioTrip")?.prop("checked") === true;
-            this._parameters.uriParams.p_audioTrip = this.elements.get("switchAudioTrip")?.prop("checked") === true;
+            this._parameters.uriParams.games.audioTrip = this.elements.get("switchAudioTrip")?.prop("checked") === true;
+            this._parameters.uriParams.plugins.audioTripPlugins.audioTrip = this.elements.get("switchAudioTrip")?.prop("checked") === true;
 
             await this._plugins.removeConnection();
             await this._plugins.connection();
         });
         this.elements.get("switchAudica")?.on("click", async () => {
-            this._parameters.uriParams.g_audica = this.elements.get("switchAudica")?.prop("checked") === true;
-            this._parameters.uriParams.p_audica = this.elements.get("switchAudica")?.prop("checked") === true;
+            this._parameters.uriParams.games.audica = this.elements.get("switchAudica")?.prop("checked") === true;
+            this._parameters.uriParams.plugins.audicaPlugins.audica = this.elements.get("switchAudica")?.prop("checked") === true;
 
             await this._plugins.removeConnection();
             await this._plugins.connection();
         });
 
         this.elements.get("checkBsPlus")?.on("click", async () => {
-            this._parameters.uriParams.p_beatSaberPlus              = this.elements.get("checkBsPlus")?.prop("checked") === true;
-            this._parameters.uriParams.p_beatSaberPlusLeaderboard   = false;
+            this._parameters.uriParams.plugins.beatSaberPlugins.beatSaberPlus = this.elements.get("checkBsPlus")?.prop("checked") === true;
+
+            await this._plugins.removeConnection();
+            await this._plugins.connection();
+        });
+        this.elements.get("checkBsPlusMp")?.on("click", async () => {
+            this._parameters.uriParams.plugins.beatSaberPlugins.beatSaberPlusLeaderboard = this.elements.get("checkBsPlusMp")?.prop("checked") === true;
 
             await this._plugins.removeConnection();
             await this._plugins.connection();
         });
         this.elements.get("checkDatapuller")?.on("click", async () => {
-            this._parameters.uriParams.p_dataPuller = this.elements.get("checkDatapuller")?.prop("checked") === true;
+            this._parameters.uriParams.plugins.beatSaberPlugins.dataPuller = this.elements.get("checkDatapuller")?.prop("checked") === true;
 
             await this._plugins.removeConnection();
             await this._plugins.connection();
         });
         this.elements.get("checkHttpSiraStatus")?.on("click", async () => {
-            this._parameters.uriParams.p_httpSiraStatus = this.elements.get("checkHttpSiraStatus")?.prop("checked") === true;
+            this._parameters.uriParams.plugins.beatSaberPlugins.httpSiraStatus = this.elements.get("checkHttpSiraStatus")?.prop("checked") === true;
 
             await this._plugins.removeConnection();
             await this._plugins.connection();
         });
 
         this.elements.get("playerCardSwitch")?.on("click", async () => {
-            this._parameters.uriParams.pc_disabled = !this.elements.get("playerCardSwitch")?.prop("checked");
+            this._parameters.uriParams.playerCard.disabled = !this.elements.get("playerCardSwitch")?.prop("checked");
             this._parameters.assocValue();
 
             if (this._playerCard.playerCardData.display) this._playerCard.playerCardData.display = this.elements.get("playerCardSwitch")?.prop("checked");
@@ -557,7 +557,7 @@ export class Setup {
             this.menuAction();
         });
         this.elements.get("songCardSwitch")?.on("click", async () => {
-            this._parameters.uriParams.sc_disabled = !this.elements.get("songCardSwitch")?.prop("checked");
+            this._parameters.uriParams.songCard.disabled = !this.elements.get("songCardSwitch")?.prop("checked");
             this._parameters.assocValue();
 
             if (this._songCard.songCardData.display) {
@@ -573,7 +573,7 @@ export class Setup {
             this.menuAction();
         });
         this.elements.get("leaderboardSwitch")?.on("click", async () => {
-            this._parameters.uriParams.ld_disabled = !this.elements.get("leaderboardSwitch")?.prop("checked");
+            this._parameters.uriParams.leaderboard.disabled = !this.elements.get("leaderboardSwitch")?.prop("checked");
             this._parameters.assocValue();
 
             if (this._leaderboard.leaderboardData.display) this._leaderboard.leaderboardData.display = this.elements.get("leaderboardSwitch")?.prop("checked");
@@ -587,7 +587,7 @@ export class Setup {
 
         this.elements.get("switchPlayerCardPreview")?.on("click", async () => {
             if (this.elements.get("switchPlayerCardPreview")?.prop("checked")) {
-                if (this._parameters.uriParams.pc_playerID === "0") this.elements.get("switchPlayerCardPreview")?.prop("checked", false);
+                if (this._parameters.uriParams.playerCard.playerID === "0") this.elements.get("switchPlayerCardPreview")?.prop("checked", false);
                 else {
                     await this._template.loadSkin(Globals.E_MODULES.PLAYERCARD, this._playerCard.playerCardData.skin);
                     this._playerCard.playerCardData.display = true;
@@ -604,8 +604,9 @@ export class Setup {
             if ((playerIdValue !== undefined) && (typeof playerIdValue === "string")) {
                 if (RegExp(/\bhttps:\/\/scoresaber.com\/u\/\b/).test(playerIdValue)) playerIdValue = playerIdValue.replace("https://scoresaber.com/u/", "");
 
-                if (this._parameters.parseParameters("pc_playerID", playerIdValue)) {
-                    this._parameters.uriParams.pc_playerID = playerIdValue;
+                if (this._parameters.parseParameters("playerID", playerIdValue)) {
+                    console.log("PlayerID Updated");
+                    this._parameters.uriParams.playerCard.playerID = playerIdValue;
                     this._parameters.assocValue();
 
                     if (this._playerCard.playerCardData.display) this._playerCard.playerCardData.needUpdate = true;
@@ -616,8 +617,8 @@ export class Setup {
             let playerCardSkinValue = this.elements.get("playerCardSkin")?.val();
 
             if ((playerCardSkinValue !== undefined) && (typeof playerCardSkinValue === "string")) {
-                if (this._parameters.parseParameters("pc_skin", playerCardSkinValue)) {
-                    this._parameters.uriParams.pc_skin = playerCardSkinValue;
+                if (this._parameters.parseParameters("skin", playerCardSkinValue, "playerCard")) {
+                    this._parameters.uriParams.playerCard.skin = playerCardSkinValue;
                     this._parameters.assocValue();
 
                     this.elements.get("playerCard-overlay")?.empty();
@@ -630,38 +631,38 @@ export class Setup {
             let playerCardPositionValue = this.elements.get("playerCardPosition")?.val();
 
             if ((playerCardPositionValue !== undefined) && (typeof playerCardPositionValue === "string")) {
-                if (this._parameters.parseParameters("pc_position", playerCardPositionValue)) {
-                    this._parameters.uriParams.pc_position = Number(playerCardPositionValue);
+                if (this._parameters.parseParameters("position", playerCardPositionValue)) {
+                    this._parameters.uriParams.playerCard.position = Number(playerCardPositionValue);
                     this._parameters.assocValue();
                 }
             }
         });
         this.elements.get("playerCardPosXReset")?.on("click", async () => {
             this.elements.get("playerCardPosX")?.val("0");
-            this._parameters.uriParams.pc_pos_x = 0;
+            this._parameters.uriParams.playerCard.pos_x = 0;
             this._parameters.assocValue();
         });
         this.elements.get("playerCardPosX")?.on("input", () => {
             let playerCardPosXValue = this.elements.get("playerCardPosX")?.val();
 
             if ((playerCardPosXValue !== undefined) && (typeof playerCardPosXValue === "string")) {
-                if (this._parameters.parseParameters("pc_pos_x", playerCardPosXValue)) {
-                    this._parameters.uriParams.pc_pos_x = Number(playerCardPosXValue);
+                if (this._parameters.parseParameters("pos_x", playerCardPosXValue)) {
+                    this._parameters.uriParams.playerCard.pos_x = Number(playerCardPosXValue);
                     this._parameters.assocValue();
                 }
             }
         });
         this.elements.get("playerCardPosYReset")?.on("click", async () => {
             this.elements.get("playerCardPosY")?.val("0");
-            this._parameters.uriParams.pc_pos_y = 0;
+            this._parameters.uriParams.playerCard.pos_y = 0;
             this._parameters.assocValue();
         });
         this.elements.get("playerCardPosY")?.on("input", () => {
             let playerCardPosYValue = this.elements.get("playerCardPosY")?.val();
 
             if ((playerCardPosYValue !== undefined) && (typeof playerCardPosYValue === "string")) {
-                if (this._parameters.parseParameters("pc_pos_y", playerCardPosYValue)) {
-                    this._parameters.uriParams.pc_pos_y = Number(playerCardPosYValue);
+                if (this._parameters.parseParameters("pos_y", playerCardPosYValue)) {
+                    this._parameters.uriParams.playerCard.pos_y = Number(playerCardPosYValue);
                     this._parameters.assocValue();
                 }
             }
@@ -670,8 +671,8 @@ export class Setup {
             let playerCardScaleValue = this.elements.get("playerCardScale")?.val();
 
             if ((playerCardScaleValue !== undefined) && (typeof playerCardScaleValue === "string")) {
-                if (this._parameters.parseParameters("pc_scale", playerCardScaleValue)) {
-                    this._parameters.uriParams.pc_scale = Number(playerCardScaleValue);
+                if (this._parameters.parseParameters("scale", playerCardScaleValue)) {
+                    this._parameters.uriParams.playerCard.scale = Number(playerCardScaleValue);
                     this._parameters.assocValue();
                 }
             }
@@ -695,8 +696,8 @@ export class Setup {
             let songCardSkinValue = this.elements.get("songCardSkin")?.val();
 
             if ((songCardSkinValue !== undefined) && (typeof songCardSkinValue === "string")) {
-                if (this._parameters.parseParameters("sc_skin", songCardSkinValue)) {
-                    this._parameters.uriParams.sc_skin = songCardSkinValue;
+                if (this._parameters.parseParameters("skin", songCardSkinValue, "songCard")) {
+                    this._parameters.uriParams.songCard.skin = songCardSkinValue;
                     this._parameters.assocValue();
 
                     this.elements.get("songCard-overlay")?.empty();
@@ -709,38 +710,38 @@ export class Setup {
             let songCardPositionValue = this.elements.get("songCardPosition")?.val();
 
             if ((songCardPositionValue !== undefined) && (typeof songCardPositionValue === "string")) {
-                if (this._parameters.parseParameters("sc_position", songCardPositionValue)) {
-                    this._parameters.uriParams.sc_position = Number(songCardPositionValue);
+                if (this._parameters.parseParameters("position", songCardPositionValue)) {
+                    this._parameters.uriParams.songCard.position = Number(songCardPositionValue);
                     this._parameters.assocValue();
                 }
             }
         });
         this.elements.get("songCardPosXReset")?.on("click", async () => {
             this.elements.get("songCardPosX")?.val("0");
-            this._parameters.uriParams.sc_pos_x = 0;
+            this._parameters.uriParams.songCard.pos_x = 0;
             this._parameters.assocValue();
         });
         this.elements.get("songCardPosX")?.on("input", () => {
             let songCardPosXValue = this.elements.get("songCardPosX")?.val();
 
             if ((songCardPosXValue !== undefined) && (typeof songCardPosXValue === "string")) {
-                if (this._parameters.parseParameters("sc_pos_x", songCardPosXValue)) {
-                    this._parameters.uriParams.sc_pos_x = Number(songCardPosXValue);
+                if (this._parameters.parseParameters("pos_x", songCardPosXValue)) {
+                    this._parameters.uriParams.songCard.pos_x = Number(songCardPosXValue);
                     this._parameters.assocValue();
                 }
             }
         });
         this.elements.get("songCardPosYReset")?.on("click", async () => {
             this.elements.get("songCardPosY")?.val("0");
-            this._parameters.uriParams.sc_pos_y = 0;
+            this._parameters.uriParams.songCard.pos_y = 0;
             this._parameters.assocValue();
         });
         this.elements.get("songCardPosY")?.on("input", () => {
             let songCardPosYValue = this.elements.get("songCardPosY")?.val();
 
             if ((songCardPosYValue !== undefined) && (typeof songCardPosYValue === "string")) {
-                if (this._parameters.parseParameters("sc_pos_y", songCardPosYValue)) {
-                    this._parameters.uriParams.sc_pos_y = Number(songCardPosYValue);
+                if (this._parameters.parseParameters("pos_y", songCardPosYValue)) {
+                    this._parameters.uriParams.songCard.pos_y = Number(songCardPosYValue);
                     this._parameters.assocValue();
                 }
             }
@@ -749,26 +750,26 @@ export class Setup {
             let songCardScaleValue = this.elements.get("songCardScale")?.val();
 
             if ((songCardScaleValue !== undefined) && (typeof songCardScaleValue === "string")) {
-                if (this._parameters.parseParameters("sc_scale", songCardScaleValue)) {
-                    this._parameters.uriParams.sc_scale = Number(songCardScaleValue);
+                if (this._parameters.parseParameters("scale", songCardScaleValue)) {
+                    this._parameters.uriParams.songCard.scale = Number(songCardScaleValue);
                     this._parameters.assocValue();
                 }
             }
         });
         this.elements.get("missDisplay")?.on("click", async () => {
-            this._parameters.uriParams.sc_missDisplay = this.elements.get("missDisplay")?.prop("checked") === true;
+            this._parameters.uriParams.songCard.missDisplay = this.elements.get("missDisplay")?.prop("checked") === true;
             this._parameters.assocValue();
         });
         this.elements.get("bigBSR")?.on("click", async () => {
-            this._parameters.uriParams.sc_bigBSR = this.elements.get("bigBSR")?.prop("checked") === true;
+            this._parameters.uriParams.songCard.bigBSR = this.elements.get("bigBSR")?.prop("checked") === true;
             this._parameters.assocValue();
         });
         /*this.elements.get("ppMax")?.on("click", async () => {
-            this._parameters.uriParams.sc_ppMax = this.elements.get("ppMax")?.prop("checked") === true;
+            this._parameters.uriParams.songCard.ppMax = this.elements.get("ppMax")?.prop("checked") === true;
             this._parameters.assocValue();
         });
         this.elements.get("ppEstimated")?.on("click", async () => {
-            this._parameters.uriParams.sc_ppEstimated = this.elements.get("ppEstimated")?.prop("checked") === true;
+            this._parameters.uriParams.songCard.ppEstimated = this.elements.get("ppEstimated")?.prop("checked") === true;
             this._parameters.assocValue();
         });*/
 
@@ -776,7 +777,7 @@ export class Setup {
             if (this.elements.get("switchLeaderboardPreview")?.prop("checked")) {
                 await this._template.loadSkin(Globals.E_MODULES.LEADERBOARD, this._leaderboard.leaderboardData.skin);
                 this._leaderboard.leaderboardData.display = true;
-                this._debugLeaderboard.play(this._parameters.uriParams.pc_playerID);
+                this._debugLeaderboard.play(this._parameters.uriParams.playerCard.playerID);
             } else {
                 this._leaderboard.leaderboardData.display = false;
                 this._debugLeaderboard.stop();
@@ -786,38 +787,38 @@ export class Setup {
             let leaderboardPositionValue = this.elements.get("leaderboardPosition")?.val();
 
             if ((leaderboardPositionValue !== undefined) && (typeof leaderboardPositionValue === "string")) {
-                if (this._parameters.parseParameters("ld_position", leaderboardPositionValue)) {
-                    this._parameters.uriParams.ld_position = Number(leaderboardPositionValue);
+                if (this._parameters.parseParameters("position", leaderboardPositionValue)) {
+                    this._parameters.uriParams.leaderboard.position = Number(leaderboardPositionValue);
                     this._parameters.assocValue();
                 }
             }
         });
         this.elements.get("leaderboardPosXReset")?.on("click", async () => {
             this.elements.get("leaderboardPosX")?.val("0");
-            this._parameters.uriParams.ld_pos_x = 0;
+            this._parameters.uriParams.leaderboard.pos_x = 0;
             this._parameters.assocValue();
         });
         this.elements.get("leaderboardPosX")?.on("input", () => {
             let leaderboardPosXValue = this.elements.get("leaderboardPosX")?.val();
 
             if ((leaderboardPosXValue !== undefined) && (typeof leaderboardPosXValue === "string")) {
-                if (this._parameters.parseParameters("ld_pos_x", leaderboardPosXValue)) {
-                    this._parameters.uriParams.ld_pos_x = Number(leaderboardPosXValue);
+                if (this._parameters.parseParameters("pos_x", leaderboardPosXValue)) {
+                    this._parameters.uriParams.leaderboard.pos_x = Number(leaderboardPosXValue);
                     this._parameters.assocValue();
                 }
             }
         });
         this.elements.get("leaderboardPosYReset")?.on("click", async () => {
             this.elements.get("leaderboardPosY")?.val("0");
-            this._parameters.uriParams.ld_pos_y = 0;
+            this._parameters.uriParams.leaderboard.pos_y = 0;
             this._parameters.assocValue();
         });
         this.elements.get("leaderboardPosY")?.on("input", () => {
             let leaderboardPosYValue = this.elements.get("leaderboardPosY")?.val();
 
             if ((leaderboardPosYValue !== undefined) && (typeof leaderboardPosYValue === "string")) {
-                if (this._parameters.parseParameters("ld_pos_y", leaderboardPosYValue)) {
-                    this._parameters.uriParams.ld_pos_y = Number(leaderboardPosYValue);
+                if (this._parameters.parseParameters("pos_y", leaderboardPosYValue)) {
+                    this._parameters.uriParams.leaderboard.pos_y = Number(leaderboardPosYValue);
                     this._parameters.assocValue();
                 }
             }
@@ -826,8 +827,8 @@ export class Setup {
             let leaderboardScaleValue = this.elements.get("leaderboardScale")?.val();
 
             if ((leaderboardScaleValue !== undefined) && (typeof leaderboardScaleValue === "string")) {
-                if (this._parameters.parseParameters("ld_scale", leaderboardScaleValue)) {
-                    this._parameters.uriParams.ld_scale = Number(leaderboardScaleValue);
+                if (this._parameters.parseParameters("scale", leaderboardScaleValue)) {
+                    this._parameters.uriParams.leaderboard.scale = Number(leaderboardScaleValue);
                     this._parameters.assocValue();
                 }
             }
@@ -836,8 +837,8 @@ export class Setup {
             let leaderboardPlayerRenderValue = this.elements.get("leaderboardPlayerRender")?.val();
 
             if ((leaderboardPlayerRenderValue !== undefined) && (typeof leaderboardPlayerRenderValue === "string")) {
-                if (this._parameters.parseParameters("ld_playerRendering", leaderboardPlayerRenderValue)) {
-                    this._parameters.uriParams.ld_playerRendering = Number(leaderboardPlayerRenderValue);
+                if (this._parameters.parseParameters("playerRendering", leaderboardPlayerRenderValue)) {
+                    this._parameters.uriParams.leaderboard.playerRendering = Number(leaderboardPlayerRenderValue);
                     this.elements.get("playerRenderingNumber")?.text(leaderboardPlayerRenderValue);
                     this._parameters.assocValue();
                 }
@@ -846,7 +847,7 @@ export class Setup {
         this.elements.get("leaderboardPlayerRenderReset")?.on("click", async () => {
             this.elements.get("leaderboardPlayerRender")?.val("5");
             this.elements.get("playerRenderingNumber")?.text("5");
-            this._parameters.uriParams.ld_playerRendering = 5;
+            this._parameters.uriParams.leaderboard.playerRendering = 5;
             this._parameters.assocValue();
         });
 
@@ -855,18 +856,85 @@ export class Setup {
             let value = this.elements.get("customURITypeScript")?.data("clipboardtext");
             await navigator.clipboard.writeText(value);
         });
+
+        this.elements.get("resetToken")?.on("click", async () => {
+            if (this.isDisplayed) {
+                this.resetToken();
+
+                this._parameters.assocValue();
+
+                this.elements.get("menuSetup")?.empty();
+                await this._template.loadSkin(Globals.E_MODULES.MENU_SETUP, this.skinSettings, "indexMenu.html");
+
+                this.elements.get("optionsSetup")?.empty();
+                await this._template.loadSkin(Globals.E_MODULES.OPT_SETUP, this.skinSettings, "indexOptions.html");
+
+                await (async () => {
+                    this.setupAction();
+
+                    await this._plugins.removeConnection();
+                    await this._plugins.connection();
+                })();
+            }
+        });
     }
 
     private async urlTextBuilder() {
-        let url = (this._parameters.uriParams.ip === "127.0.0.1") ? "https://overlay.hyldrazolxy.fr/" : "http://overlay.hyldrazolxy.fr/";
+        let url = (this._parameters.uriParams.general.ip === "127.0.0.1") ? "https://testoverlay.hyldrazolxy.fr/" : "http://testoverlay.hyldrazolxy.fr/";
 
-        if (this._parameters.uriParams.token !== "") {
+        if (this._parameters.uriParams.general.token !== "") {
             if (!await this._parameters.updateTokenParameters()) await this._parameters.saveTokenParameters();
         }
         else await this._parameters.saveTokenParameters();
 
-        url += (this._parameters.uriParams.token === "") ? "" : "?token=" + this._parameters.uriParams.token;
+        url += (this._parameters.uriParams.general.token === "") ? "" : "?token=" + this._parameters.uriParams.general.token;
 
         this.elements.get("customURITypeScript")?.data("clipboardtext", url);
+    }
+
+    private resetToken() {
+        this._parameters.uriParams.general.ip               = "127.0.0.1";
+        this._parameters.uriParams.general.scoringSystem    = 1;
+
+        this._parameters.uriParams.games.beatSaber      = true;
+        this._parameters.uriParams.games.synthRiders    = false;
+        this._parameters.uriParams.games.audioTrip      = false;
+        this._parameters.uriParams.games.audica         = false;
+
+        this._parameters.uriParams.plugins.beatSaberPlugins.beatSaberPlus               = true;
+        this._parameters.uriParams.plugins.beatSaberPlugins.beatSaberPlusLeaderboard    = false;
+        this._parameters.uriParams.plugins.beatSaberPlugins.dataPuller                  = true;
+        this._parameters.uriParams.plugins.beatSaberPlugins.httpSiraStatus              = true;
+        this._parameters.uriParams.plugins.synthRidersPlugins.synthRiders               = false;
+        this._parameters.uriParams.plugins.audioTripPlugins.audioTrip                   = false;
+        this._parameters.uriParams.plugins.audicaPlugins.audica                         = false;
+
+        this._parameters.uriParams.playerCard.disabled  = false;
+        this._parameters.uriParams.songCard.disabled    = false;
+        this._parameters.uriParams.leaderboard.disabled = true;
+
+        this._parameters.uriParams.playerCard.playerID  = "0";
+        this._parameters.uriParams.playerCard.skin      = "default";
+        this._parameters.uriParams.playerCard.position  = Globals.E_POSITION.TOP_RIGHT;
+        this._parameters.uriParams.playerCard.scale     = 1.0;
+        this._parameters.uriParams.playerCard.pos_x     = 0;
+        this._parameters.uriParams.playerCard.pos_y     = 0;
+
+        this._parameters.uriParams.songCard.skin        = "default";
+        this._parameters.uriParams.songCard.position    = Globals.E_POSITION.BOTTOM_LEFT;
+        this._parameters.uriParams.songCard.scale       = 1.0;
+        this._parameters.uriParams.songCard.pos_x       = 0;
+        this._parameters.uriParams.songCard.pos_y       = 0;
+        this._parameters.uriParams.songCard.missDisplay = false;
+        this._parameters.uriParams.songCard.bigBSR      = false;
+        this._parameters.uriParams.songCard.ppMax     = false;
+        this._parameters.uriParams.songCard.ppEstimated = false;
+
+        this._parameters.uriParams.leaderboard.skin             = "default";
+        this._parameters.uriParams.leaderboard.position         = Globals.E_POSITION.TOP_LEFT;
+        this._parameters.uriParams.leaderboard.scale            = 1.0;
+        this._parameters.uriParams.leaderboard.pos_x            = 0;
+        this._parameters.uriParams.leaderboard.pos_y            = 0;
+        this._parameters.uriParams.leaderboard.playerRendering  = 5;
     }
 }

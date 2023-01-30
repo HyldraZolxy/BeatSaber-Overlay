@@ -1,8 +1,14 @@
 /.idea/
 /node_modules/
-/js/*.js
-tsconfig.json
 /php/Cache/
 /dist/
+tsconfig.json
 package-lock.json
-Idea
+
+/js/*.js
+/js/games/audica/*.js
+/js/games/audioTrip/*.js
+/js/games/beatSaber/*.js
+/js/games/synthRiders/*.js
+/js/modules/*.js
+/js/system/*.js

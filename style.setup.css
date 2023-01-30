@@ -30,11 +30,12 @@
 .roundedButton:hover #mail,
 .roundedButton:hover #github,
 .roundedButton:hover #githubSponsor,
-.roundedButton:hover #customURI {
+.roundedButton:hover #customURI,
+.roundedButton:hover #resetTokenP {
     display: block;
     color: white;
 }
-#twitter, #discord, #mail, #github, #githubSponsor, #customURI {
+#twitter, #discord, #mail, #github, #githubSponsor, #customURI, #resetTokenP {
     padding: 5px;
     bottom: 45px;
     left: 10px;
@@ -81,6 +82,9 @@
 .ion-android-mail:hover,
 .ion-card:hover {
     color: #34dbae;
+}
+.ion-refresh:hover {
+    color: #fa7777;
 }
 
 /*=================RIGHT PANEL================*/
@@ -254,11 +258,15 @@
     padding-left: 10px;
 }
 
-#customURITypeScript {
+#customURITypeScript, #resetToken {
     cursor: pointer;
 }
-#customURI {
+#customURI, #resetTokenP {
     margin-left: 65%;
+}
+
+#resetToken {
+    margin-left: 20px;
 }
 
 #BSOVersion {

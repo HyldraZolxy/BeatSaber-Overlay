@@ -1,6 +1,6 @@
-import { Globals }                  from "./globals";
-import { Template }                 from "./template";
-import { BeatSaver, BeatLeader }    from "./api-call";
+import { Globals }                                                          from "../globals";
+import { Template }                                                         from "../system/template";
+import { BeatSaver, BeatLeader, I_beatSaverSongJSON, I_beatLeaderSongJSON } from "../system/api-call";
 
 export class SongCard {
 
@@ -12,18 +12,18 @@ export class SongCard {
     //////////////////////
     // @Class Variables //
     //////////////////////
-    private _template:      Template;
-    private _beatSaver:     BeatSaver;
-    private _beatLeader:    BeatLeader;
+    private _template   : Template;
+    private _beatSaver  : BeatSaver;
+    private _beatLeader : BeatLeader;
 
     //////////////////////
     // Public Variables //
     //////////////////////
     public songCardGames: Globals.I_gamesSupported = {
-        g_beatSaber     : true,
-        g_synthRiders   : true,
-        g_audioTrip     : true,
-        g_audica        : true
+        beatSaber     : true,
+        synthRiders   : true,
+        audioTrip     : true,
+        audica        : true
     };
     public songCardData: Globals.I_songCard = {
         disabled            : false,
@@ -46,7 +46,7 @@ export class SongCard {
         started             : false,
         inProgress          : false,
         paused              : false,
-        finished            : false, /// TODO: BS+ don't send any finished events, so always true
+        finished            : false,
 
         cover               : "https://eu.cdn.beatsaver.com/280378d7157542f5b160e8a464f0dcfdc3a1de56.jpg",
         title               : "Love yiff!",
@@ -123,7 +123,6 @@ export class SongCard {
                 this.songCardPerformance.timeToPercentage   = this.timeToPercentage();
             }
 
-            // TODO: When BS+ send finished event, do the condition check for limit the update performance
             this.songCardPerformance.endedUpdate = true;
         }, Globals.MS_TIMER);
     }
@@ -171,10 +170,10 @@ export class SongCard {
 
         this.songCardData.needUpdate = false;
 
-        let data: Globals.I_beatSaverSongJSON | Globals.I_beatLeaderSongJSON;
+        let data: I_beatSaverSongJSON | I_beatLeaderSongJSON;
 
-        if (this.songCardData.scoringSystem === Globals.E_SCORING_SYSTEM.BEATLEADER)        data = await this._beatLeader.getSongInfo(this.songCardData.hashMap);
-        else                                                                                data = await this._beatSaver.getSongInfo(this.songCardData.hashMap);
+        if (this.songCardData.scoringSystem === Globals.E_SCORING_SYSTEM.BEATLEADER)    data = await this._beatLeader.getSongInfo(this.songCardData.hashMap);
+        else                                                                            data = await this._beatSaver.getSongInfo(this.songCardData.hashMap);
 
         if (data.errorMessage !== undefined || data.error !== undefined) {
             this.songCardData.ranked        = false;

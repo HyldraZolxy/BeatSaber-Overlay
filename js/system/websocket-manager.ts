@@ -1,13 +1,13 @@
-import { Globals } from "./globals";
+import { Globals } from "../globals";
 
 export class WebSocketManager {
 
     ///////////////////////
     // Private Variables //
     ///////////////////////
-    private sockets:                    Map<string, WebSocket>;
-    private reconnectInterval:          Map<string, number>;
-    private reconnecting:               Map<string, boolean>;
+    private sockets             : Map<string, WebSocket>;
+    private reconnectInterval   : Map<string, number>;
+    private reconnecting        : Map<string, boolean>;
 
     constructor() {
         this.sockets            = new Map();
@@ -82,11 +82,10 @@ export class WebSocketManager {
     }
 
     public remove(key: string) {
-        this.sockets.get(key)?.close();
-
-        this.sockets.delete(key);
-        this.reconnectInterval.delete(key);
-        this.reconnecting.delete(key);
+        this.sockets.           get(key)?.close();
+        this.sockets.           delete(key);
+        this.reconnectInterval. delete(key);
+        this.reconnecting.      delete(key);
     }
 
     public get(key: string) { return this.sockets.get(key); }

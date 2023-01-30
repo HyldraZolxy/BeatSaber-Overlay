@@ -53,27 +53,57 @@ const DATA_UPDATE_SUCCESS           = array("successMessage" => "Data successful
 //////////////////
 
 const DEFAULT_DATA = array(
-    "general_data" => array(
-        "ip"                        => "127.0.0.1",
-        "token"                     => "",
-        "scoringSystem"             => 1
+    "general" => array(
+        "ip"            => "127.0.0.1",
+        "token"         => "",
+        "scoringSystem" => 1
     ),
-    "playercard_data" => array(
-        "disabled"                  => true,
+
+    "games" => array(
+        "beatSaber"     => true,
+        "synthRiders"   => false,
+        "audioTrip"     => false,
+        "audica"        => false
+    ),
+
+    "plugins" => array(
+        "beatSaberPlugins"              => array(
+            "beatSaberPlus"             => true,
+            "beatSaberPlusLeaderboard"  => false,
+            "dataPuller"                => true,
+            "httpSiraStatus"            => true
+        ),
+
+        "synthRidersPlugins" => array(
+            "synthRiders" => false
+        ),
+
+        "audioTripPlugins" => array(
+            "audioTrip" => false
+        ),
+
+        "audicaPlugins" => array(
+            "audica" => false
+        )
+    ),
+
+    "playerCard" => array(
+        "disabled"                  => false,
         "alwaysEnabled"             => false,
         "playerID"                  => "0",
         "skin"                      => "default",
-        "position"                  => 1,
-        "scale"                     => 1,
+        "position"                  => 0,
+        "scale"                     => 1.0,
         "pos_x"                     => 0,
         "pos_y"                     => 0
     ),
-    "songcard_data" => array(
+
+    "songCard" => array(
         "disabled"                  => false,
         "alwaysEnabled"             => false,
         "skin"                      => "default",
-        "position"                  => 1,
-        "scale"                     => 1,
+        "position"                  => 3,
+        "scale"                     => 1.0,
         "pos_x"                     => 0,
         "pos_y"                     => 0,
         "missDisplay"               => false,
@@ -81,29 +111,15 @@ const DEFAULT_DATA = array(
         "ppMax"                     => false,
         "ppEstimated"               => false
     ),
-    "leaderboard_data" => array(
+
+    "leaderboard" => array(
         "disabled"                  => false,
         "skin"                      => "default",
-        "position"                  => 1,
-        "scale"                     => 1,
+        "position"                  => 0,
+        "scale"                     => 1.0,
         "pos_x"                     => 0,
         "pos_y"                     => 0,
         "playerRendering"           => 5
-    ),
-    "games_data" => array(
-        "beatSaber"                 => true,
-        "synthRiders"               => true,
-        "audioTrip"                 => true,
-        "audica"                    => true
-    ),
-    "plugins_data" => array(
-        "beatSaberPlus"             => true,
-        "beatSaberPlusLeaderboard"  => true,
-        "dataPuller"                => true,
-        "httpSiraStatus"            => true,
-        "synthRiders"               => true,
-        "audioTrip"                 => true,
-        "audica"                    => true
     )
 );
 
@@ -244,42 +260,9 @@ function tokenSearch($SQLQuery): void {
             die;
         }
 
-        $data["general_data"] = $SQLQuery->sqlFetch();
-        unset($data["general_data"]["id"]);
-        unset($data["general_data"]["token"]);
-
-        $SQLQuery->sqlSelect($fields, "playercard_data", $where);
-
-        if ($SQLQuery->sqlCount() === 0) {
-            echo json_encode(DATA_NOT_IN_DATABASE);
-            die;
-        }
-
-        $data["playercard_data"] = $SQLQuery->sqlFetch();
-        unset($data["playercard_data"]["id"]);
-        unset($data["playercard_data"]["token"]);
-
-        $SQLQuery->sqlSelect($fields, "songcard_data", $where);
-
-        if ($SQLQuery->sqlCount() === 0) {
-            echo json_encode(DATA_NOT_IN_DATABASE);
-            die;
-        }
-
-        $data["songcard_data"] = $SQLQuery->sqlFetch();
-        unset($data["songcard_data"]["id"]);
-        unset($data["songcard_data"]["token"]);
-
-        $SQLQuery->sqlSelect($fields, "leaderboard_data", $where);
-
-        if ($SQLQuery->sqlCount() === 0) {
-            echo json_encode(DATA_NOT_IN_DATABASE);
-            die;
-        }
-
-        $data["leaderboard_data"] = $SQLQuery->sqlFetch();
-        unset($data["leaderboard_data"]["id"]);
-        unset($data["leaderboard_data"]["token"]);
+        $data["general"] = $SQLQuery->sqlFetch();
+        unset($data["general"]["id"]);
+        unset($data["general"]["token"]);
 
         $SQLQuery->sqlSelect($fields, "games_data", $where);
 
@@ -288,9 +271,9 @@ function tokenSearch($SQLQuery): void {
             die;
         }
 
-        $data["games_data"] = $SQLQuery->sqlFetch();
-        unset($data["games_data"]["id"]);
-        unset($data["games_data"]["token"]);
+        $data["games"] = $SQLQuery->sqlFetch();
+        unset($data["games"]["id"]);
+        unset($data["games"]["token"]);
 
         $SQLQuery->sqlSelect($fields, "plugins_data", $where);
 
@@ -299,9 +282,44 @@ function tokenSearch($SQLQuery): void {
             die;
         }
 
-        $data["plugins_data"] = $SQLQuery->sqlFetch();
-        unset($data["plugins_data"]["id"]);
-        unset($data["plugins_data"]["token"]);
+        $data["plugins"] = $SQLQuery->sqlFetch();
+        unset($data["plugins"]["id"]);
+        unset($data["plugins"]["token"]);
+
+        $SQLQuery->sqlSelect($fields, "playercard_data", $where);
+
+        if ($SQLQuery->sqlCount() === 0) {
+            echo json_encode(DATA_NOT_IN_DATABASE);
+            die;
+        }
+
+        $data["playerCard"] = $SQLQuery->sqlFetch();
+        unset($data["playerCard"]["id"]);
+        unset($data["playerCard"]["token"]);
+
+        $SQLQuery->sqlSelect($fields, "songcard_data", $where);
+
+        if ($SQLQuery->sqlCount() === 0) {
+            echo json_encode(DATA_NOT_IN_DATABASE);
+            die;
+        }
+
+        $data["songCard"] = $SQLQuery->sqlFetch();
+        unset($data["songCard"]["id"]);
+        unset($data["songCard"]["token"]);
+
+        $SQLQuery->sqlSelect($fields, "leaderboard_data", $where);
+
+        if ($SQLQuery->sqlCount() === 0) {
+            echo json_encode(DATA_NOT_IN_DATABASE);
+            die;
+        }
+
+        $data["leaderboard"] = $SQLQuery->sqlFetch();
+        unset($data["leaderboard"]["id"]);
+        unset($data["leaderboard"]["token"]);
+
+        $data = dataConverter($data);
 
         $data += DATA_READ_SUCCESS;
 
@@ -329,19 +347,30 @@ function tokenSave($SQLQuery): void {
             die;
         }
 
-        $data["general_data"]       += array("token" => $token);
-        $data["playercard_data"]    += array("token" => $token);
-        $data["songcard_data"]      += array("token" => $token);
-        $data["leaderboard_data"]   += array("token" => $token);
-        $data["games_data"]         += array("token" => $token);
-        $data["plugins_data"]       += array("token" => $token);
+        $data["general"]["token"]   = $token;
+        $data["games"]              += array("token" => $token);
+        $data["plugins"]            += array("token" => $token);
+        $data["playerCard"]         += array("token" => $token);
+        $data["songCard"]           += array("token" => $token);
+        $data["leaderboard"]        += array("token" => $token);
 
-        $SQLQuery->sqlAdd($data["general_data"],        "general_data");
-        $SQLQuery->sqlAdd($data["playercard_data"],     "playercard_data");
-        $SQLQuery->sqlAdd($data["songcard_data"],       "songcard_data");
-        $SQLQuery->sqlAdd($data["leaderboard_data"],    "leaderboard_data");
-        $SQLQuery->sqlAdd($data["games_data"],          "games_data");
-        $SQLQuery->sqlAdd($data["plugins_data"],        "plugins_data");
+        $SQLQuery->sqlAdd($data["general"],        "general_data");
+        $SQLQuery->sqlAdd($data["games"],          "games_data");
+        $SQLQuery->sqlAdd($data["playerCard"],     "playercard_data");
+        $SQLQuery->sqlAdd($data["songCard"],       "songcard_data");
+        $SQLQuery->sqlAdd($data["leaderboard"],    "leaderboard_data");
+
+        if (count($data["plugins"]) > 0) {
+            $pluginsData = array();
+            $pluginsData += array("token" => $token);
+
+            if (count($data["plugins"]["beatSaberPlugins"]) > 0)    $pluginsData += $data["plugins"]["beatSaberPlugins"];
+            if (count($data["plugins"]["synthRidersPlugins"]) > 0)  $pluginsData += $data["plugins"]["synthRidersPlugins"];
+            if (count($data["plugins"]["audioTripPlugins"]) > 0)    $pluginsData += $data["plugins"]["audioTripPlugins"];
+            if (count($data["plugins"]["audicaPlugins"]) > 0)       $pluginsData += $data["plugins"]["audicaPlugins"];
+
+            $SQLQuery->sqlAdd($pluginsData, "plugins_data");
+        }
 
         $json = array("token" => $token);
         $json += DATA_SAVE_SUCCESS;
@@ -366,12 +395,22 @@ function tokenUpdate($SQLQuery): void {
         if (dataExists(DATA)) {
             $data = dataConverter(DATA);
 
-            if (count($data["general_data"]) > 0)       $SQLQuery->sqlUpdate(TOKEN, $data["general_data"],      "general_data");
-            if (count($data["playercard_data"]) > 0)    $SQLQuery->sqlUpdate(TOKEN, $data["playercard_data"],   "playercard_data");
-            if (count($data["songcard_data"]) > 0)      $SQLQuery->sqlUpdate(TOKEN, $data["songcard_data"],     "songcard_data");
-            if (count($data["leaderboard_data"]) > 0)   $SQLQuery->sqlUpdate(TOKEN, $data["leaderboard_data"],  "leaderboard_data");
-            if (count($data["games_data"]) > 0)         $SQLQuery->sqlUpdate(TOKEN, $data["games_data"],        "games_data");
-            if (count($data["plugins_data"]) > 0)       $SQLQuery->sqlUpdate(TOKEN, $data["plugins_data"],      "plugins_data");
+            if (count($data["general"]) > 0)        $SQLQuery->sqlUpdate(TOKEN, $data["general"],      "general_data");
+            if (count($data["games"]) > 0)          $SQLQuery->sqlUpdate(TOKEN, $data["games"],        "games_data");
+            if (count($data["playerCard"]) > 0)     $SQLQuery->sqlUpdate(TOKEN, $data["playerCard"],   "playercard_data");
+            if (count($data["songCard"]) > 0)       $SQLQuery->sqlUpdate(TOKEN, $data["songCard"],     "songcard_data");
+            if (count($data["leaderboard"]) > 0)    $SQLQuery->sqlUpdate(TOKEN, $data["leaderboard"],  "leaderboard_data");
+
+            if (count($data["plugins"]) > 0) {
+                $pluginsData = array();
+
+                if (count($data["plugins"]["beatSaberPlugins"]) > 0)    $pluginsData += $data["plugins"]["beatSaberPlugins"];
+                if (count($data["plugins"]["synthRidersPlugins"]) > 0)  $pluginsData += $data["plugins"]["synthRidersPlugins"];
+                if (count($data["plugins"]["audioTripPlugins"]) > 0)    $pluginsData += $data["plugins"]["audioTripPlugins"];
+                if (count($data["plugins"]["audicaPlugins"]) > 0)       $pluginsData += $data["plugins"]["audicaPlugins"];
+
+                $SQLQuery->sqlUpdate(TOKEN, $pluginsData, "plugins_data");
+            }
 
             echo json_encode(DATA_UPDATE_SUCCESS);
         }
@@ -383,41 +422,119 @@ function tokenUpdate($SQLQuery): void {
  * @return array|array[]|void
  */
 function dataConverter($data) {
+    $module = "";
+    $pluginsModule = "";
+
     $dataConverted = array(
-        "general_data"      => array(),
-        "playercard_data"   => array(),
-        "songcard_data"     => array(),
-        "leaderboard_data"  => array(),
-        "games_data"        => array(),
-        "plugins_data"      => array()
+        "general"       => array(),
+        "games"         => array(),
+        "plugins"       => array(
+            "beatSaberPlugins"      => array(),
+            "synthRidersPlugins"    => array(),
+            "audioTripPlugins"      => array(),
+            "audicaPlugins"         => array()
+        ),
+        "playerCard"    => array(),
+        "songCard"      => array(),
+        "leaderboard"   => array()
     );
 
     foreach ($data as $key => $value) {
-        if ($key !== "token") {
-            if (str_contains($key, "pc_")) {
-                $databaseName   = "playercard_data";
-                $key            = str_replace("pc_", "", $key);
-            } else if (str_contains($key, "sc_")) {
-                $databaseName   = "songcard_data";
-                $key            = str_replace("sc_", "", $key);
-            } else if (str_contains($key, "ld_")) {
-                $databaseName   = "leaderboard_data";
-                $key            = str_replace("ld_", "", $key);
-            } else if (str_contains($key, "g_")) {
-                $databaseName   = "games_data";
-                $key            = str_replace("g_", "", $key);
-            } else if (str_contains($key, "p_")) {
-                $databaseName   = "plugins_data";
-                $key            = str_replace("p_", "", $key);
-            } else $databaseName   = "general_data";
+        switch($key) {
+            case "general":
+                $module = "general";
+                break;
 
-            if (!array_key_exists($key, DEFAULT_DATA[$databaseName])) {
-                echo json_encode(DATA_FORMAT_NOT_GOOD);
-                die;
+            case "games":
+                $module = "games";
+                break;
+
+            case "plugins":
+                $module = "plugins";
+                break;
+
+            case "playerCard":
+                $module = "playerCard";
+                break;
+
+            case "songCard":
+                $module = "songCard";
+                break;
+
+            case "leaderboard":
+                $module = "leaderboard";
+                break;
+        }
+
+        if ($module && $module !== "plugins") {
+            foreach ($value as $moduleKey => $moduleValue) {
+                if (!array_key_exists($moduleKey, DEFAULT_DATA[$module])) {
+                    echo json_encode(DATA_FORMAT_NOT_GOOD);
+                    die;
+                }
+
+                if (gettype($moduleValue) === "boolean") {
+                    if (gettype(DEFAULT_DATA[$module][$moduleKey]) === "boolean")   $dataConverted[$module][$moduleKey] = ($moduleValue) ? 1 : 0;
+                    else                                                            $dataConverted[$module][$moduleKey] = $moduleValue;
+                } else {
+                    if (gettype(DEFAULT_DATA[$module][$moduleKey]) === "boolean")   $dataConverted[$module][$moduleKey] = ($moduleValue);
+                    else                                                            $dataConverted[$module][$moduleKey] = $moduleValue;
+                }
             }
+        } else if ($module) {
+            foreach ($value as $pluginsKey => $valuePlugins) {
+                switch($pluginsKey) {
+                    case "beatSaberPlus":
+                    case "beatSaberPlusLeaderboard":
+                    case "dataPuller":
+                    case "httpSiraStatus":
+                    case "beatSaberPlugins":
+                        $pluginsModule = "beatSaberPlugins";
+                        break;
+                    case "synthRiders":
+                    case "synthRidersPlugins":
+                        $pluginsModule = "synthRidersPlugins";
+                        break;
+                    case "audioTrip":
+                    case "audioTripPlugins":
+                        $pluginsModule = "audioTripPlugins";
+                        break;
+                    case "audica":
+                    case "audicaPlugins":
+                        $pluginsModule = "audicaPlugins";
+                        break;
+                }
 
-            if (gettype($value) === gettype(DEFAULT_DATA[$databaseName][$key])) $dataConverted[$databaseName][$key] = (gettype($value) === "boolean") ? ($value) ? 1 : 0 : $value;
-            else                                                                $dataConverted[$databaseName][$key] = (gettype(DEFAULT_DATA[$databaseName][$key]) === "boolean") ? (DEFAULT_DATA[$databaseName][$key]) ? 1 : 0 : DEFAULT_DATA[$databaseName][$key];
+                if (is_array($valuePlugins)) {
+                    foreach ($valuePlugins as $pluginsValueKey => $valueValuePlugins) {
+                        if (!array_key_exists($pluginsValueKey, DEFAULT_DATA[$module][$pluginsModule])) {
+                            echo json_encode(DATA_FORMAT_NOT_GOOD);
+                            die;
+                        }
+
+                        if (gettype($valueValuePlugins) === "boolean") {
+                            if (gettype(DEFAULT_DATA[$module][$pluginsModule][$pluginsValueKey]) === "boolean") $dataConverted[$module][$pluginsModule][$pluginsValueKey] = ($valueValuePlugins) ? 1 : 0;
+                            else                                                                                $dataConverted[$module][$pluginsModule][$pluginsValueKey] = $valueValuePlugins;
+                        } else {
+                            if (gettype(DEFAULT_DATA[$module][$pluginsModule][$pluginsValueKey]))   $dataConverted[$module][$pluginsModule][$pluginsValueKey] = ($valueValuePlugins);
+                            else                                                                    $dataConverted[$module][$pluginsModule][$pluginsValueKey] = $valueValuePlugins;
+                        }
+                    }
+                } else {
+                    if (!array_key_exists($pluginsKey, DEFAULT_DATA[$module][$pluginsModule])) {
+                        echo json_encode(DATA_FORMAT_NOT_GOOD);
+                        die;
+                    }
+
+                    if (gettype($valuePlugins) === "boolean") {
+                        if (gettype(DEFAULT_DATA[$module][$pluginsModule][$pluginsKey]) === "boolean")  $dataConverted[$module][$pluginsModule][$pluginsKey] = ($valuePlugins) ? 1 : 0;
+                        else                                                                            $dataConverted[$module][$pluginsModule][$pluginsKey] = $valuePlugins;
+                    } else {
+                        if (gettype(DEFAULT_DATA[$module][$pluginsModule][$pluginsKey]) === "boolean")  $dataConverted[$module][$pluginsModule][$pluginsKey] = ($valuePlugins);
+                        else                                                                            $dataConverted[$module][$pluginsModule][$pluginsKey] = $valuePlugins;
+                    }
+                }
+            }
         }
     }
 

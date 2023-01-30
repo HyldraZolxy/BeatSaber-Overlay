@@ -1,6 +1,6 @@
-import { Globals }                  from "./globals";
-import { Template }                 from "./template";
-import { ScoreSaber, BeatLeader }   from "./api-call";
+import { Globals }                                                                  from "../globals";
+import { Template }                                                                 from "../system/template";
+import { ScoreSaber, BeatLeader, I_scoreSaberPlayerJSON, I_beatLeaderPlayerJSON }   from "../system/api-call";
 
 export class PlayerCard {
 
@@ -12,18 +12,18 @@ export class PlayerCard {
     //////////////////////
     // @Class Variables //
     //////////////////////
-    private _template:      Template;
-    private _scoreSaber:    ScoreSaber;
-    private _beatLeader:    BeatLeader;
+    private _template   : Template;
+    private _scoreSaber : ScoreSaber;
+    private _beatLeader : BeatLeader;
 
     //////////////////////
     // Public Variables //
     //////////////////////
     public playerCardGames: Globals.I_gamesSupported = {
-        g_beatSaber     : true,
-        g_synthRiders   : true,
-        g_audioTrip     : true,
-        g_audica        : true
+        beatSaber     : true,
+        synthRiders   : false,
+        audioTrip     : false,
+        audica        : false
     };
     public playerCardData: Globals.I_playerCard = {
         disabled        : false,
@@ -43,8 +43,8 @@ export class PlayerCard {
         playerCountry   : "FR",
         avatar          : "./pictures/default/notFound.jpg",
         playerFlag      : "./pictures/country/FR.svg",
-        topWorld        : "336",
-        topCountry      : "9",
+        topWorld        : "96",
+        topCountry      : "69",
         performancePoint: "17,357.35"
     };
 
@@ -62,7 +62,7 @@ export class PlayerCard {
 
         this.playerCardData.needUpdate = false;
 
-        let data: Globals.I_scoreSaberPlayerJSON | Globals.I_beatLeaderPlayerJSON;
+        let data: I_scoreSaberPlayerJSON | I_beatLeaderPlayerJSON;
 
         if (this.playerCardData.scoringSystem === Globals.E_SCORING_SYSTEM.BEATLEADER)  data = await this._beatLeader.getPlayerInfo(this.playerCardData.playerID);
         else                                                                            data = await this._scoreSaber.getPlayerInfo(this.playerCardData.playerID);
@@ -83,7 +83,7 @@ export class PlayerCard {
     // Public Methods //
     ////////////////////
     public refreshPlayerCard(): void {
-        if (!this.playerCardGames.g_beatSaber || this.playerCardData.disabled) {
+        if (!this.playerCardGames.beatSaber || this.playerCardData.disabled) {
             this.playerCardData.disabled = true;
             return;
         }
