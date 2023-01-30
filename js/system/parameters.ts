@@ -142,7 +142,7 @@ export class Parameters {
     public uriParams: I_uriParamsAllowed = {
         general: {
             ip              : "127.0.0.1",
-            token           : "v-rFZp2Hg1B4M6ZEtaL3bNx9fS8Elpvy", // Token debug mode: v-rFZp2Hg1B4M6ZEtaL3bNx9fS8Elpvy
+            token           : "", // Token debug mode: v-rFZp2Hg1B4M6ZEtaL3bNx9fS8Elpvy
             scoringSystem   : 1
         },
 
@@ -223,7 +223,7 @@ export class Parameters {
     // Private Methods //
     /////////////////////
     private findParameters(uri_search: URLSearchParams): void {
-        for (let [key, value] of Object.entries(uri_search.entries())) {
+        for (let [key, value] of uri_search.entries()) {
             let keyDecoded      = decodeURI(key);
             let valueDecoded    = decodeURI(value);
             let keyConverted    = this.oldURIParamsConverter(keyDecoded);

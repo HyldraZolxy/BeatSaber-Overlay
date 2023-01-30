@@ -59,11 +59,13 @@ export class Setup {
     // Private Methods //
     /////////////////////
     private setupAction() {
-        this.elementsBuilder();
-        this.fillParameters();
-        this.menuAction();
-        this.elementsOffEvent();
-        this.elementsOnEvent();
+        setTimeout(() => {
+            this.elementsBuilder();
+            this.fillParameters();
+            this.menuAction();
+            this.elementsOffEvent();
+            this.elementsOnEvent();
+        }, Globals.MS_TIMER);
     }
 
     private menuAction() {
@@ -553,8 +555,10 @@ export class Setup {
             this.elements.get("menuSetup")?.empty();
             await this._template.loadSkin(Globals.E_MODULES.MENU_SETUP, this.skinSettings, "overlayMenu.html");
 
-            this.elementsBuilder();
-            this.menuAction();
+            setTimeout(() => {
+                this.elementsBuilder();
+                this.menuAction();
+            }, Globals.MS_TIMER);
         });
         this.elements.get("songCardSwitch")?.on("click", async () => {
             this._parameters.uriParams.songCard.disabled = !this.elements.get("songCardSwitch")?.prop("checked");
@@ -569,8 +573,10 @@ export class Setup {
             this.elements.get("menuSetup")?.empty();
             await this._template.loadSkin(Globals.E_MODULES.MENU_SETUP, this.skinSettings, "overlayMenu.html");
 
-            this.elementsBuilder();
-            this.menuAction();
+            setTimeout(() => {
+                this.elementsBuilder();
+                this.menuAction();
+            }, Globals.MS_TIMER);
         });
         this.elements.get("leaderboardSwitch")?.on("click", async () => {
             this._parameters.uriParams.leaderboard.disabled = !this.elements.get("leaderboardSwitch")?.prop("checked");
@@ -581,8 +587,10 @@ export class Setup {
             this.elements.get("menuSetup")?.empty();
             await this._template.loadSkin(Globals.E_MODULES.MENU_SETUP, this.skinSettings, "overlayMenu.html");
 
-            this.elementsBuilder();
-            this.menuAction();
+            setTimeout(() => {
+                this.elementsBuilder();
+                this.menuAction();
+            }, Globals.MS_TIMER);
         });
 
         this.elements.get("switchPlayerCardPreview")?.on("click", async () => {

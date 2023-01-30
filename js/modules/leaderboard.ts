@@ -176,13 +176,15 @@ export class Leaderboard {
 
         if (player.PlayerJoined.UserName === this.leaderboardData.playerLocalName) this.leaderboardData.playerLocalLUID = player.PlayerJoined.LUID;
 
-        this._template.createRow(   player.PlayerJoined.LUID,
-                                    this._leaderboardMap.get(player.PlayerJoined.LUID)!,
-                                    this.leaderboardData.playerLocalLUID,
-                                    this._leaderboardMap.size,
-                                    this.leaderboardData.playerRendering,
-                                    this.leaderboardData.skin
-        );
+        setTimeout(() => {
+            this._template.createRow(player.PlayerJoined.LUID,
+                this._leaderboardMap.get(player.PlayerJoined.LUID)!,
+                this.leaderboardData.playerLocalLUID,
+                this._leaderboardMap.size,
+                this.leaderboardData.playerRendering,
+                this.leaderboardData.skin
+            );
+        }, Globals.MS_TIMER);
     }
     public deletePlayer(playerLUID: number): void {
         this._leaderboardMap.delete(playerLUID);
