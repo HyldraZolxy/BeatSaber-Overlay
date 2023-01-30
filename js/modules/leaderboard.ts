@@ -135,7 +135,6 @@ export class Leaderboard {
         if (this.leaderboardData.roomState === "None") return;
         if (this.leaderboardData.roomState === "Playing" || this.leaderboardData.roomState === "Results") leaderboardSorted = this.sortLeaderboard("Accuracy", "desc");
 
-        this._template.refreshUI(this.leaderboardData, Globals.E_MODULES.LEADERBOARD);
         this._template.refreshUIMap(this._leaderboardMap, Globals.E_MODULES.LEADERBOARD);
 
         this._template.sortingRows(leaderboardSorted, this.leaderboardData.playerLocalLUID, this._leaderboardMap.size, this.leaderboardData.playerRendering, this.leaderboardData.position);
@@ -193,7 +192,9 @@ export class Leaderboard {
     public updatePlayer(player: I_bsPlusLeaderboardObject["PlayerUpdated"] | I_bsPlusLeaderboardObject["Score"], event: "PlayerUpdated" | "Score"): void {
         const playerLUID = (event === "PlayerUpdated" || event === "Score") ? player.LUID : null;
 
-        for (let [key, value] of Object.entries(player)) {
+        Object.entries(player).forEach(entry => {
+            let [key, value] = entry;
+
             if (key === "LUID") return;
             if (playerLUID !== null) {
                 if (key === "MissCount" && this._leaderboardMap.get(playerLUID)?.MissCount !== value) this._leaderboardMap.get(playerLUID)!.Missed = true;
@@ -201,7 +202,7 @@ export class Leaderboard {
 
                 this._leaderboardMap.get(playerLUID)![key] = value;
             }
-        }
+        });
     }
 
     public roomLeaved(): void {

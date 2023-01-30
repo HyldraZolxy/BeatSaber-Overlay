@@ -155,9 +155,6 @@ export class Template {
                                 break;
                         }
                         break;
-
-                    case Globals.E_MODULES.LEADERBOARD:
-                        break;
                 }
             }
         }
