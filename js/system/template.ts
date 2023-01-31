@@ -305,7 +305,7 @@ export class Template {
 
         elementLd.append('<tr id="row-separator">'
                             + '<td class="separator ion-more">'
-                                + '<div class="playerLocalName localPlayer"></div>'
+                                + '<p class="playerLocalName localPlayer"></p>'
                             + '</td>'
                         + '</tr>'
         );

@@ -92,9 +92,15 @@
     width: 110px;
     margin-top: 15px;
 
-    float: right;
+
     display: inline-flex;
     flex-direction: column;
+}
+#leaderboard-overlay.top-left .rowPerformance, #leaderboard-overlay.bottom-left .rowPerformance {
+    float: right;
+}
+#leaderboard-overlay.top-right .rowPerformance, #leaderboard-overlay.bottom-right .rowPerformance {
+    float: left;
 }
 
 .UserName {
@@ -106,6 +112,12 @@
 
     line-height: 35px;
     font-weight: bold;
+}
+#leaderboard-overlay.top-left .UserName, #leaderboard-overlay.bottom-left .UserName {
+    text-align: left;
+}
+#leaderboard-overlay.top-right .UserName, #leaderboard-overlay.bottom-right .UserName {
+    text-align: right;
 }
 
 .avatar, .innerAvatar {
@@ -121,16 +133,30 @@
 .avatar {
     float: left;
 }
+#leaderboard-overlay.top-left .avatar, #leaderboard-overlay.bottom-left .avatar {
+    float: left;
+}
+#leaderboard-overlay.top-right .avatar, #leaderboard-overlay.bottom-right .avatar {
+    float: right;
+}
 
 .Accuracy {
     color: white;
 }
 .Accuracy, .fcMiss {
-    width: 60px;
+    width: 100%;
     font-size: 1.1em;
 }
 .Accuracy:after {
     content: "%";
+}
+#leaderboard-overlay.top-left .Accuracy, #leaderboard-overlay.bottom-left .Accuracy,
+#leaderboard-overlay.top-left .fcMiss, #leaderboard-overlay.bottom-left .fcMiss {
+    text-align: left;
+}
+#leaderboard-overlay.top-right .Accuracy, #leaderboard-overlay.bottom-right .Accuracy,
+#leaderboard-overlay.top-right .fcMiss, #leaderboard-overlay.bottom-right .fcMiss {
+    text-align: right;
 }
 
 #row-separator {
@@ -142,22 +168,38 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+#leaderboard-overlay.top-left #row-separator, #leaderboard-overlay.bottom-left #row-separator {
+    text-align: left;
+}
+#leaderboard-overlay.top-right #row-separator, #leaderboard-overlay.bottom-right #row-separator {
+    text-align: right;
+}
 
 .separator {
+    display: inline-flex;
     font-size: 1.5em;
+}
+#leaderboard-overlay.top-left .separator, #leaderboard-overlay.bottom-left .separator {
+    flex-direction: row;
+}
+#leaderboard-overlay.top-right .separator, #leaderboard-overlay.bottom-right .separator {
+    flex-direction: row-reverse;
 }
 
 .playerLocalName {
     display: inline-block;
     margin-top: 2px;
-    margin-left: 10px;
-
-    position: absolute;
 
     font-size: 0.5em !important;
     font-weight: bold;
 
     opacity: 0.85;
+}
+#leaderboard-overlay.top-left .playerLocalName, #leaderboard-overlay.bottom-left .playerLocalName {
+    margin-left: 10px;
+}
+#leaderboard-overlay.top-right .playerLocalName, #leaderboard-overlay.bottom-right .playerLocalName {
+    margin-right: 10px;
 }
 /* ===============================
    = LEADERBOARD TAGS / Rows end =
