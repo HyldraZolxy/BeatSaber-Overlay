@@ -133,7 +133,8 @@ export class Leaderboard {
         }
 
         if (this.leaderboardData.roomState === "None") return;
-        if (this.leaderboardData.roomState === "Playing" || this.leaderboardData.roomState === "Results") leaderboardSorted = this.sortLeaderboard("Accuracy", "desc");
+
+        leaderboardSorted = this.sortLeaderboard("Accuracy", "desc");
 
         this._template.refreshUIMap(this._leaderboardMap, Globals.E_MODULES.LEADERBOARD);
 

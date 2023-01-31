@@ -400,8 +400,10 @@ export class Template {
                 if (elementLd.find("#row-separator").length) {
                     const elementLocalPlayer = $(".playerLocalName");
 
-                    if (iteration > playerRender && iteration < playerNumber && playerRender > 1)   elementLocalPlayer.addClass("ion-pound").text(value.Position + " " + value.UserName);
-                    else                                                                            elementLocalPlayer.removeClass("ion-pound").text("");
+                    if ((iteration > playerRender || iteration === playerRender)
+                        && iteration < playerNumber
+                        && playerRender > 1)    elementLocalPlayer.addClass("ion-pound").text(value.Position + " " + value.UserName);
+                    else                        elementLocalPlayer.removeClass("ion-pound").text("");
                 }
             }
         }
