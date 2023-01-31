@@ -138,7 +138,7 @@ export class Leaderboard {
 
         this._template.refreshUIMap(this._leaderboardMap, Globals.E_MODULES.LEADERBOARD);
 
-        this._template.sortingRows(leaderboardSorted, this.leaderboardData.playerLocalLUID, this._leaderboardMap.size, this.leaderboardData.playerRendering, this.leaderboardData.position);
+        this._template.sortingRows(leaderboardSorted, this.leaderboardData.playerLocalLUID, this._leaderboardMap.size, this.leaderboardData.playerRendering, this.leaderboardData.position, this.leaderboardData.skin);
 
         this._template.moduleScale(Globals.E_MODULES.LEADERBOARD, this.leaderboardData.position, this.leaderboardData.scale);
         this._template.moduleCorners(Globals.E_MODULES.LEADERBOARD, this.leaderboardData.position);

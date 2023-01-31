@@ -24,15 +24,15 @@
 }
 
 .first {
-    background-color: rgba(196, 143, 13, 0.7) !important;
+    color: gold !important;
 }
 
 .second {
-    background-color: rgba(175, 175, 175, 0.7) !important;
+    color: silver !important;
 }
 
 .third {
-    background-color: rgba(136, 81, 37, 0.7) !important;
+    color: rgba(218, 120, 60, 0.7) !important;
 }
 
 .miss {
@@ -46,7 +46,8 @@
    = LEADERBOARD TAGS start =
    ========================== */
 #leaderboard-overlay {
-    margin: 5px;
+    margin: 2% 2%;
+
     display: inline-flex;
     position: absolute;
 }
@@ -61,20 +62,17 @@
    = LEADERBOARD TAGS / Rows start =
    ================================= */
 #leaderboardTable tr {
-    margin-bottom: 3px;
+    margin-bottom: 20px;
 
     display: inline-flex;
-    flex-direction: row;
+    flex-direction: column;
     clear: both;
     position: absolute;
 
-    background-color: rgba(98, 98, 98, 0.7);
-
-    border-radius: 3px;
-    line-height: 40px;
-
     font-family: Arial, Helvetica, sans-serif;
     color: white;
+    filter: drop-shadow(0 0 0.25rem black)
+            drop-shadow(0 0 0.25rem black);
 
     transition-duration: 0.5s;
 }
@@ -85,41 +83,18 @@
     right: 0;
 }
 
-#leaderboardTable tr > * {
-    margin: 7px 10px;
+.rowGroup {
+    width: 170px;
+
     display: inline-block;
 }
+.rowPerformance {
+    width: 110px;
+    margin-top: 15px;
 
-.playerLocalName {
-    display: inline-block;
-    margin-left: 10px;
-
-    font-weight: bold;
-
-    opacity: 0.85;
-}
-
-.Position {
-    width: 40px;
-
-    font-weight: bold;
-}
-.Position, .UserName {
-    font-size: 1.2em;
-}
-
-.avatar {
-    outline: 2px solid rgb(29, 224, 204);
-}
-.avatar, .innerAvatar {
-    width: 40px;
-    height: 40px;
-
-    background-image: url("https://cdn.scoresaber.com/avatars/oculus.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-
-    border-radius: 50%;
+    float: right;
+    display: inline-flex;
+    flex-direction: column;
 }
 
 .UserName {
@@ -128,35 +103,61 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    line-height: 35px;
+    font-weight: bold;
 }
 
-.Score, .Accuracy, .fcMiss {
-    text-align: right;
-    font-size: 1.1em;
+.avatar, .innerAvatar {
+    width: 50px;
+    height: 50px;
+
+    background-image: url("https://cdn.scoresaber.com/avatars/oculus.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    border-radius: 50%;
+}
+.avatar {
+    float: left;
 }
 
-.Score {
-    width: 90px;
+.Accuracy {
+    color: white;
 }
-
 .Accuracy, .fcMiss {
     width: 60px;
+    font-size: 1.1em;
 }
-
 .Accuracy:after {
     content: "%";
 }
 
-.barPercentage {
-    display: none;
+#row-separator {
+    width: 170px;
+
+    line-height: 20px !important;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-#row-separator {
-    width: 580px;
+.separator {
+    font-size: 1.5em;
+}
 
-    line-height: 23px !important;
+.playerLocalName {
+    display: inline-block;
+    margin-top: 2px;
+    margin-left: 10px;
 
-    background-color: rgba(84, 76, 135, 0.7) !important;
+    position: absolute;
+
+    font-size: 0.5em !important;
+    font-weight: bold;
+
+    opacity: 0.85;
 }
 /* ===============================
    = LEADERBOARD TAGS / Rows end =
@@ -183,44 +184,54 @@
 
 @keyframes joinedColor {
     0% {
-        background-color: rgba(77, 77, 77, 0.7);
+        filter: drop-shadow(0 0 0.25rem black)
+                drop-shadow(0 0 0.25rem black);
     }
 
     50% {
-        box-shadow: 0 0 50px rgb(66, 198, 238);
-        background-color: rgb(66, 198, 238);
+        filter: drop-shadow(0 0 0.25rem rgb(66, 198, 238))
+                drop-shadow(0 0 0.25rem rgb(66, 198, 238));
     }
 
     100% {
-        background-color: rgba(77, 77, 77, 0.7);
+        filter: drop-shadow(0 0 0.25rem black)
+                drop-shadow(0 0 0.25rem black);
     }
 }
 
 @keyframes leavedColor {
     0% {
-        background-color: rgba(77, 77, 77, 0.7);
+        filter: drop-shadow(0 0 0.25rem black)
+                drop-shadow(0 0 0.25rem black);
     }
 
     50% {
         opacity: 70%;
-        box-shadow: 0 0 40px rgb(238, 82, 66) inset;
+        filter: drop-shadow(0 0 0.25rem rgb(238, 82, 66))
+                drop-shadow(0 0 0.25rem rgb(238, 82, 66));
     }
 
     100% {
         opacity: 0;
+        filter: drop-shadow(0 0 0.25rem black)
+                drop-shadow(0 0 0.25rem black);
     }
 }
 
 @keyframes missColor {
-    0% {}
+    0% {
+        filter: drop-shadow(0 0 0.25rem black)
+                drop-shadow(0 0 0.25rem black);
+    }
 
     50% {
-        box-shadow: 0 0 50px rgb(238, 82, 66);
-        background-color: rgba(238, 82, 66, 0.7);
+        filter: drop-shadow(0 0 0.25rem rgb(238, 82, 66))
+                drop-shadow(0 0 0.25rem rgb(238, 82, 66));
     }
 
     100% {
-        background-color: rgba(77, 77, 77, 0.7);
+        filter: drop-shadow(0 0 0.25rem black)
+                drop-shadow(0 0 0.25rem black);
     }
 }
 /* ======================

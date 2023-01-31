@@ -319,11 +319,12 @@ export class Template {
         elementRow.empty().remove();
     }
 
-    public sortingRows(player: Map<number, I_leaderboardPlayer>, localPlayer: number, playerNumber: number, playerRender: number, positionCSS: number): void {
+    public sortingRows(player: Map<number, I_leaderboardPlayer>, localPlayer: number, playerNumber: number, playerRender: number, positionCSS: number, skinName: string): void {
         const elementLd         = $("#leaderboardTable");
         const positionCSSString = [Globals.E_POSITION.TOP_LEFT, Globals.E_POSITION.TOP_RIGHT].includes(positionCSS) ? "top" : "bottom";
         let iteration           = 0;
         let rowTotalHeight      = 0;
+        let marginBottom        = (skinName === "default") ? 3 : 15;
 
         for (let [key, value] of player) {
             iteration++;
@@ -354,14 +355,14 @@ export class Template {
                         elementRow.css("display", "inline-flex");
                         elementRow.css(positionCSSString, rowTotalHeight);
 
-                        rowTotalHeight += elementRow.height()! + 3;
+                        rowTotalHeight += elementRow.height()! + marginBottom;
                     } else if (iteration === playerRender && playerRender < playerNumber) {
                         this.createSeparatorRow();
 
                         const elementSeparatorRow = $("#row-separator");
 
                         elementSeparatorRow.css(positionCSSString, rowTotalHeight);
-                        rowTotalHeight += elementSeparatorRow.height()! + 3;
+                        rowTotalHeight += elementSeparatorRow.height()! + marginBottom;
 
                         elementRow.css("display", "none");
                     } else if (iteration > playerRender && iteration !== playerNumber) {
@@ -370,7 +371,7 @@ export class Template {
                         elementRow.css("display", "inline-flex");
                         elementRow.css(positionCSSString, rowTotalHeight);
 
-                        rowTotalHeight += elementRow.height()! + 3;
+                        rowTotalHeight += elementRow.height()! + marginBottom;
                     }
                 } else {
                     if (localPlayer !== key) elementRow.css("display", "none");
@@ -378,18 +379,18 @@ export class Template {
                         elementRow.css("display", "inline-flex");
                         elementRow.css(positionCSSString, rowTotalHeight);
 
-                        rowTotalHeight += elementRow.height()! + 3;
+                        rowTotalHeight += elementRow.height()! + marginBottom;
 
                         if (playerNumber > 1) {
                             if (!elementLd.find("#row-separator").length) {
                                 this.createSeparatorRow();
-                                rowTotalHeight += $("#row-separator").height()! + 3;
+                                rowTotalHeight += $("#row-separator").height()! + marginBottom;
                             } else {
                                 const elementSeparatorRow = $("#row-separator");
 
                                 elementSeparatorRow.css(positionCSSString, rowTotalHeight);
 
-                                rowTotalHeight += elementSeparatorRow.height()! + 3;
+                                rowTotalHeight += elementSeparatorRow.height()! + marginBottom;
                             }
                         } else this.deleteSeparatorRow();
                     }

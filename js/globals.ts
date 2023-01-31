@@ -115,7 +115,8 @@ export namespace Globals {
 
         // Skin for E_MODULES.LEADERBOARD
         2: {
-            default : ["./skins/leaderboard/default/", "index.html", "rows.html", "style.css"]
+            default : ["./skins/leaderboard/default/", "index.html", "rows.html", "style.css"],
+            minify  : ["./skins/leaderboard/minify/", "index.html", "rows.html", "style.css"]
         },
 
         // Skin for E_MODULES.MENU_SETUP

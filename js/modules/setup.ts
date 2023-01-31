@@ -308,6 +308,7 @@ export class Setup {
         // Leaderboard Settings
         /******************************************************************************/
         this.elements.set("switchLeaderboardPreview",       $("#switchLeaderboardPreview"));
+        this.elements.set("leaderboardSkin",                $("#leaderboardSkin"));
         this.elements.set("leaderboardPosition",            $("#leaderboardPosition"));
         this.elements.set("leaderboardPosXReset",           $("#leaderboardPosXReset"));
         this.elements.set("leaderboardPosX",                $("#leaderboardPosX"));
@@ -382,6 +383,7 @@ export class Setup {
         // Leaderboard Settings
         /******************************************************************************/
         this.elements.get("switchLeaderboardPreview")?. prop("checked", this._leaderboard.leaderboardData.display);
+        this.elements.get("leaderboardSkin")?.          val(this._parameters.uriParams.leaderboard.skin);
         this.elements.get("leaderboardPosition")?.      val(this._parameters.uriParams.leaderboard.position);
         this.elements.get("leaderboardPosX")?.          val(this._parameters.uriParams.leaderboard.pos_x);
         this.elements.get("leaderboardPosY")?.          val(this._parameters.uriParams.leaderboard.pos_y);
@@ -429,6 +431,7 @@ export class Setup {
         this.elements.get("songCardScale")?.        off("input");
 
         this.elements.get("switchLeaderboardPreview")?. off("click");
+        this.elements.get("leaderboardSkin")?.          off("change");
         this.elements.get("leaderboardPosition")?.      off("change");
         this.elements.get("leaderboardPosX")?.          off("input");
         this.elements.get("leaderboardPosY")?.          off("input");
@@ -789,6 +792,20 @@ export class Setup {
             } else {
                 this._leaderboard.leaderboardData.display = false;
                 this._debugLeaderboard.stop();
+            }
+        });
+        this.elements.get("leaderboardSkin")?.on("change", async () => {
+            let leaderboardSkinValue = this.elements.get("leaderboardSkin")?.val();
+
+            if ((leaderboardSkinValue !== undefined) && (typeof leaderboardSkinValue === "string")) {
+                if (this._parameters.parseParameters("skin", leaderboardSkinValue, "leaderboard")) {
+                    this._parameters.uriParams.leaderboard.skin = leaderboardSkinValue;
+                    this._parameters.assocValue();
+
+                    this.elements.get("leaderboard-overlay")?.empty();
+                    await this._template.loadSkin(Globals.E_MODULES.LEADERBOARD, this._leaderboard.leaderboardData.skin);
+                    if (this._leaderboard.leaderboardData.display) this._leaderboard.leaderboardData.needUpdate = true;
+                }
             }
         });
         this.elements.get("leaderboardPosition")?.on("change", async () => {
