@@ -28,6 +28,7 @@ export class Setup {
     private skinSettings    = "default";
     private isDisplayed     = false;
     private elements        : Map<string, JQuery>;
+    private latency         = window.timeStamp + Globals.MS_TIMER;
 
     constructor() {
         this._tools             = new Tools();
@@ -65,7 +66,7 @@ export class Setup {
             this.menuAction();
             this.elementsOffEvent();
             this.elementsOnEvent();
-        }, Globals.MS_TIMER);
+        }, this.latency);
     }
 
     private menuAction() {
@@ -561,7 +562,7 @@ export class Setup {
             setTimeout(() => {
                 this.elementsBuilder();
                 this.menuAction();
-            }, Globals.MS_TIMER);
+            }, this.latency);
         });
         this.elements.get("songCardSwitch")?.on("click", async () => {
             this._parameters.uriParams.songCard.disabled = !this.elements.get("songCardSwitch")?.prop("checked");
@@ -579,7 +580,7 @@ export class Setup {
             setTimeout(() => {
                 this.elementsBuilder();
                 this.menuAction();
-            }, Globals.MS_TIMER);
+            }, this.latency);
         });
         this.elements.get("leaderboardSwitch")?.on("click", async () => {
             this._parameters.uriParams.leaderboard.disabled = !this.elements.get("leaderboardSwitch")?.prop("checked");
@@ -593,7 +594,7 @@ export class Setup {
             setTimeout(() => {
                 this.elementsBuilder();
                 this.menuAction();
-            }, Globals.MS_TIMER);
+            }, this.latency);
         });
 
         this.elements.get("switchPlayerCardPreview")?.on("click", async () => {

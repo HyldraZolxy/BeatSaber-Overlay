@@ -1,10 +1,14 @@
-console.time("Load time");
-
 import { Globals }      from "./globals";
 import { Parameters }   from "./system/parameters";
 import { UI }           from "./system/ui";
 import { Plugins }      from "./system/plugins";
 import { Setup }        from "./modules/setup";
+
+declare global {
+    interface Window {
+        timeStamp: number;
+    }
+}
 
 class Init {
 
@@ -30,7 +34,8 @@ class Init {
             await this.appInit();
             this._ui.refreshUI();
 
-            console.timeEnd("Load time");
+            // Try to catch the performance of the internet connection (for the Setup panel)
+            window.timeStamp = window.timeStamp + performance.now();
         })();
     }
 
