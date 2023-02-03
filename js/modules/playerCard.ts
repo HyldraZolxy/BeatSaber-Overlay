@@ -83,8 +83,9 @@ export class PlayerCard {
     // Public Methods //
     ////////////////////
     public refreshPlayerCard(): void {
-        if (!this.playerCardGames.beatSaber || this.playerCardData.disabled) {
+        if (!this.playerCardGames.beatSaber || this.playerCardData.disabled || this.playerCardData.playerID === Globals.DEFAULT_PLAYERID) {
             this.playerCardData.disabled = true;
+            this.playerCardData.display = false;
             return;
         }
 
@@ -92,9 +93,9 @@ export class PlayerCard {
             this._template.refreshUI(this.playerCardData, Globals.E_MODULES.PLAYERCARD);
             this.playerCardData.endedUpdate = false;
 
-            this._template.moduleScale(Globals.E_MODULES.PLAYERCARD, this.playerCardData.position, this.playerCardData.scale);
-            this._template.moduleCorners(Globals.E_MODULES.PLAYERCARD, this.playerCardData.position);
-            this._template.modulePosition(Globals.E_MODULES.PLAYERCARD, this.playerCardData.pos_x, this.playerCardData.pos_y);
+            this._template.moduleScale(Globals.E_MODULES.PLAYERCARD,    this.playerCardData.position,   this.playerCardData.scale);
+            this._template.moduleCorners(Globals.E_MODULES.PLAYERCARD,  this.playerCardData.position);
+            this._template.modulePosition(Globals.E_MODULES.PLAYERCARD, this.playerCardData.pos_x,      this.playerCardData.pos_y);
         });
     }
 

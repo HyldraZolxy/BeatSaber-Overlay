@@ -288,6 +288,7 @@ export class Setup {
         this.elements.set("playerCardPosYReset",        $("#playerCardPosYReset"));
         this.elements.set("playerCardPosY",             $("#playerCardPosY"));
         this.elements.set("playerCardScale",            $("#playerCardScale"));
+        this.elements.set("alwaysDisplayPlayerCard",    $("#alwaysDisplayPlayerCard"));
         /******************************************************************************/
 
         // Song Card Settings
@@ -304,6 +305,7 @@ export class Setup {
         this.elements.set("bigBSR",                 $("#bigBSR"));
         /*this.elements.set("ppMax",                $("#ppMax"));
         this.elements.set("ppEstimated",            $("#ppEstimated"));*/
+        this.elements.set("alwaysDisplaySongCard",  $("#alwaysDisplaySongCard"));
         /******************************************************************************/
 
         // Leaderboard Settings
@@ -359,6 +361,7 @@ export class Setup {
         // Player Card Settings
         /******************************************************************************/
         this.elements.get("switchPlayerCardPreview")?.  prop("checked",     this._playerCard.playerCardData.display);
+        this.elements.get("alwaysDisplayPlayerCard")?.  prop("checked",     this._playerCard.playerCardData.alwaysEnabled);
         this.elements.get("playerId")?.                 attr("placeholder", (this._parameters.uriParams.playerCard.playerID === "0") ? "https://scoresaber.com/u/" + this._parameters.uriParams.playerCard.playerID : this._parameters.uriParams.playerCard.playerID);
         this.elements.get("playerCardSkin")?.           val(this._parameters.uriParams.playerCard.skin);
         this.elements.get("playerCardPosition")?.       val(this._parameters.uriParams.playerCard.position);
@@ -370,6 +373,7 @@ export class Setup {
         // Song Card Settings
         /******************************************************************************/
         this.elements.get("switchSongCardPreview")?.prop("checked", this._songCard.songCardData.display);
+        this.elements.get("alwaysDisplaySongCard")?.prop("checked", this._songCard.songCardData.alwaysEnabled);
         this.elements.get("songCardSkin")?.         val(this._parameters.uriParams.songCard.skin);
         this.elements.get("songCardPosition")?.     val(this._parameters.uriParams.songCard.position);
         this.elements.get("songCardPosX")?.         val(this._parameters.uriParams.songCard.pos_x);
@@ -423,6 +427,7 @@ export class Setup {
         this.elements.get("playerCardPosX")?.           off("input");
         this.elements.get("playerCardPosY")?.           off("input");
         this.elements.get("playerCardScale")?.          off("input");
+        this.elements.get("alwaysDisplayPlayerCard")?.  off("click");
 
         this.elements.get("switchSongCardPreview")?.off("click");
         this.elements.get("songCardSkin")?.         off("change");
@@ -430,6 +435,7 @@ export class Setup {
         this.elements.get("songCardPosX")?.         off("input");
         this.elements.get("songCardPosY")?.         off("input");
         this.elements.get("songCardScale")?.        off("input");
+        this.elements.get("alwaysDisplaySongCard")?.off("click");
 
         this.elements.get("switchLeaderboardPreview")?. off("click");
         this.elements.get("leaderboardSkin")?.          off("change");
@@ -617,7 +623,6 @@ export class Setup {
                 if (RegExp(/\bhttps:\/\/scoresaber.com\/u\/\b/).test(playerIdValue)) playerIdValue = playerIdValue.replace("https://scoresaber.com/u/", "");
 
                 if (this._parameters.parseParameters("playerID", playerIdValue)) {
-                    console.log("PlayerID Updated");
                     this._parameters.uriParams.playerCard.playerID = playerIdValue;
                     this._parameters.assocValue();
 
@@ -688,6 +693,9 @@ export class Setup {
                     this._parameters.assocValue();
                 }
             }
+        });
+        this.elements.get("alwaysDisplayPlayerCard")?.on("click", async () => {
+            this._playerCard.playerCardData.alwaysEnabled = this.elements.get("alwaysDisplayPlayerCard")?.prop("checked") === true;
         });
 
         this.elements.get("switchSongCardPreview")?.on("click", async () => {
@@ -784,6 +792,9 @@ export class Setup {
             this._parameters.uriParams.songCard.ppEstimated = this.elements.get("ppEstimated")?.prop("checked") === true;
             this._parameters.assocValue();
         });*/
+        this.elements.get("alwaysDisplaySongCard")?.on("click", async () => {
+            this._songCard.songCardData.alwaysEnabled = this.elements.get("alwaysDisplaySongCard")?.prop("checked") === true;
+        });
 
         this.elements.get("switchLeaderboardPreview")?.on("click", async () => {
             if (this.elements.get("switchLeaderboardPreview")?.prop("checked")) {
@@ -939,22 +950,24 @@ export class Setup {
         this._parameters.uriParams.songCard.disabled    = false;
         this._parameters.uriParams.leaderboard.disabled = true;
 
-        this._parameters.uriParams.playerCard.playerID  = "0";
-        this._parameters.uriParams.playerCard.skin      = "default";
-        this._parameters.uriParams.playerCard.position  = Globals.E_POSITION.TOP_RIGHT;
-        this._parameters.uriParams.playerCard.scale     = 1.0;
-        this._parameters.uriParams.playerCard.pos_x     = 0;
-        this._parameters.uriParams.playerCard.pos_y     = 0;
+        this._parameters.uriParams.playerCard.playerID      = "0";
+        this._parameters.uriParams.playerCard.skin          = "default";
+        this._parameters.uriParams.playerCard.position      = Globals.E_POSITION.TOP_RIGHT;
+        this._parameters.uriParams.playerCard.scale         = 1.0;
+        this._parameters.uriParams.playerCard.pos_x         = 0;
+        this._parameters.uriParams.playerCard.pos_y         = 0;
+        this._parameters.uriParams.playerCard.alwaysEnabled = false;
 
-        this._parameters.uriParams.songCard.skin        = "default";
-        this._parameters.uriParams.songCard.position    = Globals.E_POSITION.BOTTOM_LEFT;
-        this._parameters.uriParams.songCard.scale       = 1.0;
-        this._parameters.uriParams.songCard.pos_x       = 0;
-        this._parameters.uriParams.songCard.pos_y       = 0;
-        this._parameters.uriParams.songCard.missDisplay = false;
-        this._parameters.uriParams.songCard.bigBSR      = false;
-        this._parameters.uriParams.songCard.ppMax     = false;
-        this._parameters.uriParams.songCard.ppEstimated = false;
+        this._parameters.uriParams.songCard.skin            = "default";
+        this._parameters.uriParams.songCard.position        = Globals.E_POSITION.BOTTOM_LEFT;
+        this._parameters.uriParams.songCard.scale           = 1.0;
+        this._parameters.uriParams.songCard.pos_x           = 0;
+        this._parameters.uriParams.songCard.pos_y           = 0;
+        this._parameters.uriParams.songCard.missDisplay     = false;
+        this._parameters.uriParams.songCard.bigBSR          = false;
+        this._parameters.uriParams.songCard.ppMax           = false;
+        this._parameters.uriParams.songCard.ppEstimated     = false;
+        this._parameters.uriParams.songCard.alwaysEnabled   = false;
 
         this._parameters.uriParams.leaderboard.skin             = "default";
         this._parameters.uriParams.leaderboard.position         = Globals.E_POSITION.TOP_LEFT;
