@@ -695,7 +695,8 @@ export class Setup {
             }
         });
         this.elements.get("alwaysDisplayPlayerCard")?.on("click", async () => {
-            this._playerCard.playerCardData.alwaysEnabled = this.elements.get("alwaysDisplayPlayerCard")?.prop("checked") === true;
+            this._parameters.uriParams.playerCard.alwaysEnabled = this.elements.get("alwaysDisplayPlayerCard")?.prop("checked") === true;
+            this._parameters.assocValue();
         });
 
         this.elements.get("switchSongCardPreview")?.on("click", async () => {
@@ -793,7 +794,8 @@ export class Setup {
             this._parameters.assocValue();
         });*/
         this.elements.get("alwaysDisplaySongCard")?.on("click", async () => {
-            this._songCard.songCardData.alwaysEnabled = this.elements.get("alwaysDisplaySongCard")?.prop("checked") === true;
+            this._parameters.uriParams.songCard.alwaysEnabled = this.elements.get("alwaysDisplaySongCard")?.prop("checked") === true;
+            this._parameters.assocValue();
         });
 
         this.elements.get("switchLeaderboardPreview")?.on("click", async () => {
