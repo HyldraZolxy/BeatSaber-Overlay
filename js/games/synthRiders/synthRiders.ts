@@ -139,5 +139,7 @@ export class SynthRiders {
     public dataParser(data: string): void {
         let dataParsed: I_synthRidersObject = JSON.parse(data);
         this.eHandler(dataParsed);
+
+        console.log(dataParsed);
     }
 }

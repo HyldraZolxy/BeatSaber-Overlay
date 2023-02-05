@@ -152,5 +152,7 @@ export class Audica {
     public dataParser(data: string): void {
         let dataParsed: I_audicaObject = JSON.parse(data);
         this.eHandler(dataParsed);
+
+        console.log(dataParsed);
     }
 }

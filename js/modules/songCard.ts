@@ -1,6 +1,7 @@
 import { Globals }                                                          from "../globals";
 import { Template }                                                         from "../system/template";
 import { BeatSaver, BeatLeader, I_beatSaverSongJSON, I_beatLeaderSongJSON } from "../system/api-call";
+import { Tools }                                                            from "../system/tools";
 
 export class SongCard {
 
@@ -15,6 +16,7 @@ export class SongCard {
     private _template   : Template;
     private _beatSaver  : BeatSaver;
     private _beatLeader : BeatLeader;
+    private _tools      : Tools
 
     //////////////////////
     // Public Variables //
@@ -88,11 +90,13 @@ export class SongCard {
 
         health                  : 100
     };
+    public websocketMod!: Globals.WEBSOCKET_MODS;
 
     constructor() {
         this._template      = new Template();
         this._beatSaver     = new BeatSaver();
         this._beatLeader    = new BeatLeader();
+        this._tools         = new Tools();
 
         this.timerSong();
     }
@@ -152,28 +156,23 @@ export class SongCard {
         }
     }
 
-    private timeToLetters(time: number): string {
-            let minutes = Math.floor((time / 1000) / 60).toFixed(0);
-            let seconds = ((time / 1000) % 60).toFixed(0);
-
-            if (+(seconds) < 10) seconds = "0" + seconds;
-
-            return minutes + ":" + seconds;
-    }
-
     private timeToPercentage(): number {
         return Math.min(this.songCardPerformance.time / this.songCardData.totalTime) * 100;
     }
 
     private async updateSongInfo(): Promise<void> {
-        if (this.songCardData.disabled || !this.songCardData.needUpdate) return;
+        if (this.songCardData.disabled || !this.songCardData.needUpdate || !this._tools.checkGames(this.songCardGames, this.websocketMod) || !this._tools.checkPlugins(Globals.E_MODULES.SONGCARD, this.websocketMod)) {
+            this.songCardData.needUpdate    = false;
+            this.songCardData.endedUpdate   = true;
+            return;
+        }
 
         this.songCardData.needUpdate = false;
 
         let data: I_beatSaverSongJSON | I_beatLeaderSongJSON;
 
-        if (this.songCardData.scoringSystem === Globals.E_SCORING_SYSTEM.BEATLEADER)    data = await this._beatLeader.getSongInfo(this.songCardData.hashMap);
-        else                                                                            data = await this._beatSaver.getSongInfo(this.songCardData.hashMap);
+        if (this.songCardData.scoringSystem === Globals.E_SCORING_SYSTEM.BEATLEADER)    data = await this._beatLeader.  getSongInfo(this.songCardData.hashMap);
+        else                                                                            data = await this._beatSaver.   getSongInfo(this.songCardData.hashMap);
 
         if (data.errorMessage !== undefined || data.error !== undefined) {
             this.songCardData.ranked        = false;
@@ -217,6 +216,15 @@ export class SongCard {
     ////////////////////
     // Public Methods //
     ////////////////////
+    public timeToLetters(time: number): string {
+        let minutes = Math.floor((time / 1000) / 60).toFixed(0);
+        let seconds = ((time / 1000) % 60).toFixed(0);
+
+        if (+(seconds) < 10) seconds = "0" + seconds;
+
+        return minutes + ":" + seconds;
+    }
+
     public refreshSongCard(): void {
         this.updateSongInfo().then(() => {
             this.songCardPerformance.accuracyToLetters      = this.accuracyToLetter();
@@ -237,9 +245,10 @@ export class SongCard {
             this._template.bigBSR(this.songCardData.bigBSR, this.songCardData.skin);
 
             /* Plugin details */
-            if (this.songCardData.skin === "reselim") this._template.timerToCircleBar(this.songCardPerformance.timeToPercentage);
+            if (this.songCardData.skin === "reselim")   this._template.timerToCircleBar(this.songCardPerformance.timeToPercentage);
+            if (this.songCardData.skin === "dietah")    this._template.missChanger(this.songCardPerformance.miss);
 
-            if (this.songCardData.skin === "dietah") this._template.missChanger(this.songCardPerformance.miss);
+            this._template.changeWithPluginUse(Globals.E_MODULES.SONGCARD, this.songCardData.skin, this.websocketMod);
         });
     }
 

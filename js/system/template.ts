@@ -448,7 +448,6 @@ export class Template {
         const circumference = 30 * Math.PI * 2;
         $("#progress").css("stroke-dashoffset", ((1 - (percentage / 100)) * circumference) + "px");
     }
-
     public missChanger(missNumber: number): void {
         let element = $("#miss");
 
@@ -459,6 +458,94 @@ export class Template {
         } else {
             element.removeClass("ion-android-checkmark-circle ion-android-cancel");
             element.addClass("ion-android-cancel");
+        }
+    }
+
+    public changeWithPluginUse(module: Globals.E_MODULES, skinName: string, pluginUsed: Globals.WEBSOCKET_MODS): void {
+        let elementBase = $("#songCard-overlay");
+        switch(module) {
+            case Globals.E_MODULES.PLAYERCARD: break;
+
+            case Globals.E_MODULES.SONGCARD:
+                switch(skinName) {
+                    case "default":
+                        switch(pluginUsed) {
+                            case Globals.WEBSOCKET_MODS.AUDIOTRIP:
+                                elementBase.find("#logoLeaderboardSong").css("display", "none");
+                                elementBase.find("#bsrKey").css("display", "none");
+                                elementBase.find("#accuracy").css("display", "none");
+                                elementBase.find("#score").css("display", "block");
+                                break;
+
+                            default:
+                                elementBase.find("#logoLeaderboardSong").css("display", "block");
+                                elementBase.find("#bsrKey").css("display", "block");
+                                elementBase.find("#accuracy").css("display", "block");
+                                elementBase.find("#score").css("display", "none");
+                                break;
+                        }
+                        break;
+                    case "freemium":
+                        switch(pluginUsed) {
+                            case Globals.WEBSOCKET_MODS.AUDIOTRIP:
+                                elementBase.find("#logoLeaderboardSong").css("display", "none");
+                                elementBase.find("#bsrKey").css("display", "none");
+                                elementBase.find("#songAccuracyDiv").css("display", "none");
+                                elementBase.find("#songAccuracyLetterDiv").css("display", "none");
+                                elementBase.find("#bpm").css("display", "none");
+                                elementBase.find("#score").css("display", "inline-block");
+                                break;
+
+                            default:
+                                elementBase.find("#logoLeaderboardSong").css("display", "block");
+                                elementBase.find("#bsrKey").css("display", "inline-block");
+                                elementBase.find("#songAccuracyDiv").css("display", "block");
+                                elementBase.find("#songAccuracyLetterDiv").css("display", "block");
+                                elementBase.find("#bpm").css("display", "inline-block");
+                                elementBase.find("#score").css("display", "none");
+                                break;
+                        }
+                        break;
+                    case "reselim":
+                        switch(pluginUsed) {
+                            case Globals.WEBSOCKET_MODS.AUDIOTRIP:
+                                elementBase.find("#logoLeaderboardSong").css("display", "none");
+                                elementBase.find("#bsrKey").css("display", "none");
+                                elementBase.find("#accuracy").css("display", "none");
+                                elementBase.find("#accuracyToLetters").css("display", "none");
+                                elementBase.find("#combo").css("display", "none");
+                                elementBase.find("#comboText").css("display", "none");
+                                elementBase.find("#bpm").css("display", "none");
+                                break;
+
+                            default:
+                                elementBase.find("#logoLeaderboardSong").css("display", "block");
+                                elementBase.find("#bsrKey").css("display", "flex");
+                                elementBase.find("#accuracy").css("display", "flex");
+                                elementBase.find("#accuracyToLetters").css("display", "flex");
+                                elementBase.find("#combo").css("display", "flex");
+                                elementBase.find("#comboText").css("display", "flex");
+                                elementBase.find("#bpm").css("display", "flex");
+                                break;
+                        }
+                        break;
+
+                    case "dietah":
+                        switch(pluginUsed) {
+                            case Globals.WEBSOCKET_MODS.AUDIOTRIP:
+                                elementBase.find("#bsrKey").val("");
+                                elementBase.find("#accuracy").css("display", "none");
+                                elementBase.find("#score").css("display", "block");
+                                break;
+
+                            default:
+                                elementBase.find("#accuracy").css("display", "block");
+                                elementBase.find("#score").css("display", "none");
+                                break;
+                        }
+                        break;
+                }
+                break;
         }
     }
 

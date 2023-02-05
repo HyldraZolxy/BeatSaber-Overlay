@@ -51,7 +51,7 @@ export class Tools {
         }
     }
 
-    // Thanks, @HardCPP, for the function :thumb:
+    // Thanks, @HardCPP, for the function 👍
     public getModuleSkin(module: string, skin: string): string[] | null {
         let moduleSkins: {} | null = null;
 
@@ -68,5 +68,43 @@ export class Tools {
         if (moduleSkins.hasOwnProperty("default")) return moduleSkins["default" as keyof typeof moduleSkins];
 
         return null;
+    }
+
+    public checkGames(gamesSupported: Globals.I_gamesSupported, pluginConnected: Globals.WEBSOCKET_MODS): boolean {
+        switch(pluginConnected) {
+            case Globals.WEBSOCKET_MODS.BSPLUS:
+            case Globals.WEBSOCKET_MODS.DATAPULLER:
+            case Globals.WEBSOCKET_MODS.HTTPSIRASTATUS:
+                return gamesSupported.beatSaber;
+
+            case Globals.WEBSOCKET_MODS.SYNTHRIDERS:
+                return gamesSupported.synthRiders;
+
+            case Globals.WEBSOCKET_MODS.AUDIOTRIP:
+                return gamesSupported.audioTrip;
+
+            case Globals.WEBSOCKET_MODS.AUDICA:
+                return gamesSupported.audica;
+
+            default: return false;
+        }
+    }
+    public checkPlugins(module: Globals.E_MODULES, pluginConnected: Globals.WEBSOCKET_MODS): boolean {
+        switch(module) {
+            case Globals.E_MODULES.SONGCARD:
+            case Globals.E_MODULES.PLAYERCARD:
+                switch(pluginConnected) {
+                    case Globals.WEBSOCKET_MODS.BSPLUS:
+                    case Globals.WEBSOCKET_MODS.DATAPULLER:
+                    case Globals.WEBSOCKET_MODS.HTTPSIRASTATUS: return true;
+
+                    case Globals.WEBSOCKET_MODS.SYNTHRIDERS:
+                    case Globals.WEBSOCKET_MODS.AUDIOTRIP:
+                    case Globals.WEBSOCKET_MODS.AUDICA:
+                    default:                                    return false;
+                }
+
+            default: return false;
+        }
     }
 }

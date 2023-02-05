@@ -11,19 +11,6 @@ import { SynthRiders }          from "../games/synthRiders/synthRiders";
 import { AudioTrip }            from "../games/audioTrip/audioTrip";
 import { Audica }               from "../games/audica/audica";
 
-enum WEBSOCKET_STATUS {
-    DISCONNECTED,
-    CONNECTED
-}
-enum WEBSOCKET_MODS {
-    BSPLUS,
-    DATAPULLER,
-    HTTPSIRASTATUS,
-    SYNTHRIDERS,
-    AUDIOTRIP,
-    AUDICA
-}
-
 export class Plugins {
 
     ///////////////
@@ -50,8 +37,12 @@ export class Plugins {
     // Private Variables //
     ///////////////////////
     private websocketVersion = 0;
-    private websocketStatus: WEBSOCKET_STATUS = WEBSOCKET_STATUS.DISCONNECTED;
-    private websocketMod!: WEBSOCKET_MODS;
+
+    //////////////////////
+    // Public Variables //
+    //////////////////////
+    public websocketStatus  : Globals.WEBSOCKET_STATUS = Globals.WEBSOCKET_STATUS.DISCONNECTED;
+    public websocketMod!    : Globals.WEBSOCKET_MODS;
 
     constructor() {
         this._parameters        = Parameters.Instance;
@@ -71,13 +62,15 @@ export class Plugins {
     // Private Methods //
     /////////////////////
     private overlayDisplay() {
-        if (this.websocketStatus === WEBSOCKET_STATUS.DISCONNECTED) {
+        if (this.websocketStatus === Globals.WEBSOCKET_STATUS.DISCONNECTED) {
             this._playerCard.playerCardData.display = false;
             this._songCard.songCardData.display     = false;
 
             if (this._playerCard.playerCardData.alwaysEnabled)  this._playerCard.playerCardData.alwaysEnabled = false;
             if (this._songCard.songCardData.alwaysEnabled)      this._songCard.songCardData.alwaysEnabled = false;
         } else this._parameters.assocValue();
+
+        this._songCard.websocketMod = this.websocketMod;
     }
 
     ////////////////////
@@ -92,8 +85,8 @@ export class Plugins {
                     (data) => { this._bsPlus.dataParser(data); },
                     () => {
                         console.log("%csocket initialized on BeatSaberPlus!", Globals.SUCCESS_LOG);
-                        this.websocketStatus = WEBSOCKET_STATUS.CONNECTED;
-                        this.websocketMod = WEBSOCKET_MODS.BSPLUS;
+                        this.websocketStatus    = Globals.WEBSOCKET_STATUS.CONNECTED;
+                        this.websocketMod       = Globals.WEBSOCKET_MODS.BSPLUS;
 
                         this.overlayDisplay();
 
@@ -109,9 +102,15 @@ export class Plugins {
                     },
                     () => {
                         this._websocketManager.remove("BSPlusLeaderboard" + this.websocketVersion);
-                        if (this.websocketStatus === WEBSOCKET_STATUS.CONNECTED) {
-                            if (this.websocketMod === WEBSOCKET_MODS.BSPLUS) this.websocketStatus = WEBSOCKET_STATUS.DISCONNECTED;
-                        } else this.websocketStatus = WEBSOCKET_STATUS.DISCONNECTED;
+                        if (this.websocketStatus === Globals.WEBSOCKET_STATUS.CONNECTED) {
+                            if (this.websocketMod === Globals.WEBSOCKET_MODS.BSPLUS) {
+                                this.websocketStatus    = Globals.WEBSOCKET_STATUS.DISCONNECTED;
+                                this.websocketMod       = Globals.WEBSOCKET_MODS.NONE;
+                            }
+                        } else {
+                            this.websocketStatus    = Globals.WEBSOCKET_STATUS.DISCONNECTED;
+                            this.websocketMod       = Globals.WEBSOCKET_MODS.NONE;
+                        }
 
                         this.overlayDisplay();
                     },
@@ -124,8 +123,8 @@ export class Plugins {
                     (data) => { this._dataPuller.dataParser(data, "MapData"); },
                     () => {
                         console.log("%csocket initialized on DataPuller!", Globals.SUCCESS_LOG);
-                        this.websocketStatus = WEBSOCKET_STATUS.CONNECTED;
-                        this.websocketMod = WEBSOCKET_MODS.DATAPULLER;
+                        this.websocketStatus    = Globals.WEBSOCKET_STATUS.CONNECTED;
+                        this.websocketMod       = Globals.WEBSOCKET_MODS.DATAPULLER;
 
                         this.overlayDisplay();
 
@@ -139,9 +138,15 @@ export class Plugins {
                     },
                     () => {
                         this._websocketManager.remove("DataPullerLiveData" + this.websocketVersion);
-                        if (this.websocketStatus === WEBSOCKET_STATUS.CONNECTED) {
-                            if (this.websocketMod === WEBSOCKET_MODS.DATAPULLER) this.websocketStatus = WEBSOCKET_STATUS.DISCONNECTED;
-                        } else this.websocketStatus = WEBSOCKET_STATUS.DISCONNECTED;
+                        if (this.websocketStatus === Globals.WEBSOCKET_STATUS.CONNECTED) {
+                            if (this.websocketMod === Globals.WEBSOCKET_MODS.DATAPULLER) {
+                                this.websocketStatus    = Globals.WEBSOCKET_STATUS.DISCONNECTED;
+                                this.websocketMod       = Globals.WEBSOCKET_MODS.NONE;
+                            }
+                        } else {
+                            this.websocketStatus    = Globals.WEBSOCKET_STATUS.DISCONNECTED;
+                            this.websocketMod       = Globals.WEBSOCKET_MODS.NONE;
+                        }
 
                         this.overlayDisplay();
                     },
@@ -154,15 +159,21 @@ export class Plugins {
                     (data) => { this._httpSiraStatus.dataParser(data); },
                     () => {
                         console.log("%csocket initialized on HttpSiraStatus!", Globals.SUCCESS_LOG);
-                        this.websocketStatus = WEBSOCKET_STATUS.CONNECTED;
-                        this.websocketMod = WEBSOCKET_MODS.HTTPSIRASTATUS;
+                        this.websocketStatus    = Globals.WEBSOCKET_STATUS.CONNECTED;
+                        this.websocketMod       = Globals.WEBSOCKET_MODS.HTTPSIRASTATUS;
 
                         this.overlayDisplay();
                     },
                     () => {
-                        if (this.websocketStatus === WEBSOCKET_STATUS.CONNECTED) {
-                            if (this.websocketMod === WEBSOCKET_MODS.HTTPSIRASTATUS) this.websocketStatus = WEBSOCKET_STATUS.DISCONNECTED;
-                        } else this.websocketStatus = WEBSOCKET_STATUS.DISCONNECTED;
+                        if (this.websocketStatus === Globals.WEBSOCKET_STATUS.CONNECTED) {
+                            if (this.websocketMod === Globals.WEBSOCKET_MODS.HTTPSIRASTATUS) {
+                                this.websocketStatus    = Globals.WEBSOCKET_STATUS.DISCONNECTED;
+                                this.websocketMod       = Globals.WEBSOCKET_MODS.NONE;
+                            }
+                        } else {
+                            this.websocketStatus    = Globals.WEBSOCKET_STATUS.DISCONNECTED;
+                            this.websocketMod       = Globals.WEBSOCKET_MODS.NONE;
+                        }
 
                         this.overlayDisplay();
                     },
@@ -176,15 +187,21 @@ export class Plugins {
                 (data) => { this._synthRiders.dataParser(data); },
                 () => {
                     console.log("%csocket initialized on SynthRiders!", Globals.SUCCESS_LOG);
-                    this.websocketStatus = WEBSOCKET_STATUS.CONNECTED;
-                    this.websocketMod = WEBSOCKET_MODS.SYNTHRIDERS;
+                    this.websocketStatus    = Globals.WEBSOCKET_STATUS.CONNECTED;
+                    this.websocketMod       = Globals.WEBSOCKET_MODS.SYNTHRIDERS;
 
                     this.overlayDisplay();
                 },
                 () => {
-                    if (this.websocketStatus === WEBSOCKET_STATUS.CONNECTED) {
-                        if (this.websocketMod === WEBSOCKET_MODS.SYNTHRIDERS) this.websocketStatus = WEBSOCKET_STATUS.DISCONNECTED;
-                    } else this.websocketStatus = WEBSOCKET_STATUS.DISCONNECTED;
+                    if (this.websocketStatus === Globals.WEBSOCKET_STATUS.CONNECTED) {
+                        if (this.websocketMod === Globals.WEBSOCKET_MODS.SYNTHRIDERS) {
+                            this.websocketStatus    = Globals.WEBSOCKET_STATUS.DISCONNECTED;
+                            this.websocketMod       = Globals.WEBSOCKET_MODS.NONE;
+                        }
+                    } else {
+                        this.websocketStatus    = Globals.WEBSOCKET_STATUS.DISCONNECTED;
+                        this.websocketMod       = Globals.WEBSOCKET_MODS.NONE;
+                    }
 
                     this.overlayDisplay();
                 },
@@ -197,15 +214,21 @@ export class Plugins {
                 (data) => { this._audioTrip.dataParser(data); },
                 () => {
                     console.log("%csocket initialized on AudioTrip!", Globals.SUCCESS_LOG);
-                    this.websocketStatus = WEBSOCKET_STATUS.CONNECTED;
-                    this.websocketMod = WEBSOCKET_MODS.AUDIOTRIP;
+                    this.websocketStatus    = Globals.WEBSOCKET_STATUS.CONNECTED;
+                    this.websocketMod       = Globals.WEBSOCKET_MODS.AUDIOTRIP;
 
                     this.overlayDisplay();
                 },
                 () => {
-                    if (this.websocketStatus === WEBSOCKET_STATUS.CONNECTED) {
-                        if (this.websocketMod === WEBSOCKET_MODS.AUDIOTRIP) this.websocketStatus = WEBSOCKET_STATUS.DISCONNECTED;
-                    } else this.websocketStatus = WEBSOCKET_STATUS.DISCONNECTED;
+                    if (this.websocketStatus === Globals.WEBSOCKET_STATUS.CONNECTED) {
+                        if (this.websocketMod === Globals.WEBSOCKET_MODS.AUDIOTRIP) {
+                            this.websocketStatus    = Globals.WEBSOCKET_STATUS.DISCONNECTED;
+                            this.websocketMod       = Globals.WEBSOCKET_MODS.NONE;
+                        }
+                    } else {
+                        this.websocketStatus    = Globals.WEBSOCKET_STATUS.DISCONNECTED;
+                        this.websocketMod       = Globals.WEBSOCKET_MODS.NONE;
+                    }
 
                     this.overlayDisplay();
                 },
@@ -218,15 +241,21 @@ export class Plugins {
                 (data) => { this._audica.dataParser(data); },
                 () => {
                     console.log("%csocket initialized on Audica!", Globals.SUCCESS_LOG);
-                    this.websocketStatus = WEBSOCKET_STATUS.CONNECTED;
-                    this.websocketMod = WEBSOCKET_MODS.AUDICA;
+                    this.websocketStatus    = Globals.WEBSOCKET_STATUS.CONNECTED;
+                    this.websocketMod       = Globals.WEBSOCKET_MODS.AUDICA;
 
                     this.overlayDisplay();
                 },
                 () => {
-                    if (this.websocketStatus === WEBSOCKET_STATUS.CONNECTED) {
-                        if (this.websocketMod === WEBSOCKET_MODS.AUDICA) this.websocketStatus = WEBSOCKET_STATUS.DISCONNECTED;
-                    } else this.websocketStatus = WEBSOCKET_STATUS.DISCONNECTED;
+                    if (this.websocketStatus === Globals.WEBSOCKET_STATUS.CONNECTED) {
+                        if (this.websocketMod === Globals.WEBSOCKET_MODS.AUDICA) {
+                            this.websocketStatus    = Globals.WEBSOCKET_STATUS.DISCONNECTED;
+                            this.websocketMod       = Globals.WEBSOCKET_MODS.NONE;
+                        }
+                    } else {
+                        this.websocketStatus    = Globals.WEBSOCKET_STATUS.DISCONNECTED;
+                        this.websocketMod       = Globals.WEBSOCKET_MODS.NONE;
+                    }
 
                     this.overlayDisplay();
                 },

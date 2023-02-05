@@ -86,6 +86,8 @@
     border-radius: 2px;
 
     font-size: 1em;
+
+    background-color: #965a5a;
 }
 /* ========================
    = SONG TAGS / Info end =
@@ -158,12 +160,16 @@
 #songCard-overlay.top-left #miss, #songCard-overlay.bottom-left #miss { margin-left: 20px; font-size: 1.4em; }
 #songCard-overlay.top-right #miss, #songCard-overlay.bottom-right #miss { margin-right: 20px; font-size: 1.4em; }
 
-#accuracy {
+#accuracy, #score {
     width: 70px;
 
     font-size: 1.7em;
 }
 #accuracy:after { content: "%"; }
+
+#score {
+    display: none;
+}
 /* ===============================
    = SONG TAGS / Performance end =
    =============================== */

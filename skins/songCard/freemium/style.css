@@ -248,6 +248,8 @@
     display: inline-block;
 
     font-size: 0.6em;
+
+    background-color: #3b3b3b;
 }
 
 #songCard-overlay.top-left .descBar,
@@ -286,6 +288,10 @@
 
 #bpm::after {
     content: " bpm";
+}
+
+#score {
+    display: none;
 }
 
 #songData {

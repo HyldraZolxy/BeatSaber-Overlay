@@ -66,6 +66,21 @@ export namespace Globals {
         }
     }
 
+    // Plugins and Mods for plugins system
+    export enum WEBSOCKET_STATUS {
+        DISCONNECTED,
+        CONNECTED
+    }
+    export enum WEBSOCKET_MODS {
+        NONE,
+        BSPLUS,
+        DATAPULLER,
+        HTTPSIRASTATUS,
+        SYNTHRIDERS,
+        AUDIOTRIP,
+        AUDICA
+    }
+
     // General
     export const URI_NAV_SEARCH     = window.location.search;
     export const MS_TIMER           = 100;
@@ -79,6 +94,7 @@ export namespace Globals {
     export const BEATLEADER_API_PROXY_URI       = "./php/beatLeaderPlayerProxy.php";
     export const BEATLEADER_SONG_API_PROXY_URI  = "./php/beatLeaderSongProxy.php";
     export const BEATSAVER_API_URI              = "https://api.beatsaver.com";
+    export const AUDIO_TRIP_SONG_PROXY          = "./php/audioTripProxy.php";
 
     //////////////////
     // UI Variables //

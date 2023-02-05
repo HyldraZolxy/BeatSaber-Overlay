@@ -144,7 +144,7 @@
             drop-shadow(0 0 0.25rem black);
 }
 #songData p {
-    max-width: 59%;
+    max-width: 90%;
 
     text-overflow: ellipsis;
     overflow: hidden;
@@ -233,6 +233,8 @@
     border-radius: 2px;
 
     font-size: 0.8em;
+
+    background-color: #3b3b3b;
 }
 #songCard-overlay.top-left #difficulty,
 #songCard-overlay.bottom-left #difficulty {
@@ -288,7 +290,7 @@
     background-color: rgba(221, 221, 221, 0.61);
 }
 
-#accuracy {
+#accuracy, #score {
     width: 23%;
 
     margin: 0 10px -5px 10px;
@@ -306,6 +308,10 @@
 }
 #accuracy::after {
     content: "%";
+}
+
+#score {
+    display: none;
 }
 /* =======================
    = SONG TAGS/ Info end =

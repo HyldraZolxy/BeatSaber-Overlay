@@ -104,6 +104,10 @@ interface I_beatLeaderSongArrayJSON {
     };
 }
 
+export interface I_audioTripSong extends I_JSONMessageFromAPI {
+    coverLink: string;
+}
+
 export class ScoreSaber {
 
     //////////////////////
@@ -162,5 +166,24 @@ export class BeatSaver {
     ////////////////////
     public async getSongInfo(songHash: string): Promise<I_beatSaverSongJSON> {
         return await this._tools.getMethod(Globals.BEATSAVER_API_URI + "/maps/hash/" + songHash);
+    }
+}
+
+export class AudioTripSong {
+
+    //////////////////////
+    // @Class Variables //
+    //////////////////////
+    private _tools: Tools;
+
+    constructor() {
+        this._tools = new Tools();
+    }
+
+    ////////////////////
+    // Public Methods //
+    ////////////////////
+    public async getSongInfo(songHash: string): Promise<I_audioTripSong> {
+        return await this._tools.getMethod(Globals.AUDIO_TRIP_SONG_PROXY + "/?hash=" + songHash);
     }
 }

@@ -76,19 +76,19 @@
 
 /* difficulty color */
 .Easy {
-    background-color: #00a279;
+    background-color: #00a279 !important;
 }
 .Normal {
-    background-color: #3498db;
+    background-color: #3498db !important;
 }
 .Hard {
-    background-color: #da6300;
+    background-color: #da6300 !important;
 }
 .Expert {
-    background-color: #de2d1b;
+    background-color: #de2d1b !important;
 }
 .ExpertPlus {
-    background-color: #6610f2;
+    background-color: #6610f2 !important;
 }
 
 /* percentage letter color */
