@@ -27,7 +27,7 @@ $where  = array(
 
 $data = array();
 
-$SQLQuery->sqlSelect($fields, "audioTrip_song", $where);
+$SQLQuery->sqlSelect($fields, "audiotrip_song", $where);
 
 if ($SQLQuery->sqlCount() === 0) {
     echo json_encode($_DEFAULT_MSG_ERROR);

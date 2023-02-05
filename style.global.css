@@ -75,10 +75,10 @@
 }
 
 /* difficulty color */
-.Easy {
+.Easy, .Beginner {
     background-color: #00a279 !important;
 }
-.Normal {
+.Normal, .Regular {
     background-color: #3498db !important;
 }
 .Hard {
@@ -87,7 +87,7 @@
 .Expert {
     background-color: #de2d1b !important;
 }
-.ExpertPlus {
+.ExpertPlus, .Cardio {
     background-color: #6610f2 !important;
 }
 

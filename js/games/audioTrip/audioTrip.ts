@@ -102,7 +102,7 @@ export class AudioTrip {
         this._songCard.songCardData.totalTimeToLetters  = this._songCard.timeToLetters(this._songCard.songCardData.totalTime);
         this._songCard.songCardData.speedModifier       = 1;
 
-        this._songCard.songCardData.cover               = await this.getCover(dataEvent.choreoID);
+        this._songCard.songCardData.cover               = await this.getCover(dataEvent.songID);
 
         this._songCard.songCardData.needUpdate          = true;
         this.alreadyDid                                 = true;
