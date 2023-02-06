@@ -470,6 +470,7 @@ export class Template {
                 switch(skinName) {
                     case "default":
                         switch(pluginUsed) {
+                            case Globals.WEBSOCKET_MODS.AUDICA:
                             case Globals.WEBSOCKET_MODS.AUDIOTRIP:
                                 elementBase.find("#logoLeaderboardSong").css("display", "none");
                                 elementBase.find("#bsrKey").css("display", "none");
@@ -487,6 +488,7 @@ export class Template {
                         break;
                     case "freemium":
                         switch(pluginUsed) {
+                            case Globals.WEBSOCKET_MODS.AUDICA:
                             case Globals.WEBSOCKET_MODS.AUDIOTRIP:
                                 elementBase.find("#logoLeaderboardSong").css("display", "none");
                                 elementBase.find("#bsrKey").css("display", "none");
@@ -508,6 +510,7 @@ export class Template {
                         break;
                     case "reselim":
                         switch(pluginUsed) {
+                            case Globals.WEBSOCKET_MODS.AUDICA:
                             case Globals.WEBSOCKET_MODS.AUDIOTRIP:
                                 elementBase.find("#logoLeaderboardSong").css("display", "none");
                                 elementBase.find("#bsrKey").css("display", "none");
@@ -532,6 +535,7 @@ export class Template {
 
                     case "dietah":
                         switch(pluginUsed) {
+                            case Globals.WEBSOCKET_MODS.AUDICA:
                             case Globals.WEBSOCKET_MODS.AUDIOTRIP:
                                 elementBase.find("#bsrKey").val("");
                                 elementBase.find("#accuracy").css("display", "none");

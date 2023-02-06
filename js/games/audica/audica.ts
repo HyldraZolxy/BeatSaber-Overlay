@@ -101,6 +101,10 @@ export class Audica {
                 this.scoreParser(dataEvent);
                 break;
 
+            case "SongProgress":
+                this.infoParser(dataEvent);
+                break;
+
             case "TargetMiss":
                 this.noteMiss++;
                 break;
@@ -123,10 +127,11 @@ export class Audica {
 
         this._songCard.songCardPerformance.time     = 0;
         this._songCard.songCardPerformance.accuracy = 100;
+        this._songCard.songCardPerformance.score    = "0";
 
         this._songCard.songCardData.title           = dataEvent.data.songName;
         this._songCard.songCardData.subTitle        = "";
-        this._songCard.songCardData.mapper          = dataEvent.data.songAuthor;
+        this._songCard.songCardData.mapper          = (dataEvent.data.songAuthor !== "") ? "[" + dataEvent.data.songAuthor.trim() + "]" : "";
         this._songCard.songCardData.author          = dataEvent.data.songArtist;
         this._songCard.songCardData.bpm             = 0;
         this._songCard.songCardData.difficulty      = dataEvent.data.difficulty;
@@ -145,6 +150,9 @@ export class Audica {
         this._songCard.songCardPerformance.health   = dataEvent.data.health;
         this._songCard.songCardPerformance.score    = dataEvent.data.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
+    private infoParser(dataEvent: I_audicaObject): void {
+        this._songCard.songCardPerformance.time = dataEvent.data.timeElapsedSeconds * 1000;
+    }
 
     ////////////////////
     // Public Methods //
@@ -152,7 +160,5 @@ export class Audica {
     public dataParser(data: string): void {
         let dataParsed: I_audicaObject = JSON.parse(data);
         this.eHandler(dataParsed);
-
-        console.log(dataParsed);
     }
 }

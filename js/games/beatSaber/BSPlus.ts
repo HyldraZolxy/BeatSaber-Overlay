@@ -131,7 +131,7 @@ export class BSPlus {
         this._songCard.songCardData.cover           = "data:image/png;base64," + dataEvent.mapInfoChanged.coverRaw;
         this._songCard.songCardData.title           = dataEvent.mapInfoChanged.name;
         this._songCard.songCardData.subTitle        = dataEvent.mapInfoChanged.sub_name;
-        this._songCard.songCardData.mapper          = dataEvent.mapInfoChanged.mapper;
+        this._songCard.songCardData.mapper          = (dataEvent.mapInfoChanged.mapper !== "") ? "[" + dataEvent.mapInfoChanged.mapper.trim() + "]" : "";
         this._songCard.songCardData.author          = dataEvent.mapInfoChanged.artist;
         this._songCard.songCardData.bsrKey          = dataEvent.mapInfoChanged.BSRKey;
         this._songCard.songCardData.bpm             = dataEvent.mapInfoChanged.BPM;

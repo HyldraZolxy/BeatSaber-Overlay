@@ -204,12 +204,6 @@
 #songCard-overlay.bottom-right #mapper {
     margin-left: 10px;
 }
-#mapper::before {
-    content: "[";
-}
-#mapper::after {
-    content: "]";
-}
 
 #songDataInfo {
     margin-top: 30px;

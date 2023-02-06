@@ -75,8 +75,6 @@
     white-space: nowrap;
     font-size: 1.6em;
 }
-#mapper:before { content: "["; }
-#mapper:after { content: "]"; }
 #songCard-overlay.top-left #mapper, #songCard-overlay.bottom-left #mapper { margin-left: 20px; text-align: left; }
 #songCard-overlay.top-right #mapper, #songCard-overlay.bottom-right #mapper { margin-right: 20px; text-align: right; }
 

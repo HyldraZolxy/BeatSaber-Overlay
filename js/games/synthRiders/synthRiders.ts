@@ -113,7 +113,7 @@ export class SynthRiders {
 
         this._songCard.songCardData.title           = dataEvent.data.song;
         this._songCard.songCardData.subTitle        = "";
-        this._songCard.songCardData.mapper          = dataEvent.data.beatMapper;
+        this._songCard.songCardData.mapper          = (dataEvent.data.beatMapper !== "") ? "[" + dataEvent.data.beatMapper.trim() + "]" : "";
         this._songCard.songCardData.author          = dataEvent.data.author;
         this._songCard.songCardData.bpm             = dataEvent.data.bpm;
         this._songCard.songCardData.difficulty      = dataEvent.data.difficulty;

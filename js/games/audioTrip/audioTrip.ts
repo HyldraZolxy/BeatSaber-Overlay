@@ -91,7 +91,7 @@ export class AudioTrip {
 
         this._songCard.songCardData.title               = dataEvent.songTitle;
         this._songCard.songCardData.subTitle            = "";
-        this._songCard.songCardData.mapper              = dataEvent.choreographer;
+        this._songCard.songCardData.mapper              = (dataEvent.choreographer !== "") ? "[" + dataEvent.choreographer.trim() + "]" : "";
         this._songCard.songCardData.author              = dataEvent.songArtist;
         this._songCard.songCardData.bpm                 = 0;
         this._songCard.songCardData.difficulty          = dataEvent.choreoName;

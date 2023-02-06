@@ -190,7 +190,7 @@ export class DataPuller {
 
         this._songCard.songCardData.title           = dataEvent.SongName;
         this._songCard.songCardData.subTitle        = dataEvent.SongSubName;
-        this._songCard.songCardData.mapper          = dataEvent.Mapper;
+        this._songCard.songCardData.mapper          = (dataEvent.Mapper !== "") ? "[" + dataEvent.Mapper.trim() + "]" : "";
         this._songCard.songCardData.author          = dataEvent.SongAuthor;
         this._songCard.songCardData.bpm             = dataEvent.BPM;
         this._songCard.songCardData.difficultyClass = dataEvent.Difficulty;

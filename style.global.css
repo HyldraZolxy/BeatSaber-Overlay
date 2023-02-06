@@ -75,13 +75,13 @@
 }
 
 /* difficulty color */
-.Easy, .Beginner {
+.Easy, .Beginner, .Débutant {
     background-color: #00a279 !important;
 }
-.Normal, .Regular {
+.Normal, .Regular, .Standard {
     background-color: #3498db !important;
 }
-.Hard {
+.Hard, .Advanced, .Avancé {
     background-color: #da6300 !important;
 }
 .Expert {

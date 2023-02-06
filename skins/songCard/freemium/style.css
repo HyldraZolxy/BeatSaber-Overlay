@@ -273,12 +273,12 @@
 }
 
 #qualified {
-    background-color: #646464;
+    background-color: #646464 !important;
     display: none;
 }
 
 #ranked {
-    background-color: #c4a335;
+    background-color: #c4a335 !important;
     display: none;
 }
 
@@ -326,14 +326,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
-
-#mapper::before {
-    content: " - [";
-}
-
-#mapper::after {
-    content: "]";
 }
 /* =======================
    = SONG TAGS/ Info end =
