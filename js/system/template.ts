@@ -146,7 +146,7 @@ export class Template {
                                 elementClass.removeClass("ss s a b c de").addClass(value);
                                 break;
                             case "difficultyClass":
-                                elementClass.removeClass("ExpertPlus Expert Hard Normal Easy Beginner Regular Cardio").addClass(value);
+                                elementClass.removeClass("ExpertPlus Expert Hard Normal Easy Beginner Regular Cardio Débutant Standard Avancé Advanced").addClass(value);
                                 break;
 
                             case "health":
