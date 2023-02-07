@@ -42,8 +42,11 @@ export class SynthRiders {
     ///////////////////////
     // Private Variables //
     ///////////////////////
-    private helloEvent  = true;
-    private noteMiss    = 0;
+    private helloEvent          = true;
+    private noteMiss            = 0;
+    private timeInMapOld        = 0;
+    private timeInMapNew        = 0;
+    private timeOutIsPlaying    = 1500;
 
     constructor() {
         this._playerCard    = PlayerCard.Instance;
@@ -92,6 +95,17 @@ export class SynthRiders {
                 this.noteMiss++;
                 break;
 
+            case "PlayTime":
+                this.infoParser(dataEvent);
+
+                setTimeout(() => {
+                    let isPlaying = this.isPlaying();
+
+                    this._songCard.songCardData.inProgress  = isPlaying;
+                    this._songCard.songCardData.paused      = !isPlaying;
+                }, this.timeOutIsPlaying);
+                break;
+
             case "ReturnToMenu":
                 if (!this._songCard.songCardData.disabled) {
                     this._songCard.songCardData.display     = false;
@@ -109,6 +123,9 @@ export class SynthRiders {
         this._songCard.songCardData.needUpdate      = false;
 
         this._songCard.songCardPerformance.time     = 0;
+        this.timeInMapOld                           = 0;
+        this.timeInMapNew                           = 0;
+        this._songCard.songCardPerformance.score    = "0";
         this._songCard.songCardPerformance.accuracy = 100;
 
         this._songCard.songCardData.title           = dataEvent.data.song;
@@ -132,6 +149,19 @@ export class SynthRiders {
         this._songCard.songCardPerformance.health   = dataEvent.data.lifeBarPercent;
         this._songCard.songCardPerformance.score    = dataEvent.data.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
+    private infoParser(dataEvent: I_synthRidersObject): void {
+        this._songCard.songCardPerformance.time = dataEvent.data.playTimeMS;
+        this.timeInMapNew                       = dataEvent.data.playTimeMS;
+    }
+
+    private isPlaying(): boolean {
+        if (this.timeInMapNew > this.timeInMapOld) {
+            this.timeInMapOld = this.timeInMapNew;
+            return true;
+        }
+
+        return false;
+    }
 
     ////////////////////
     // Public Methods //
@@ -139,7 +169,5 @@ export class SynthRiders {
     public dataParser(data: string): void {
         let dataParsed: I_synthRidersObject = JSON.parse(data);
         this.eHandler(dataParsed);
-
-        console.log(dataParsed);
     }
 }

@@ -146,7 +146,7 @@ export class Template {
                                 elementClass.removeClass("ss s a b c de").addClass(value);
                                 break;
                             case "difficultyClass":
-                                elementClass.removeClass("ExpertPlus Expert Hard Normal Easy Beginner Regular Cardio Débutant Standard Avancé Advanced").addClass(value);
+                                elementClass.removeClass("ExpertPlus Expert Hard Normal Easy Beginner Regular Cardio Débutant Standard Avancé Advanced Master").addClass(value);
                                 break;
 
                             case "health":
@@ -472,6 +472,7 @@ export class Template {
                         switch(pluginUsed) {
                             case Globals.WEBSOCKET_MODS.AUDICA:
                             case Globals.WEBSOCKET_MODS.AUDIOTRIP:
+                            case Globals.WEBSOCKET_MODS.SYNTHRIDERS:
                                 elementBase.find("#logoLeaderboardSong").css("display", "none");
                                 elementBase.find("#bsrKey").css("display", "none");
                                 elementBase.find("#accuracy").css("display", "none");
@@ -490,6 +491,7 @@ export class Template {
                         switch(pluginUsed) {
                             case Globals.WEBSOCKET_MODS.AUDICA:
                             case Globals.WEBSOCKET_MODS.AUDIOTRIP:
+                            case Globals.WEBSOCKET_MODS.SYNTHRIDERS:
                                 elementBase.find("#logoLeaderboardSong").css("display", "none");
                                 elementBase.find("#bsrKey").css("display", "none");
                                 elementBase.find("#songAccuracyDiv").css("display", "none");
@@ -512,6 +514,7 @@ export class Template {
                         switch(pluginUsed) {
                             case Globals.WEBSOCKET_MODS.AUDICA:
                             case Globals.WEBSOCKET_MODS.AUDIOTRIP:
+                            case Globals.WEBSOCKET_MODS.SYNTHRIDERS:
                                 elementBase.find("#logoLeaderboardSong").css("display", "none");
                                 elementBase.find("#bsrKey").css("display", "none");
                                 elementBase.find("#accuracy").css("display", "none");
@@ -537,6 +540,7 @@ export class Template {
                         switch(pluginUsed) {
                             case Globals.WEBSOCKET_MODS.AUDICA:
                             case Globals.WEBSOCKET_MODS.AUDIOTRIP:
+                            case Globals.WEBSOCKET_MODS.SYNTHRIDERS:
                                 elementBase.find("#bsrKey").val("");
                                 elementBase.find("#accuracy").css("display", "none");
                                 elementBase.find("#score").css("display", "block");

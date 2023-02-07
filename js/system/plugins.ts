@@ -183,7 +183,7 @@ export class Plugins {
         }
 
         if (this._parameters.uriParams.games.synthRiders) {
-            this._websocketManager.add("SynthRiders" + this.websocketVersion, "ws://" + this._parameters.uriParams.general.ip + ":9000/",
+            this._websocketManager.add("SynthRiders" + this.websocketVersion, "ws://localhost:9000/",
                 (data) => { this._synthRiders.dataParser(data); },
                 () => {
                     console.log("%csocket initialized on SynthRiders!", Globals.SUCCESS_LOG);
