@@ -63,10 +63,11 @@ export class Leaderboard {
     // Public Variables //
     //////////////////////
     public leaderboardGames: Globals.I_gamesSupported = {
-        beatSaber     : true,
-        synthRiders   : false,
-        audioTrip     : false,
-        audica        : false
+        beatSaber       : true,
+        synthRiders     : false,
+        audioTrip       : false,
+        audica          : false,
+        adofai          : false
     };
     public leaderboardData: I_leaderboard = {
         disabled            : true,

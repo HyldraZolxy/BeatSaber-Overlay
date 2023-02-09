@@ -10,6 +10,7 @@ import { DataPuller }           from "../games/beatSaber/dataPuller";
 import { SynthRiders }          from "../games/synthRiders/synthRiders";
 import { AudioTrip }            from "../games/audioTrip/audioTrip";
 import { Audica }               from "../games/audica/audica";
+import { Adofai }               from "../games/adofai/adofai";
 
 export class Plugins {
 
@@ -32,6 +33,7 @@ export class Plugins {
     private _synthRiders        : SynthRiders;
     private _audioTrip          : AudioTrip;
     private _audica             : Audica;
+    private _adofai             : Adofai;
 
     ///////////////////////
     // Private Variables //
@@ -56,6 +58,7 @@ export class Plugins {
         this._synthRiders       = new SynthRiders();
         this._audioTrip         = new AudioTrip();
         this._audica            = new Audica();
+        this._adofai            = new Adofai();
     }
 
     /////////////////////
@@ -183,7 +186,7 @@ export class Plugins {
         }
 
         if (this._parameters.uriParams.games.synthRiders) {
-            this._websocketManager.add("SynthRiders" + this.websocketVersion, "ws://localhost:9000/",
+            this._websocketManager.add("SynthRiders" + this.websocketVersion, "ws://" + this._parameters.uriParams.general.ip + ":9000/",
                 (data) => { this._synthRiders.dataParser(data); },
                 () => {
                     console.log("%csocket initialized on SynthRiders!", Globals.SUCCESS_LOG);
@@ -260,6 +263,33 @@ export class Plugins {
                     this.overlayDisplay();
                 },
                 () => { console.log("%cinit of Audica socket failed!", Globals.WARN_LOG); }
+            );
+        }
+
+        if (this._parameters.uriParams.games.adofai) {
+            this._websocketManager.add("Adofai" + this.websocketVersion, "ws://" + this._parameters.uriParams.general.ip + ":420/server",
+                (data) => { this._adofai.dataParser(data); },
+                () => {
+                    console.log("%csocket initialized on Adofai!", Globals.SUCCESS_LOG);
+                    this.websocketStatus    = Globals.WEBSOCKET_STATUS.CONNECTED;
+                    this.websocketMod       = Globals.WEBSOCKET_MODS.ADOFAI;
+
+                    this.overlayDisplay();
+                },
+                () => {
+                    if (this.websocketStatus === Globals.WEBSOCKET_STATUS.CONNECTED) {
+                        if (this.websocketMod === Globals.WEBSOCKET_MODS.ADOFAI) {
+                            this.websocketStatus    = Globals.WEBSOCKET_STATUS.DISCONNECTED;
+                            this.websocketMod       = Globals.WEBSOCKET_MODS.NONE;
+                        }
+                    } else {
+                        this.websocketStatus    = Globals.WEBSOCKET_STATUS.DISCONNECTED;
+                        this.websocketMod       = Globals.WEBSOCKET_MODS.NONE;
+                    }
+
+                    this.overlayDisplay();
+                },
+                () => { console.log("%cinit of Adoai socket failed!", Globals.WARN_LOG); }
             );
         }
     }

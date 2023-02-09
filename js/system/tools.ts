@@ -86,6 +86,9 @@ export class Tools {
             case Globals.WEBSOCKET_MODS.AUDICA:
                 return gamesSupported.audica;
 
+            case Globals.WEBSOCKET_MODS.ADOFAI:
+                return gamesSupported.adofai;
+
             default: return false;
         }
     }
@@ -101,6 +104,7 @@ export class Tools {
                     case Globals.WEBSOCKET_MODS.SYNTHRIDERS:
                     case Globals.WEBSOCKET_MODS.AUDIOTRIP:
                     case Globals.WEBSOCKET_MODS.AUDICA:
+                    case Globals.WEBSOCKET_MODS.ADOFAI:
                     default:                                    return false;
                 }
 

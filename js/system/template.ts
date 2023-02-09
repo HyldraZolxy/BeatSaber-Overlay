@@ -120,12 +120,28 @@ export class Template {
                             case "bpm":
                             case "timeToLetters":
                             case "totalTimeToLetters":
+                            case "timeToPercentageLetter":
                             case "accuracy":
                             case "accuracyToLetters":
                             case "score":
                             case "combo":
                             case "miss":
+                                // Adofai
+                            case "te":
+                            case "ve":
+                            case "ep":
+                            case "pp":
+                            case "lp":
+                            case "vl":
+                            case "tl":
                                 elementID.text(value);
+                                break;
+
+                                // Adofai
+                            case "death":
+                            case "checkpoint":
+                            case "retry":
+                                elementID.text(" " + value);
                                 break;
 
                             case "cover":
@@ -146,7 +162,7 @@ export class Template {
                                 elementClass.removeClass("ss s a b c de").addClass(value);
                                 break;
                             case "difficultyClass":
-                                elementClass.removeClass("ExpertPlus Expert Hard Normal Easy Beginner Regular Cardio Débutant Standard Avancé Advanced Master").addClass(value);
+                                elementClass.removeClass("ExpertPlus Expert Hard Normal Easy Beginner Regular Cardio Débutant Standard Avancé Advanced Master Hardcore").addClass(value);
                                 break;
 
                             case "health":
@@ -452,12 +468,12 @@ export class Template {
         let element = $("#miss");
 
         if (missNumber === 0) {
-            element.removeClass("ion-android-checkmark-circle ion-android-cancel");
-            element.addClass("ion-android-checkmark-circle");
+            element.removeClass("ion-android-checkmark-circle ion-android-cancel fcColor missColor");
+            element.addClass("ion-android-checkmark-circle fcColor");
             element.text("FC");
         } else {
-            element.removeClass("ion-android-checkmark-circle ion-android-cancel");
-            element.addClass("ion-android-cancel");
+            element.removeClass("ion-android-checkmark-circle ion-android-cancel fcColor missColor");
+            element.addClass("ion-android-cancel missColor");
         }
     }
 
@@ -478,12 +494,20 @@ export class Template {
                                 elementBase.find("#accuracy").css("display", "none");
                                 elementBase.find("#score").css("display", "block");
                                 break;
+                            case Globals.WEBSOCKET_MODS.ADOFAI:
+                                elementBase.find("#logoLeaderboardSong").css("display", "none");
+                                elementBase.find("#bsrKey").css("display", "none");
+                                elementBase.find("#accuracy").css("display", "none");
+                                elementBase.find("#score").css("display", "none");
+                                elementBase.find("#performanceGroup").css("display", "flex");
+                                break;
 
                             default:
                                 elementBase.find("#logoLeaderboardSong").css("display", "block");
                                 elementBase.find("#bsrKey").css("display", "block");
                                 elementBase.find("#accuracy").css("display", "block");
                                 elementBase.find("#score").css("display", "none");
+                                elementBase.find("#performanceGroup").css("display", "none");
                                 break;
                         }
                         break;
@@ -499,6 +523,16 @@ export class Template {
                                 elementBase.find("#bpm").css("display", "none");
                                 elementBase.find("#score").css("display", "inline-block");
                                 break;
+                            case Globals.WEBSOCKET_MODS.ADOFAI:
+                                elementBase.find("#logoLeaderboardSong").css("display", "none");
+                                elementBase.find("#bsrKey").css("display", "none");
+                                elementBase.find("#songAccuracyDiv").css("display", "none");
+                                elementBase.find("#songAccuracyLetterDiv").css("display", "none");
+                                elementBase.find("#bpm").css("display", "none");
+                                elementBase.find("#score").css("display", "none");
+                                elementBase.find("#progression").css("display", "flex");
+                                elementBase.find("#hits").css("display", "flex");
+                                break;
 
                             default:
                                 elementBase.find("#logoLeaderboardSong").css("display", "block");
@@ -507,6 +541,8 @@ export class Template {
                                 elementBase.find("#songAccuracyLetterDiv").css("display", "block");
                                 elementBase.find("#bpm").css("display", "inline-block");
                                 elementBase.find("#score").css("display", "none");
+                                elementBase.find("#progression").css("display", "none");
+                                elementBase.find("#hits").css("display", "none");
                                 break;
                         }
                         break;
@@ -523,15 +559,34 @@ export class Template {
                                 elementBase.find("#comboText").css("display", "none");
                                 elementBase.find("#bpm").css("display", "none");
                                 break;
+                            case Globals.WEBSOCKET_MODS.ADOFAI:
+                                elementBase.find("#logoLeaderboardSong").css("display", "none");
+                                elementBase.find("#timeToLetters").css("display", "none");
+                                elementBase.find("#timeToPercentageLetter").css("display", "flex");
+                                elementBase.find("#bsrKey").css("display", "none");
+                                elementBase.find("#accuracy").css("display", "none");
+                                elementBase.find("#accuracyToLetters").css("display", "none");
+                                elementBase.find("#combo").css("display", "none");
+                                elementBase.find("#comboText").css("display", "none");
+                                elementBase.find("#bpm").css("display", "none");
+                                elementBase.find("#score").css("display", "none");
+                                elementBase.find("#progression").css("display", "flex");
+                                elementBase.find("#hits").css("display", "flex");
+                                break;
 
                             default:
                                 elementBase.find("#logoLeaderboardSong").css("display", "block");
+                                elementBase.find("#timeToLetters").css("display", "flex");
+                                elementBase.find("#timeToPercentageLetter").css("display", "none");
                                 elementBase.find("#bsrKey").css("display", "flex");
                                 elementBase.find("#accuracy").css("display", "flex");
                                 elementBase.find("#accuracyToLetters").css("display", "flex");
                                 elementBase.find("#combo").css("display", "flex");
                                 elementBase.find("#comboText").css("display", "flex");
                                 elementBase.find("#bpm").css("display", "flex");
+                                elementBase.find("#score").css("display", "flex");
+                                elementBase.find("#progression").css("display", "none");
+                                elementBase.find("#hits").css("display", "none");
                                 break;
                         }
                         break;
@@ -544,6 +599,11 @@ export class Template {
                                 elementBase.find("#bsrKey").val("");
                                 elementBase.find("#accuracy").css("display", "none");
                                 elementBase.find("#score").css("display", "block");
+                                break;
+                            case Globals.WEBSOCKET_MODS.ADOFAI:
+                                elementBase.find("#bsrKey").val("");
+                                elementBase.find("#accuracy").css("display", "none");
+                                elementBase.find("#score").css("display", "none");
                                 break;
 
                             default:

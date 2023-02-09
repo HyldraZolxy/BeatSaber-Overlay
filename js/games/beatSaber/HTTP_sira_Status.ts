@@ -269,7 +269,7 @@ export class HTTP_sira_Status {
         this._songCard.songCardPerformance.combo = <number>dataEvent.status.performance?.combo;
         this._songCard.songCardPerformance.miss = <number>dataEvent.status.performance?.missedNotes;
 
-        this._songCard.songCardPerformance.accuracy = (dataEvent.status.performance?.relativeScore !== undefined) ? +((dataEvent.status.performance.relativeScore * 100).toFixed(1)) : +(((<number>dataEvent.status.performance?.score * 100) / <number>dataEvent.status.performance?.currentMaxScore).toFixed(1));
+        this._songCard.songCardPerformance.accuracy = (dataEvent.status.performance?.relativeScore !== undefined) ? Number(Math.floor(dataEvent.status.performance.relativeScore * 100).toFixed(1)) : Number(Math.floor((<number>dataEvent.status.performance?.score * 100) / <number>dataEvent.status.performance?.currentMaxScore).toFixed(1));
         this._songCard.songCardPerformance.score = (<number>dataEvent.status.performance?.score).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 

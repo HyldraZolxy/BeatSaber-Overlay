@@ -64,7 +64,7 @@
 
     background-image: url("../../../pictures/default/defaultSong.jpg");
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
 
     filter: drop-shadow(0 0 0.25rem black)
             drop-shadow(0 0 0.25rem black);
@@ -292,6 +292,22 @@
 
 #score {
     display: none;
+}
+
+#progression {
+    display: none;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+#hits {
+    display: none;
+    flex-direction: row;
+    justify-content: space-between;
+}
+#hits > *, #progression > * {
+    padding: 0 3px 0 3px;
+
+    filter: drop-shadow(0 0 0.25rem black);
 }
 
 #songData {

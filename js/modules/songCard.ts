@@ -22,10 +22,11 @@ export class SongCard {
     // Public Variables //
     //////////////////////
     public songCardGames: Globals.I_gamesSupported = {
-        beatSaber     : true,
-        synthRiders   : true,
-        audioTrip     : true,
-        audica        : true
+        beatSaber       : true,
+        synthRiders     : true,
+        audioTrip       : true,
+        audica          : true,
+        adofai          : true
     };
     public songCardData: Globals.I_songCard = {
         disabled            : false,
@@ -78,6 +79,7 @@ export class SongCard {
         time                    : 137000,
         timeToLetters           : "2:17",
         timeToPercentage        : 50,
+        timeToPercentageLetter  : "50%",
 
         accuracy                : 69.69,
         accuracyToLetters       : "A",
@@ -87,6 +89,18 @@ export class SongCard {
         ppActual                : 267.23,
         combo                   : 234,
         miss                    : 2,
+
+        // Adofai
+        death                   : 0,
+        checkpoint              : 0,
+        retry                   : 0,
+        te                      : 0,
+        ve                      : 0,
+        ep                      : 0,
+        pp                      : 0,
+        lp                      : 0,
+        vl                      : 0,
+        tl                      : 0,
 
         health                  : 100
     };
@@ -109,22 +123,25 @@ export class SongCard {
             if (this.songCardData.disabled || !this.songCardData.display) return;
 
             if (!this.songCardData.started && !this.songCardData.alwaysEnabled) {
-                this.songCardPerformance.time               = 0;
-                this.songCardData.totalTime                 = 0;
-                this.songCardPerformance.timeToLetters      = "0:00";
-                this.songCardPerformance.timeToPercentage   = 0;
+                this.songCardPerformance.time                   = 0;
+                this.songCardData.totalTime                     = 0;
+                this.songCardPerformance.timeToLetters          = "0:00";
+                this.songCardPerformance.timeToPercentage       = 0;
+                this.songCardPerformance.timeToPercentageLetter = "0%";
             }
 
             if (!this.songCardData.started && this.songCardData.finished) {
-                this.songCardPerformance.time               = this.songCardData.totalTime;
-                this.songCardPerformance.timeToLetters      = this.timeToLetters(this.songCardPerformance.time);
-                this.songCardPerformance.timeToPercentage   = 100;
+                this.songCardPerformance.time                   = this.songCardData.totalTime;
+                this.songCardPerformance.timeToLetters          = this.timeToLetters(this.songCardPerformance.time);
+                this.songCardPerformance.timeToPercentage       = 100;
+                this.songCardPerformance.timeToPercentageLetter = "100%";
             }
 
             if (this.songCardData.started && this.songCardData.inProgress && !this.songCardData.paused) {
-                this.songCardPerformance.time               += (100 * this.songCardData.speedModifier);
-                this.songCardPerformance.timeToLetters      = this.timeToLetters(this.songCardPerformance.time);
-                this.songCardPerformance.timeToPercentage   = this.timeToPercentage();
+                this.songCardPerformance.time                   += (100 * this.songCardData.speedModifier);
+                this.songCardPerformance.timeToLetters          = this.timeToLetters(this.songCardPerformance.time);
+                this.songCardPerformance.timeToPercentage       = this.timeToPercentage();
+                this.songCardPerformance.timeToPercentageLetter = this.timeToPercentageLetter();
             }
 
             this.songCardPerformance.endedUpdate = true;
@@ -142,7 +159,6 @@ export class SongCard {
 
         return "E";
     }
-
     private accuracyToLetterClass(): "ss" | "s" | "a" | "b" | "c" | "de" {
         switch(this.songCardPerformance.accuracyToLetters) {
             case "SS":  return "ss";
@@ -157,7 +173,10 @@ export class SongCard {
     }
 
     private timeToPercentage(): number {
-        return Math.min(this.songCardPerformance.time / this.songCardData.totalTime) * 100;
+        return Math.floor(this.songCardPerformance.time / this.songCardData.totalTime) * 100;
+    }
+    private timeToPercentageLetter(): string {
+        return Math.floor((this.songCardPerformance.time / this.songCardData.totalTime) * 100).toFixed(0).toString() + "%";
     }
 
     private async updateSongInfo(): Promise<void> {
@@ -223,6 +242,12 @@ export class SongCard {
         if (+(seconds) < 10) seconds = "0" + seconds;
 
         return minutes + ":" + seconds;
+    }
+    public timerSongManual(): void {
+        this.songCardPerformance.timeToLetters          = this.timeToLetters(this.songCardPerformance.time);
+        this.songCardPerformance.timeToPercentage       = this.timeToPercentage();
+        this.songCardPerformance.timeToPercentageLetter = this.timeToPercentageLetter();
+        this.songCardPerformance.endedUpdate            = true;
     }
 
     public refreshSongCard(): void {

@@ -20,10 +20,11 @@ export class PlayerCard {
     // Public Variables //
     //////////////////////
     public playerCardGames: Globals.I_gamesSupported = {
-        beatSaber     : true,
-        synthRiders   : false,
-        audioTrip     : false,
-        audica        : false
+        beatSaber       : true,
+        synthRiders     : false,
+        audioTrip       : false,
+        audica          : false,
+        adofai          : false
     };
     public playerCardData: Globals.I_playerCard = {
         disabled        : false,

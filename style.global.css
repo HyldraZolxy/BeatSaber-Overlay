@@ -87,7 +87,7 @@
 .Expert {
     background-color: #de2d1b !important;
 }
-.ExpertPlus, .Cardio, .Master {
+.ExpertPlus, .Cardio, .Master, .Hardcore {
     background-color: #6610f2 !important;
 }
 
@@ -118,10 +118,10 @@
 
 /* FC/Miss */
 .fcColor {
-    color: gold;
+    color: gold !important;
 }
 .missColor {
-    color: #d53535;
+    color: #d53535 !important;
     font-weight: bold;
 }
 .missGroup {
@@ -147,6 +147,12 @@
 .roundedButton:hover {
     background-color: #6c6c6c;
 }
+
+/* Adofai colors */
+#te, #tl, #death { color: #ed3e3e; }
+#ve, #vl { color: #eb9a46; }
+#ep, #lp, #retry { color: #e3e370; }
+#pp, #checkpoint { color: #86e370; }
 /* ===================
    = REUSED TAGS end =
    =================== */

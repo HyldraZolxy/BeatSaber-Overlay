@@ -80,7 +80,7 @@
     position: relative;
 
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
 }
 
 #meta {
@@ -266,9 +266,13 @@
     stroke-dashoffset: 188px;
 }
 
-#timeToLetters {
+#timeToLetters, #timeToPercentageLetter {
     font-size: 16px;
     font-weight: 600;
+}
+
+#timeToPercentageLetter {
+    display: none;
 }
 
 /* Performance */
@@ -322,6 +326,18 @@
     font-size: 34px;
     font-weight: 700;
     letter-spacing: 2px;
+}
+
+#progression {
+    display: none;
+    flex-direction: row;
+}
+#hits {
+    display: none;
+    flex-direction: row;
+}
+#hits > *, #progression > * {
+    padding: 0 3px 0 3px;
 }
 
 /* Animations and state */

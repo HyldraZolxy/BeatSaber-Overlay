@@ -224,7 +224,7 @@ export class DataPuller {
         this._songCard.songCardPerformance.combo    = dataEvent.Combo;
         this._songCard.songCardPerformance.miss     = dataEvent.Misses;
         this._songCard.songCardPerformance.health   = dataEvent.PlayerHealth;
-        this._songCard.songCardPerformance.accuracy = Number((dataEvent.Accuracy).toFixed(1));
+        this._songCard.songCardPerformance.accuracy = Number(Math.floor(dataEvent.Accuracy).toFixed(1));
         this._songCard.songCardPerformance.score    = dataEvent.Score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 

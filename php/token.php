@@ -63,7 +63,8 @@ const DEFAULT_DATA = array(
         "beatSaber"     => true,
         "synthRiders"   => false,
         "audioTrip"     => false,
-        "audica"        => false
+        "audica"        => false,
+        "adofai"        => false
     ),
 
     "plugins" => array(
@@ -84,6 +85,10 @@ const DEFAULT_DATA = array(
 
         "audicaPlugins" => array(
             "audica" => false
+        ),
+
+        "adofaiPlugins" => array(
+            "adofai" => false
         )
     ),
 
@@ -368,6 +373,7 @@ function tokenSave($SQLQuery): void {
             if (count($data["plugins"]["synthRidersPlugins"]) > 0)  $pluginsData += $data["plugins"]["synthRidersPlugins"];
             if (count($data["plugins"]["audioTripPlugins"]) > 0)    $pluginsData += $data["plugins"]["audioTripPlugins"];
             if (count($data["plugins"]["audicaPlugins"]) > 0)       $pluginsData += $data["plugins"]["audicaPlugins"];
+            if (count($data["plugins"]["adofaiPlugins"]) > 0)       $pluginsData += $data["plugins"]["adofaiPlugins"];
 
             $SQLQuery->sqlAdd($pluginsData, "plugins_data");
         }
@@ -408,6 +414,7 @@ function tokenUpdate($SQLQuery): void {
                 if (count($data["plugins"]["synthRidersPlugins"]) > 0)  $pluginsData += $data["plugins"]["synthRidersPlugins"];
                 if (count($data["plugins"]["audioTripPlugins"]) > 0)    $pluginsData += $data["plugins"]["audioTripPlugins"];
                 if (count($data["plugins"]["audicaPlugins"]) > 0)       $pluginsData += $data["plugins"]["audicaPlugins"];
+                if (count($data["plugins"]["adofaiPlugins"]) > 0)       $pluginsData += $data["plugins"]["adofaiPlugins"];
 
                 $SQLQuery->sqlUpdate(TOKEN, $pluginsData, "plugins_data");
             }
@@ -432,7 +439,8 @@ function dataConverter($data) {
             "beatSaberPlugins"      => array(),
             "synthRidersPlugins"    => array(),
             "audioTripPlugins"      => array(),
-            "audicaPlugins"         => array()
+            "audicaPlugins"         => array(),
+            "adofaiPlugins"         => array()
         ),
         "playerCard"    => array(),
         "songCard"      => array(),
@@ -502,6 +510,10 @@ function dataConverter($data) {
                     case "audica":
                     case "audicaPlugins":
                         $pluginsModule = "audicaPlugins";
+                        break;
+                    case "adofai":
+                    case "adofaiPlugins":
+                        $pluginsModule = "adofaiPlugins";
                         break;
                 }
 

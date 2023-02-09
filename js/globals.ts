@@ -34,6 +34,7 @@ export namespace Globals {
         synthRiders   : boolean; // SynthRiders is enabled ?
         audioTrip     : boolean; // AudioTrip is enabled ?
         audica        : boolean; // Audica is enabled ?
+        adofai        : boolean; // Adofai is enabled ?
     }
     export interface I_pluginsSupported {
         [key: string]: {}
@@ -64,6 +65,12 @@ export namespace Globals {
 
             audica : boolean; // https://github.com/steglasaurous/audica-websocket-server
         }
+
+        adofaiPlugins: {
+            [key: string]: boolean;
+
+            adofai : boolean; // https://github.com/thijnmens/AdofaiWeb
+        }
     }
 
     // Plugins and Mods for plugins system
@@ -78,7 +85,8 @@ export namespace Globals {
         HTTPSIRASTATUS,
         SYNTHRIDERS,
         AUDIOTRIP,
-        AUDICA
+        AUDICA,
+        ADOFAI
     }
 
     // General
@@ -226,6 +234,7 @@ export namespace Globals {
         time                    : number;   // Actual time of the actual song
         timeToLetters           : string;   // Time in letter of the actual song
         timeToPercentage        : number;   // Time in percentage of the actual song
+        timeToPercentageLetter  : string;   // Time in percentage but letter of the actual song
 
         accuracy                : number;   // Player accuracy of the actual song
         accuracyToLetters       : string;   // Player accuracy in letter of the actual song
@@ -235,6 +244,18 @@ export namespace Globals {
         ppActual                : number;   // Player PP value of the actual song
         combo                   : number;   // Player combo of the actual song
         miss                    : number;   // Player miss of the actual song
+
+        // Adofai
+        death                   : number;   // Death number
+        checkpoint              : number;   // Checkpoint used
+        retry                   : number;   // Retry number
+        te                      : number;   // Too early
+        ve                      : number;   // Very early
+        ep                      : number;   // Early perfect
+        pp                      : number;   // Pure perfect
+        lp                      : number;   // Late perfect
+        vl                      : number;   // Very late
+        tl                      : number;   // Too late
 
         health                  : number;   // Player health of the actual song
     }

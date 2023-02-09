@@ -64,7 +64,7 @@
 
     background-image: url("../../../pictures/default/defaultSong.jpg");
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
 
     filter: drop-shadow(0 0 0.25rem black)
             drop-shadow(0 0 0.25rem black);
@@ -244,6 +244,28 @@
 }
 #bsrKey::before {
     content: "!bsr ";
+}
+
+#performanceGroup {
+    width: 200px;
+    margin-top: -20px;
+    margin-left: 100px;
+
+    position: absolute;
+    display: none;
+    flex-direction: column;
+}
+#progression {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+#hits {
+    margin-top: 5px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 #songDataInfoBar {

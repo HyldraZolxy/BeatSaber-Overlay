@@ -151,6 +151,7 @@ export class Parameters {
             synthRiders : false,
             audioTrip   : false,
             audica      : false,
+            adofai      : false
         },
 
         plugins: {
@@ -171,6 +172,10 @@ export class Parameters {
 
             audicaPlugins: {
                 audica : false
+            },
+
+            adofaiPlugins: {
+                adofai : false
             }
         },
 
@@ -270,6 +275,7 @@ export class Parameters {
             case "synthRiders":
             case "audioTrip":
             case "audica":
+            case "adofai":
             case "missDisplay":
             case "bigBSR":
             case "ppMax":
@@ -326,6 +332,7 @@ export class Parameters {
                             case "synthRidersPlugins":
                             case "audioTripPlugins":
                             case "audicaPlugins":
+                            case "adofaiPlugins":
                                 let pluginsModule = keyValue;
 
                                 for (let [keyPluginsValue, valuePluginsValue] of Object.entries<string>(valueValue)) {

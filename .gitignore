@@ -7,6 +7,7 @@ tsconfig.json
 package-lock.json
 
 /js/*.js
+/js/games/adofai/*.js
 /js/games/audica/*.js
 /js/games/audioTrip/*.js
 /js/games/beatSaber/*.js

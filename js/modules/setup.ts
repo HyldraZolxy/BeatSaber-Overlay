@@ -264,6 +264,7 @@ export class Setup {
         this.elements.set("switchSynthRiders",      $("#switchSynthRiders"));
         this.elements.set("switchAudioTrip",        $("#switchAudioTrip"));
         this.elements.set("switchAudica",           $("#switchAudica"));
+        this.elements.set("switchAdofai",           $("#switchAdofai"));
         /*==========================================================================================*/
 
         // Overlay Settings
@@ -346,6 +347,7 @@ export class Setup {
         this.elements.get("switchSynthRiders")?.    prop("checked", this._parameters.uriParams.games.synthRiders);
         this.elements.get("switchAudioTrip")?.      prop("checked", this._parameters.uriParams.games.audioTrip);
         this.elements.get("switchAudica")?.         prop("checked", this._parameters.uriParams.games.audica);
+        this.elements.get("switchAdofai")?.         prop("checked", this._parameters.uriParams.games.adofai);
         /*==========================================================================================*/
 
         // Overlay Settings
@@ -410,6 +412,7 @@ export class Setup {
         this.elements.get("switchSynthRiders")?.off("click");
         this.elements.get("switchAudioTrip")?.  off("click");
         this.elements.get("switchAudica")?.     off("click");
+        this.elements.get("switchAdofai")?.     off("click");
 
         this.elements.get("checkBsPlus")?.          off("click");
         this.elements.get("checkBsPlusMp")?.        off("click");
@@ -526,6 +529,13 @@ export class Setup {
         this.elements.get("switchAudica")?.on("click", async () => {
             this._parameters.uriParams.games.audica = this.elements.get("switchAudica")?.prop("checked") === true;
             this._parameters.uriParams.plugins.audicaPlugins.audica = this.elements.get("switchAudica")?.prop("checked") === true;
+
+            await this._plugins.removeConnection();
+            await this._plugins.connection();
+        });
+        this.elements.get("switchAdofai")?.on("click", async () => {
+            this._parameters.uriParams.games.adofai = this.elements.get("switchAdofai")?.prop("checked") === true;
+            this._parameters.uriParams.plugins.adofaiPlugins.adofai = this.elements.get("switchAdofai")?.prop("checked") === true;
 
             await this._plugins.removeConnection();
             await this._plugins.connection();
@@ -939,6 +949,7 @@ export class Setup {
         this._parameters.uriParams.games.synthRiders    = false;
         this._parameters.uriParams.games.audioTrip      = false;
         this._parameters.uriParams.games.audica         = false;
+        this._parameters.uriParams.games.adofai         = false;
 
         this._parameters.uriParams.plugins.beatSaberPlugins.beatSaberPlus               = true;
         this._parameters.uriParams.plugins.beatSaberPlugins.beatSaberPlusLeaderboard    = false;
@@ -947,6 +958,7 @@ export class Setup {
         this._parameters.uriParams.plugins.synthRidersPlugins.synthRiders               = false;
         this._parameters.uriParams.plugins.audioTripPlugins.audioTrip                   = false;
         this._parameters.uriParams.plugins.audicaPlugins.audica                         = false;
+        this._parameters.uriParams.plugins.adofaiPlugins.adofai                         = false;
 
         this._parameters.uriParams.playerCard.disabled  = false;
         this._parameters.uriParams.songCard.disabled    = false;

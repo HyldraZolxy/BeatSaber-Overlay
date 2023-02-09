@@ -80,8 +80,8 @@ export class SynthRiders {
 
             case "SongEnd":
                 if (!this._songCard.songCardData.disabled) {
-                    this._songCard.songCardData.display     = true;
-                    this._songCard.songCardData.started     = true;
+                    this._songCard.songCardData.display     = false;
+                    this._songCard.songCardData.started     = false;
                     this._songCard.songCardData.inProgress  = false;
                     this._songCard.songCardData.finished    = true;
                 }
@@ -126,6 +126,7 @@ export class SynthRiders {
         this.timeInMapOld                           = 0;
         this.timeInMapNew                           = 0;
         this._songCard.songCardPerformance.score    = "0";
+        this._songCard.songCardPerformance.miss     = 0;
         this._songCard.songCardPerformance.accuracy = 100;
 
         this._songCard.songCardData.title           = dataEvent.data.song;
