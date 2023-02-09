@@ -173,7 +173,7 @@ export class SongCard {
     }
 
     private timeToPercentage(): number {
-        return Math.floor(this.songCardPerformance.time / this.songCardData.totalTime) * 100;
+        return Math.floor((this.songCardPerformance.time / this.songCardData.totalTime) * 100);
     }
     private timeToPercentageLetter(): string {
         return Math.floor((this.songCardPerformance.time / this.songCardData.totalTime) * 100).toFixed(0).toString() + "%";
@@ -247,6 +247,7 @@ export class SongCard {
         this.songCardPerformance.timeToLetters          = this.timeToLetters(this.songCardPerformance.time);
         this.songCardPerformance.timeToPercentage       = this.timeToPercentage();
         this.songCardPerformance.timeToPercentageLetter = this.timeToPercentageLetter();
+        this.songCardData.totalTimeToLetters            = this.timeToLetters(this.songCardData.totalTime);
         this.songCardPerformance.endedUpdate            = true;
     }
 

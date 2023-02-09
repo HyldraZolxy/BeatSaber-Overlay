@@ -43,7 +43,8 @@ export class Setup {
 
         $("#setupButton").on("click", async () => {
             if (!this.isDisplayed) {
-                this.isDisplayed = true;
+                this.isDisplayed            = true;
+                this._plugins.setupDisplay  = true;
 
                 this._template.hideSetup(false);
                 await this._template.loadSkin(Globals.E_MODULES.MENU_SETUP, this.skinSettings);
@@ -72,7 +73,8 @@ export class Setup {
     private menuAction() {
         this.elements.get("closeButton")?.on("click", async () => {
             if (this.isDisplayed) {
-                this.isDisplayed = false;
+                this.isDisplayed            = false;
+                this._plugins.setupDisplay  = false;
 
                 this._template.hideSetup(true);
                 this.elements.get("optionsSetup")?.empty();

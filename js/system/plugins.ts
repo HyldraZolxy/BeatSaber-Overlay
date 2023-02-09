@@ -45,6 +45,7 @@ export class Plugins {
     //////////////////////
     public websocketStatus  : Globals.WEBSOCKET_STATUS = Globals.WEBSOCKET_STATUS.DISCONNECTED;
     public websocketMod!    : Globals.WEBSOCKET_MODS;
+    public setupDisplay     = false;
 
     constructor() {
         this._parameters        = Parameters.Instance;
@@ -65,13 +66,15 @@ export class Plugins {
     // Private Methods //
     /////////////////////
     private overlayDisplay() {
-        if (this.websocketStatus === Globals.WEBSOCKET_STATUS.DISCONNECTED) {
-            this._playerCard.playerCardData.display = false;
-            this._songCard.songCardData.display     = false;
+        if (!this.setupDisplay) {
+            if (this.websocketStatus === Globals.WEBSOCKET_STATUS.DISCONNECTED) {
+                this._playerCard.playerCardData.display = false;
+                this._songCard.songCardData.display = false;
 
-            if (this._playerCard.playerCardData.alwaysEnabled)  this._playerCard.playerCardData.alwaysEnabled = false;
-            if (this._songCard.songCardData.alwaysEnabled)      this._songCard.songCardData.alwaysEnabled = false;
-        } else this._parameters.assocValue();
+                if (this._playerCard.playerCardData.alwaysEnabled) this._playerCard.playerCardData.alwaysEnabled = false;
+                if (this._songCard.songCardData.alwaysEnabled) this._songCard.songCardData.alwaysEnabled = false;
+            } else this._parameters.assocValue();
+        }
 
         this._songCard.websocketMod = this.websocketMod;
     }

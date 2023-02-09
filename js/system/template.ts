@@ -578,13 +578,13 @@ export class Template {
                                 elementBase.find("#logoLeaderboardSong").css("display", "block");
                                 elementBase.find("#timeToLetters").css("display", "flex");
                                 elementBase.find("#timeToPercentageLetter").css("display", "none");
-                                elementBase.find("#bsrKey").css("display", "flex");
-                                elementBase.find("#accuracy").css("display", "flex");
-                                elementBase.find("#accuracyToLetters").css("display", "flex");
-                                elementBase.find("#combo").css("display", "flex");
-                                elementBase.find("#comboText").css("display", "flex");
-                                elementBase.find("#bpm").css("display", "flex");
-                                elementBase.find("#score").css("display", "flex");
+                                elementBase.find("#bsrKey").css("display", "inline-block");
+                                elementBase.find("#accuracy").css("display", "inline-block");
+                                elementBase.find("#accuracyToLetters").css("display", "inline-block");
+                                elementBase.find("#combo").css("display", "inline-block");
+                                elementBase.find("#comboText").css("display", "inline-block");
+                                elementBase.find("#bpm").css("display", "inline-block");
+                                elementBase.find("#score").css("display", "block");
                                 elementBase.find("#progression").css("display", "none");
                                 elementBase.find("#hits").css("display", "none");
                                 break;
@@ -595,10 +595,14 @@ export class Template {
                         switch(pluginUsed) {
                             case Globals.WEBSOCKET_MODS.AUDICA:
                             case Globals.WEBSOCKET_MODS.AUDIOTRIP:
-                            case Globals.WEBSOCKET_MODS.SYNTHRIDERS:
                                 elementBase.find("#bsrKey").val("");
                                 elementBase.find("#accuracy").css("display", "none");
                                 elementBase.find("#score").css("display", "block");
+                                break;
+                            case Globals.WEBSOCKET_MODS.SYNTHRIDERS:
+                                elementBase.find("#bsrKey").val("");
+                                elementBase.find("#accuracy").css("display", "none");
+                                elementBase.find("#score").css("display", "none");
                                 break;
                             case Globals.WEBSOCKET_MODS.ADOFAI:
                                 elementBase.find("#bsrKey").val("");

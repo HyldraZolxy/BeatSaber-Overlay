@@ -153,6 +153,7 @@ export class SynthRiders {
     private infoParser(dataEvent: I_synthRidersObject): void {
         this._songCard.songCardPerformance.time = dataEvent.data.playTimeMS;
         this.timeInMapNew                       = dataEvent.data.playTimeMS;
+        this._songCard.timerSongManual();
     }
 
     private isPlaying(): boolean {
