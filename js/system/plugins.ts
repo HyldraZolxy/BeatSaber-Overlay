@@ -1,16 +1,16 @@
-import { Globals }              from "../globals";
-import { Parameters }           from "./parameters";
-import { WebSocketManager }     from './websocket-manager';
-import { PlayerCard }           from "../modules/playerCard";
-import { SongCard }             from "../modules/songCard";
-import { BSPlus }               from "../games/beatSaber/BSPlus";
-import { BSPlusLeaderboard }    from "../games/beatSaber/bsPlusLeaderboard";
-import { HTTP_sira_Status }     from "../games/beatSaber/HTTP_sira_Status";
-import { DataPuller }           from "../games/beatSaber/dataPuller";
-import { SynthRiders }          from "../games/synthRiders/synthRiders";
-import { AudioTrip }            from "../games/audioTrip/audioTrip";
-import { Audica }               from "../games/audica/audica";
-import { Adofai }               from "../games/adofai/adofai";
+import { Globals }              from "../globals.js";
+import { Parameters }           from "./parameters.js";
+import { WebSocketManager }     from './websocket-manager.js';
+import { PlayerCard }           from "../modules/playerCard.js";
+import { SongCard }             from "../modules/songCard.js";
+import { BSPlus }               from "../games/beatSaber/BSPlus.js";
+import { BSPlusLeaderboard }    from "../games/beatSaber/bsPlusLeaderboard.js";
+import { HTTP_sira_Status }     from "../games/beatSaber/HTTP_sira_Status.js";
+import { DataPuller }           from "../games/beatSaber/dataPuller.js";
+import { SynthRiders }          from "../games/synthRiders/synthRiders.js";
+import { AudioTrip }            from "../games/audioTrip/audioTrip.js";
+import { Audica }               from "../games/audica/audica.js";
+import { Adofai }               from "../games/adofai/adofai.js";
 
 export class Plugins {
 

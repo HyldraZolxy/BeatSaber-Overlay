@@ -8,7 +8,19 @@ module.exports = {
         minimize: true,
         minimizer: [
             new TerserPlugin({
-                parallel: true
+                parallel: true,
+                terserOptions: {
+                    ecma: 2022,
+                    mangle: {
+                        toplevel: true
+                    },
+                    compress: {
+                        drop_console: false
+                    },
+                    output: {
+                        comments: false
+                    }
+                }
             })
         ],
     },

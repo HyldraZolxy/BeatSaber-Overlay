@@ -1,12 +1,12 @@
-import { Globals }          from "../globals";
-import { Tools }            from "../system/tools";
-import { Template }         from "../system/template";
-import { Parameters }       from "../system/parameters";
-import { PlayerCard }       from "./playerCard";
-import { SongCard }         from "./songCard";
-import { Plugins }          from "../system/plugins";
-import { Leaderboard }      from "./leaderboard";
-import { DebugLeaderboard } from "../system/debugLeaderboard";
+import { Globals }          from "../globals.js";
+import { Tools }            from "../system/tools.js";
+import { Template }         from "../system/template.js";
+import { Parameters }       from "../system/parameters.js";
+import { PlayerCard }       from "./playerCard.js";
+import { SongCard }         from "./songCard.js";
+import { Plugins }          from "../system/plugins.js";
+import { Leaderboard }      from "./leaderboard.js";
+import { DebugLeaderboard } from "../system/debugLeaderboard.js";
 
 export class Setup {
 

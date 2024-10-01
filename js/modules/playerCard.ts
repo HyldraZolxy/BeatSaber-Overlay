@@ -1,6 +1,6 @@
-import { Globals }                                                                  from "../globals";
-import { Template }                                                                 from "../system/template";
-import { ScoreSaber, BeatLeader, I_scoreSaberPlayerJSON, I_beatLeaderPlayerJSON }   from "../system/api-call";
+import { Globals }                                                                  from "../globals.js";
+import { Template }                                                                 from "../system/template.js";
+import { ScoreSaber, BeatLeader, I_scoreSaberPlayerJSON, I_beatLeaderPlayerJSON }   from "../system/api-call.js";
 
 export class PlayerCard {
 

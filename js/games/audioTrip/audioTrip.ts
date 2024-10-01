@@ -1,7 +1,7 @@
-import { Globals }                          from "../../globals";
-import { PlayerCard }                       from "../../modules/playerCard";
-import { SongCard }                         from "../../modules/songCard";
-import { AudioTripSong, I_audioTripSong }   from "../../system/api-call";
+import { Globals }                          from "../../globals.js";
+import { PlayerCard }                       from "../../modules/playerCard.js";
+import { SongCard }                         from "../../modules/songCard.js";
+import { AudioTripSong, I_audioTripSong }   from "../../system/api-call.js";
 
 interface I_audioTripObject {
     gameVersion     : string;                               // Game version

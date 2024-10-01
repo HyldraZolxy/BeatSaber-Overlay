@@ -1,5 +1,5 @@
-import { Globals }      from "../../globals";
-import { Leaderboard }  from "../../modules/leaderboard";
+import { Globals }      from "../../globals.js";
+import { Leaderboard }  from "../../modules/leaderboard.js";
 
 export interface I_bsPlusLeaderboardObject {
     GameVersion     : string;                                                                                                   // Version of Beat Saber

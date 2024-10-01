@@ -1,5 +1,5 @@
-import { Globals }  from "../globals";
-import { Tools }    from "./tools";
+import { Globals }  from "../globals.js";
+import { Tools }    from "./tools.js";
 
 // JSON object always send by Proxy or API
 interface I_JSONMessageFromAPI {

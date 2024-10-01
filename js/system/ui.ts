@@ -1,8 +1,8 @@
-import { Globals }      from "../globals";
-import { Template }     from "./template";
-import { PlayerCard }   from "../modules/playerCard";
-import { SongCard }     from "../modules/songCard";
-import { Leaderboard }  from "../modules/leaderboard";
+import { Globals }      from "../globals.js";
+import { Template }     from "./template.js";
+import { PlayerCard }   from "../modules/playerCard.js";
+import { SongCard }     from "../modules/songCard.js";
+import { Leaderboard }  from "../modules/leaderboard.js";
 
 export class UI {
 

@@ -1,6 +1,6 @@
-import { Globals }                              from "../globals";
-import { Tools }                                from "./tools";
-import { I_leaderboard, I_leaderboardPlayer }   from "../modules/leaderboard";
+import { Globals }                              from "../globals.js";
+import { Tools }                                from "./tools.js";
+import { I_leaderboard, I_leaderboardPlayer }   from "../modules/leaderboard.js";
 
 export class Template {
 

@@ -1,6 +1,6 @@
-import { Globals }      from "../../globals";
-import { PlayerCard }   from "../../modules/playerCard";
-import { SongCard }     from "../../modules/songCard";
+import { Globals }      from "../../globals.js";
+import { PlayerCard }   from "../../modules/playerCard.js";
+import { SongCard }     from "../../modules/songCard.js";
 
 interface I_bsPlusObject {
     gameVersion         : string;               // Version of Beat Saber

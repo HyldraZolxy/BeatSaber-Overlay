@@ -3,8 +3,7 @@
 /php/Cache/
 /dist/
 /pictures/coverSong/*.jpg
-tsconfig.json
-package-lock.json
+*.tsbuildinfo
 
 /js/*.js
 /js/games/adofai/*.js

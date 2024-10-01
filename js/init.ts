@@ -1,8 +1,8 @@
-import { Globals }      from "./globals";
-import { Parameters }   from "./system/parameters";
-import { UI }           from "./system/ui";
-import { Plugins }      from "./system/plugins";
-import { Setup }        from "./modules/setup";
+import { Globals }      from "./globals.js";
+import { Parameters }   from "./system/parameters.js";
+import { UI }           from "./system/ui.js";
+import { Plugins }      from "./system/plugins.js";
+import { Setup }        from "./modules/setup.js";
 
 declare global {
     interface Window {
@@ -36,6 +36,7 @@ class Init {
 
             // Try to catch the performance of the internet connection (for the Setup panel)
             window.timeStamp = window.timeStamp + performance.now();
+            let test = 2;
         })();
     }
 

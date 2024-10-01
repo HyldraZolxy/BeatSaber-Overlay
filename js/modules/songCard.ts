@@ -1,7 +1,7 @@
-import { Globals }                                                          from "../globals";
-import { Template }                                                         from "../system/template";
-import { BeatSaver, BeatLeader, I_beatSaverSongJSON, I_beatLeaderSongJSON } from "../system/api-call";
-import { Tools }                                                            from "../system/tools";
+import { Globals }                                                          from "../globals.js";
+import { Template }                                                         from "../system/template.js";
+import { BeatSaver, BeatLeader, I_beatSaverSongJSON, I_beatLeaderSongJSON } from "../system/api-call.js";
+import { Tools }                                                            from "../system/tools.js";
 
 export class SongCard {
 

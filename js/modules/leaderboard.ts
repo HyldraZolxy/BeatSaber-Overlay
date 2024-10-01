@@ -1,6 +1,6 @@
-import { Globals }                      from "../globals";
-import { Template }                     from "../system/template";
-import { I_bsPlusLeaderboardObject }    from "../games/beatSaber/bsPlusLeaderboard";
+import { Globals }                      from "../globals.js";
+import { Template }                     from "../system/template.js";
+import { I_bsPlusLeaderboardObject }    from "../games/beatSaber/bsPlusLeaderboard.js";
 
 export interface I_leaderboard {
     disabled            : boolean;                                                          // Is leaderboard enabled?

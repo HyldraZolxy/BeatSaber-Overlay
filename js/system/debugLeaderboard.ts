@@ -1,4 +1,4 @@
-import { BSPlusLeaderboard } from "../games/beatSaber/bsPlusLeaderboard";
+import { BSPlusLeaderboard } from "../games/beatSaber/bsPlusLeaderboard.js";
 
 export class DebugLeaderboard {
 
