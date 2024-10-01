@@ -36,7 +36,6 @@ class Init {
 
             // Try to catch the performance of the internet connection (for the Setup panel)
             window.timeStamp = window.timeStamp + performance.now();
-            let test = 2;
         })();
     }
 
