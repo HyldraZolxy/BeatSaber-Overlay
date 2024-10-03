@@ -55,6 +55,7 @@ interface I_uriParamsAllowed {
 
         disabled        : boolean;  // Leaderboard is enabled ?
         skin            : string;   // Skin of Leaderboard
+        battleRoyal     : boolean;  // Is Battle Royal enabled?
         position        : number;   // Position of Leaderboard
         scale           : number;   // Scale of Leaderboard
         pos_x           : number;   // Position of the Leaderboard on the X axis
@@ -207,6 +208,7 @@ export class Parameters {
         leaderboard: {
             disabled        : true,
             skin            : "default",
+            battleRoyal     : false,
             position        : 0,
             scale           : 1.0,
             pos_x           : 0,
@@ -280,6 +282,7 @@ export class Parameters {
             case "bigBSR":
             case "ppMax":
             case "ppEstimated":
+            case "battleRoyal":
                 return (<string>value === "true" || <string>value === "false") || typeof value === "boolean";
 
             case "skin":
@@ -430,6 +433,7 @@ export class Parameters {
         this._leaderboard.leaderboardData.pos_x             = this.uriParams.leaderboard.pos_x;
         this._leaderboard.leaderboardData.pos_y             = this.uriParams.leaderboard.pos_y;
         this._leaderboard.leaderboardData.playerRendering   = this.uriParams.leaderboard.playerRendering;
+        this._leaderboard.leaderboardData.battleRoyal       = this.uriParams.leaderboard.battleRoyal;
     }
 
     /////////////

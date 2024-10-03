@@ -207,6 +207,24 @@ export class Template {
 
         element.css("transform-origin", this._tools.positionStringConverter(position).replace(/(-)/g, " "));
         element.css("transform",        "scale(" + scale + ")");
+
+        if (module === Globals.E_MODULES.LEADERBOARD) {
+            element = $("#leaderboardTable");
+
+            element.css("transform-origin", '');
+            element.css("transform",        '');
+        }
+    }
+    public moduleScaleLeaderboard(module: Globals.E_MODULES, position: number, scale: number): void {
+        let element = $("#" + this._prefix(module));
+
+        element.css("transform-origin", '');
+        element.css("transform",        '');
+
+        element = $("#leaderboardTable");
+
+        element.css("transform-origin", this._tools.positionStringConverter(position).replace(/(-)/g, " "));
+        element.css("transform",        "scale(" + scale + ")");
     }
     public moduleCorners(module: Globals.E_MODULES, position: number): void {
         let element = $("#" + this._prefix(module));
@@ -214,10 +232,11 @@ export class Template {
         element.removeClass(Globals.cssPosition.join(" "));
         element.addClass(this._tools.positionStringConverter(position));
     }
-    public modulePosition(module: Globals.E_MODULES, pos_x: number, pos_y: number): void {
+    public modulePosition(module: Globals.E_MODULES, pos_x: number, pos_y: number, margin: boolean): void {
         let element = $("#" + this._prefix(module));
+        let marginFetch = (margin) ? '2% + ' : '';
 
-        element.css("margin", "calc(2% + " + pos_x + "px) calc(2% + " + pos_y + "px)");
+        element.css("margin", "calc(" + marginFetch + pos_x + "px) calc(" + marginFetch + pos_y + "px)");
     }
 
     public stopOrStart(module: Globals.E_MODULES, started: boolean, paused: boolean): void {
@@ -335,12 +354,13 @@ export class Template {
         elementRow.empty().remove();
     }
 
-    public sortingRows(player: Map<number, I_leaderboardPlayer>, localPlayer: number, playerNumber: number, playerRender: number, positionCSS: number, skinName: string): void {
+    public sortingRows(player: Map<number, I_leaderboardPlayer>, localPlayer: number, playerNumber: number, playerRender: number, positionCSS: number, skinName: string, battleRoyal: boolean, scale: number): void {
         const elementLd         = $("#leaderboardTable");
         const positionCSSString = [Globals.E_POSITION.TOP_LEFT, Globals.E_POSITION.TOP_RIGHT].includes(positionCSS) ? "top" : "bottom";
         let iteration           = 0;
         let rowTotalHeight      = 0;
         let marginBottom        = (skinName === "default") ? 3 : 15;
+        let playerHideBefore = playerNumber - 15;
 
         for (let [key, value] of player) {
             iteration++;
@@ -364,15 +384,28 @@ export class Template {
                     elementRow.css("top", "");
                 }
 
-                if (playerRender > 1) {
-                    if (iteration < playerRender || (iteration === playerRender && playerRender > playerNumber)) {
-                        this.deleteSeparatorRow();
+                if (battleRoyal) {
+                    if (iteration >= 16) {
+                        elementRow.css("right", this.getMargin(scale) + '%');
+                        elementRow.css("left", '');
+                    } else {
+                        elementRow.css("left", 0);
+                        elementRow.css("right", '');
+                    }
+                } else {
+                    elementRow.css("left", 0);
+                    elementRow.css("right", '');
+                }
 
+                if (battleRoyal) {
+                    if (iteration < 16) {
                         elementRow.css("display", "inline-flex");
                         elementRow.css(positionCSSString, rowTotalHeight);
 
                         rowTotalHeight += elementRow.height()! + marginBottom;
-                    } else if (iteration === playerRender && playerRender < playerNumber) {
+                    }
+
+                    if (iteration === 16) {
                         this.createSeparatorRow();
 
                         const elementSeparatorRow = $("#row-separator");
@@ -380,35 +413,97 @@ export class Template {
                         elementSeparatorRow.css(positionCSSString, rowTotalHeight);
                         rowTotalHeight += elementSeparatorRow.height()! + marginBottom;
 
+                        rowTotalHeight = 0;
+
+                        if (playerNumber <= playerRender) {
+                            elementRow.css("display", "inline-flex");
+                            elementRow.css(positionCSSString, rowTotalHeight);
+
+                            rowTotalHeight += elementRow.height()! + marginBottom;
+                        } else {
+                            elementRow.css("display", "none");
+                        }
+                    }
+
+                    if (iteration > 16 && iteration < playerHideBefore && playerNumber > 16) {
                         elementRow.css("display", "none");
-                    } else if (iteration > playerRender && iteration !== playerNumber) {
-                        elementRow.css("display", "none");
-                    } else if (iteration === playerNumber) {
+                    } else if (iteration > 16 && iteration >= playerHideBefore) {
                         elementRow.css("display", "inline-flex");
                         elementRow.css(positionCSSString, rowTotalHeight);
 
                         rowTotalHeight += elementRow.height()! + marginBottom;
                     }
+
+                    if (playerNumber <= playerRender) {
+                        this.deleteSeparatorRow();
+                    }
+
+                    elementRow.removeClass('FourthLastPlayer ThirdLastPlayer SecondLastPlayer LastPlayer');
+
+                    if (playerNumber > 3) {
+                        if (iteration === playerNumber-3 && playerNumber > 6) {
+                            elementRow.addClass('FourthLastPlayer');
+                        }
+                        if (iteration === playerNumber-2 && playerNumber > 5) {
+                            elementRow.addClass('ThirdLastPlayer');
+                        }
+                        if (iteration === playerNumber-1 && playerNumber > 4) {
+                            elementRow.addClass('SecondLastPlayer');
+                        }
+                        if (iteration === playerNumber) {
+                            elementRow.addClass('LastPlayer');
+                        }
+                    }
+
                 } else {
-                    if (localPlayer !== key) elementRow.css("display", "none");
-                    else {
-                        elementRow.css("display", "inline-flex");
-                        elementRow.css(positionCSSString, rowTotalHeight);
+                    elementRow.removeClass('FourthLastPlayer ThirdLastPlayer SecondLastPlayer LastPlayer');
 
-                        rowTotalHeight += elementRow.height()! + marginBottom;
+                    if (playerRender > 1) {
+                        if (iteration < playerRender || (iteration === playerRender && playerRender > playerNumber)) {
+                            this.deleteSeparatorRow();
 
-                        if (playerNumber > 1) {
-                            if (!elementLd.find("#row-separator").length) {
-                                this.createSeparatorRow();
-                                rowTotalHeight += $("#row-separator").height()! + marginBottom;
-                            } else {
-                                const elementSeparatorRow = $("#row-separator");
+                            elementRow.css("display", "inline-flex");
+                            elementRow.css(positionCSSString, rowTotalHeight);
 
-                                elementSeparatorRow.css(positionCSSString, rowTotalHeight);
+                            rowTotalHeight += elementRow.height()! + marginBottom;
+                        } else if (iteration === playerRender && playerRender < playerNumber) {
+                            this.createSeparatorRow();
 
-                                rowTotalHeight += elementSeparatorRow.height()! + marginBottom;
-                            }
-                        } else this.deleteSeparatorRow();
+                            const elementSeparatorRow = $("#row-separator");
+
+                            elementSeparatorRow.css(positionCSSString, rowTotalHeight);
+                            rowTotalHeight += elementSeparatorRow.height()! + marginBottom;
+
+                            elementRow.css("display", "none");
+                        } else if (iteration > playerRender && iteration !== playerNumber) {
+                            elementRow.css("display", "none");
+                        } else if (iteration === playerNumber) {
+                            elementRow.css("display", "inline-flex");
+                            elementRow.css(positionCSSString, rowTotalHeight);
+
+                            rowTotalHeight += elementRow.height()! + marginBottom;
+                        }
+                    } else {
+                        if (localPlayer !== key) elementRow.css("display", "none");
+                        else {
+                            elementRow.css("display", "inline-flex");
+                            elementRow.css(positionCSSString, rowTotalHeight);
+
+                            rowTotalHeight += elementRow.height()! + marginBottom;
+
+                            if (playerNumber > 1) {
+                                if (!elementLd.find("#row-separator").length) {
+                                    this.createSeparatorRow();
+                                    rowTotalHeight += $("#row-separator").height()! + marginBottom;
+                                } else {
+                                    const elementSeparatorRow = $("#row-separator");
+
+                                    elementSeparatorRow.css(positionCSSString, rowTotalHeight);
+
+                                    rowTotalHeight += elementSeparatorRow.height()! + marginBottom;
+                                }
+                            } else this.deleteSeparatorRow();
+                        }
                     }
                 }
             }
@@ -633,5 +728,25 @@ export class Template {
     public makeElementActive(element?: JQuery): void {
         $("li").removeClass("active");
         if (element !== undefined) element.addClass("active");
+    }
+
+    ///////////////////////////
+    private getMargin(scale: number) {
+        if (scale <= 0.5)  return -100;
+        if (scale <= 0.55) return this.interpolate(scale, 0.5,  -100,  0.55, -81.6);
+        if (scale <= 0.6)  return this.interpolate(scale, 0.55, -81.6, 0.6,  -66.5);
+        if (scale <= 0.65) return this.interpolate(scale, 0.6,  -66.5, 0.65, -53.7);
+        if (scale <= 0.7)  return this.interpolate(scale, 0.65, -53.7, 0.7,  -42.8);
+        if (scale <= 0.75) return this.interpolate(scale, 0.70, -42.8, 0.75, -33.2);
+        if (scale <= 0.8)  return this.interpolate(scale, 0.75, -33.2, 0.8,  -24.9);
+        if (scale <= 0.85) return this.interpolate(scale, 0.80, -24.9, 0.85, -17.6);
+        if (scale <= 0.9)  return this.interpolate(scale, 0.85, -17.6, 0.9,  -11);
+        if (scale <= 0.95) return this.interpolate(scale, 0.9,  -11,   0.95, -5.2);
+        if (scale <= 1.0)  return this.interpolate(scale, 0.95, -5.2,  1.0,   0);
+        return 0;
+    }
+
+    private interpolate(x: number, x1: number, y1: number, x2: number, y2: number) {
+        return y1 + ((y2 - y1) * ((x - x1) / (x2 - x1)));
     }
 }

@@ -24,15 +24,15 @@
         <link rel="icon" href="./pictures/favicon.png" type="image/png" />
 
         <link rel="preload stylesheet" as="style" href="./ionicons.min.css" type="text/css" />
-        <link rel="preload stylesheet" as="style" href="./style.global.css" type="text/css" />
+        <link rel="preload stylesheet" as="style" href="./style.output.css" type="text/css" />
         <link rel="preload stylesheet" as="style" href="./style.setup.css" type="text/css" />
     </head>
-    <body>
+    <body class='min-h-screen w-screen fixed overflow-hidden hover:bg-neutral-500'>
         <main>
             <section id="games-overlay">
                 <div id="playerCard-overlay"></div>
                 <div id="songCard-overlay"></div>
-                <div id="leaderboard-overlay"></div>
+                <div id="leaderboard-overlay" class='h-full w-full flex absolute'></div>
             </section>
 
             <section id="games-setup" class="hidden">

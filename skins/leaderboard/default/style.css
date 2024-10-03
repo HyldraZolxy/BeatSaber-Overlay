@@ -38,6 +38,23 @@
 .miss {
     animation: missColor 0.2s linear;
 }
+
+.FourthLastPlayer {
+    box-shadow: 0 0 5px rgba(248, 163, 155, 0.2);
+    background-color: rgba(105, 87, 87, 0.7) !important;
+}
+.ThirdLastPlayer {
+    box-shadow: 0 0 5px rgba(248, 163, 155, 0.5);
+    background-color: rgba(112, 69, 69, 0.7) !important;
+}
+.SecondLastPlayer {
+    box-shadow: 0 0 15px rgba(250, 117, 102, 0.5);
+    background-color: rgba(150, 50, 50, 0.7) !important;
+}
+.LastPlayer {
+    box-shadow: 0 0 50px rgb(238, 82, 66);
+    background-color: rgba(197, 33, 33, 0.7) !important;
+}
 /* ===================
    = REUSED TAGS end =
    =================== */
@@ -45,11 +62,6 @@
 /* ==========================
    = LEADERBOARD TAGS start =
    ========================== */
-#leaderboard-overlay {
-    margin: 5px;
-    display: inline-flex;
-    position: absolute;
-}
 #leaderboard-overlay.top-left, #leaderboard-overlay.top-right {
     flex-direction: column;
 }
@@ -63,7 +75,7 @@
 #leaderboardTable tr {
     margin-bottom: 3px;
 
-    display: inline-flex;
+    display: flex;
     flex-direction: row;
     clear: both;
     position: absolute;
@@ -78,12 +90,7 @@
 
     transition-duration: 0.5s;
 }
-#leaderboard-overlay.top-left #leaderboardTable tr, #leaderboard-overlay.bottom-left #leaderboardTable tr {
-    left: 0;
-}
-#leaderboard-overlay.top-right #leaderboardTable tr, #leaderboard-overlay.bottom-right #leaderboardTable tr {
-    right: 0;
-}
+
 
 #leaderboardTable tr > * {
     margin: 7px 10px;
@@ -100,7 +107,7 @@
 }
 
 .Position {
-    width: 40px;
+    width: 41px;
 
     font-weight: bold;
 }

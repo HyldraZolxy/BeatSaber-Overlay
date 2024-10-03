@@ -264,7 +264,7 @@ export class SongCard {
 
             this._template.moduleScale(Globals.E_MODULES.SONGCARD, this.songCardData.position, this.songCardData.scale);
             this._template.moduleCorners(Globals.E_MODULES.SONGCARD, this.songCardData.position);
-            if (this.songCardData.skin !== "dietah") this._template.modulePosition(Globals.E_MODULES.SONGCARD, this.songCardData.pos_x, this.songCardData.pos_y);
+            if (this.songCardData.skin !== "dietah") this._template.modulePosition(Globals.E_MODULES.SONGCARD, this.songCardData.pos_x, this.songCardData.pos_y, true);
 
             this._template.stopOrStart(Globals.E_MODULES.SONGCARD, this.songCardData.started, this.songCardData.paused);
             this._template.missDisplay(this.songCardData.displayMiss);

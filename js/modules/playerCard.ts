@@ -96,7 +96,7 @@ export class PlayerCard {
 
             this._template.moduleScale(Globals.E_MODULES.PLAYERCARD,    this.playerCardData.position,   this.playerCardData.scale);
             this._template.moduleCorners(Globals.E_MODULES.PLAYERCARD,  this.playerCardData.position);
-            this._template.modulePosition(Globals.E_MODULES.PLAYERCARD, this.playerCardData.pos_x,      this.playerCardData.pos_y);
+            this._template.modulePosition(Globals.E_MODULES.PLAYERCARD, this.playerCardData.pos_x,      this.playerCardData.pos_y, true);
         });
     }
 

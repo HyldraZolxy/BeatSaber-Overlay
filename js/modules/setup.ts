@@ -324,6 +324,7 @@ export class Setup {
         this.elements.set("leaderboardPlayerRender",        $("#leaderboardPlayerRender"));
         this.elements.set("leaderboardPlayerRenderReset",   $("#leaderboardPlayerRenderReset"));
         this.elements.set("playerRenderingNumber",          $(".playerRenderingNumber"));
+        this.elements.set("battleRoyal",                    $("#battleRoyal"));
         /******************************************************************************/
         /*==========================================================================================*/
         /*--------------------------------------------------------------------------------------------------------------*/
@@ -399,6 +400,7 @@ export class Setup {
         this.elements.get("leaderboardScale")?.         val(this._parameters.uriParams.leaderboard.scale);
         this.elements.get("leaderboardPlayerRender")?.  val(this._parameters.uriParams.leaderboard.playerRendering);
         this.elements.get("playerRenderingNumber")?.    val(this._parameters.uriParams.leaderboard.playerRendering);
+        this.elements.get("battleRoyal")?.              prop("checked", this._parameters.uriParams.leaderboard.battleRoyal);
         /******************************************************************************/
         /*==========================================================================================*/
         /*--------------------------------------------------------------------------------------------------------------*/
@@ -449,6 +451,7 @@ export class Setup {
         this.elements.get("leaderboardPosY")?.          off("input");
         this.elements.get("leaderboardScale")?.         off("input");
         this.elements.get("leaderboardPlayerRender")?.  off("input");
+        this.elements.get("battleRoyal")?.              off("click");
 
         this.elements.get("customURITypeScript")?.  off("click");
         this.elements.get("resetToken")?.           off("click");
@@ -901,6 +904,10 @@ export class Setup {
             this._parameters.uriParams.leaderboard.playerRendering = 5;
             this._parameters.assocValue();
         });
+        this.elements.get("battleRoyal")?.on("click", async () => {
+            this._parameters.uriParams.leaderboard.battleRoyal = this.elements.get("battleRoyal")?.prop("checked") === true;
+            this._parameters.assocValue();
+        });
 
         this.elements.get("customURITypeScript")?.on("click", async () => {
             await this.urlTextBuilder();
@@ -986,6 +993,7 @@ export class Setup {
         this._parameters.uriParams.songCard.alwaysEnabled   = false;
 
         this._parameters.uriParams.leaderboard.skin             = "default";
+        this._parameters.uriParams.leaderboard.battleRoyal      = false;
         this._parameters.uriParams.leaderboard.position         = Globals.E_POSITION.TOP_LEFT;
         this._parameters.uriParams.leaderboard.scale            = 1.0;
         this._parameters.uriParams.leaderboard.pos_x            = 0;

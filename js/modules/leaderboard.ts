@@ -8,6 +8,7 @@ export interface I_leaderboard {
     needUpdate          : boolean;                                                          // Is leaderboard need update?
     endedUpdate         : boolean;                                                          // Is leaderboard updated?
     skin                : string;                                                           // Skin of the leaderboard
+    battleRoyal         : boolean;
     position            : number;                                                           // Position of the leaderboard
     scale               : number;                                                           // Scale of the leaderboard
     pos_x               : number;                                                           // Pos X of the leaderboard
@@ -80,6 +81,7 @@ export class Leaderboard {
         pos_x               : 0,
         pos_y               : 0,
         playerRendering     : 5,
+        battleRoyal         : false,
 
         playerLocalId       : "0",
         playerLocalLUID     : 0,
@@ -139,11 +141,17 @@ export class Leaderboard {
 
         this._template.refreshUIMap(this._leaderboardMap, Globals.E_MODULES.LEADERBOARD);
 
-        this._template.sortingRows(leaderboardSorted, this.leaderboardData.playerLocalLUID, this._leaderboardMap.size, this.leaderboardData.playerRendering, this.leaderboardData.position, this.leaderboardData.skin);
+        this._template.sortingRows(leaderboardSorted, this.leaderboardData.playerLocalLUID, this._leaderboardMap.size, this.leaderboardData.playerRendering, this.leaderboardData.position, this.leaderboardData.skin, this.leaderboardData.battleRoyal, this.leaderboardData.scale);
 
-        this._template.moduleScale(Globals.E_MODULES.LEADERBOARD, this.leaderboardData.position, this.leaderboardData.scale);
+        if (!this.leaderboardData.battleRoyal) {
+            this._template.moduleScale(Globals.E_MODULES.LEADERBOARD, this.leaderboardData.position, this.leaderboardData.scale);
+        }
+        else {
+            this._template.moduleScaleLeaderboard(Globals.E_MODULES.LEADERBOARD, this.leaderboardData.position, this.leaderboardData.scale);
+        }
+
         this._template.moduleCorners(Globals.E_MODULES.LEADERBOARD, this.leaderboardData.position);
-        this._template.modulePosition(Globals.E_MODULES.LEADERBOARD, this.leaderboardData.pos_x, this.leaderboardData.pos_y);
+        this._template.modulePosition(Globals.E_MODULES.LEADERBOARD, this.leaderboardData.pos_x, this.leaderboardData.pos_y, !(this.leaderboardData.battleRoyal));
 
         for (let [key, value] of this._leaderboardMap) {
             this._template.joinClass(key, value);

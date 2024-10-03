@@ -160,27 +160,3 @@
 /* ===================
    = REUSED TAGS end =
    =================== */
-
-/* ======================
-   = GENERAL TAGS start =
-   ====================== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    min-width: 100vw;
-    min-height: 100vh;
-
-    position: fixed;
-    overflow: hidden;
-}
-
-body:hover {
-    background-color: rgba(59, 59, 59, 0.7);
-}
-/* ====================
-   = GENERAL TAGS end =
-   ==================== */

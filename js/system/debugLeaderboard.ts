@@ -12,7 +12,7 @@ export class DebugLeaderboard {
     ///////////////////////
     private localUserID         = "";
     private roomLeaved          = false;
-    private playerNumber        = 30;
+    private playerNumber        = 40;
     private playerTotalNumber   = 0;
     private loopTimer           : NodeJS.Timeout | undefined;
 
