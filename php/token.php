@@ -124,7 +124,8 @@ const DEFAULT_DATA = array(
         "scale"                     => 1.0,
         "pos_x"                     => 0,
         "pos_y"                     => 0,
-        "playerRendering"           => 5
+        "playerRendering"           => 5,
+	    "battleRoyal"               => false
     )
 );
 
