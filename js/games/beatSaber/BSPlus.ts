@@ -148,7 +148,7 @@ export class BSPlus {
         this._songCard.songCardPerformance.combo    = dataEvent.scoreEvent.combo;
         this._songCard.songCardPerformance.miss     = dataEvent.scoreEvent.missCount;
         this._songCard.songCardPerformance.health   = dataEvent.scoreEvent.currentHealth;
-        this._songCard.songCardPerformance.accuracy = Number(Math.floor(dataEvent.scoreEvent.accuracy * 100).toFixed(1));
+        this._songCard.songCardPerformance.accuracy = Number(Math.round((dataEvent.scoreEvent.accuracy * 100 + Number.EPSILON) * 100) / 100);
         this._songCard.songCardPerformance.score    = dataEvent.scoreEvent.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
