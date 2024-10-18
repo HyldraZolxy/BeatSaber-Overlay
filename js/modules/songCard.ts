@@ -57,6 +57,7 @@ export class SongCard {
         mapper              : "Yasu",
         author              : "Camellia",
 
+        oldBsrKey           : "",
         bsrKey              : "2319e",
         hashMap             : "280378d7157542f5b160e8a464f0dcfdc3a1de56",
         bpm                 : 272,
@@ -196,12 +197,12 @@ export class SongCard {
         if (data.errorMessage !== undefined || data.error !== undefined) {
             this.songCardData.ranked        = false;
             this.songCardData.qualified     = false;
-            this.songCardData.bsrKey        = "NotFound";
+            this.songCardData.bsrKey        = (this.songCardData.oldBsrKey === this.songCardData.bsrKey) ? "NotFound" : this.songCardData.bsrKey;
             this.songCardData.endedUpdate   = true;
             return;
         }
 
-        this.songCardData.bsrKey                = data.id;
+        this.songCardData.bsrKey                = data.id.replace(/x/g, "");
         this.songCardData.cover                 = ("versions" in data) ? data.versions[0].coverURL : data.coverImage;
         this.songCardData.totalTimeToLetters    = this.timeToLetters(this.songCardData.totalTime);
 

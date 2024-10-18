@@ -197,6 +197,7 @@ export class DataPuller {
         this._songCard.songCardData.hashMap         = dataEvent.Hash;
 
         this._songCard.songCardData.cover           = (dataEvent.coverImage !== null) ? "data:image/png;base64," + dataEvent.coverImage : "./pictures/default/notFound.jpg";
+        this._songCard.songCardData.oldBsrKey       = this._songCard.songCardData.bsrKey;
         this._songCard.songCardData.bsrKey          = (dataEvent.BSRKey !== null) ? dataEvent.BSRKey : "";
         this._songCard.songCardData.difficulty      = (dataEvent.Difficulty === "ExpertPlus") ? "Expert +" : dataEvent.Difficulty;
         this._songCard.songCardData.totalTime       = (this.oldVersion) ? dataEvent.Length * 1000 : dataEvent.Duration * 1000;

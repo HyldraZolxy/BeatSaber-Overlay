@@ -213,6 +213,7 @@ export namespace Globals {
         mapper              : string;   // Mapper of the actual song
         author              : string;   // Author of the actual song
 
+        oldBsrKey           : string;   // BSR key of the previous song for avoid the "NotFound" if the key exist in the past in the game
         bsrKey              : string;   // BSR key of the actual song
         hashMap             : string;   // Hash ID of the actual song
         bpm                 : number;   // BPM of the actual song
