@@ -247,8 +247,7 @@ export class HTTP_sira_Status {
         this._songCard.songCardData.speedModifier   = 1;  // To 1 because the mod calculate the length automatically with the speed
 
         this._songCard.songCardPerformance.score    = "0";
-        this._songCard.songCardData.oldBsrKey       = this._songCard.songCardData.bsrKey;
-        this._songCard.songCardData.bsrKey          = "";
+        this._songCard.songCardData.pluginBsrKey    = "";
 
         this._songCard.songCardData.title           = <string>dataEvent.status.beatmap?.songName;
         this._songCard.songCardData.subTitle        = <string>dataEvent.status.beatmap?.songSubName;

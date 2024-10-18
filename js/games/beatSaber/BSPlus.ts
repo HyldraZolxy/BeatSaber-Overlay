@@ -133,8 +133,7 @@ export class BSPlus {
         this._songCard.songCardData.subTitle        = dataEvent.mapInfoChanged.sub_name;
         this._songCard.songCardData.mapper          = (dataEvent.mapInfoChanged.mapper !== "") ? "[" + dataEvent.mapInfoChanged.mapper.trim() + "]" : "";
         this._songCard.songCardData.author          = dataEvent.mapInfoChanged.artist;
-        this._songCard.songCardData.oldBsrKey       = this._songCard.songCardData.bsrKey;
-        this._songCard.songCardData.bsrKey          = dataEvent.mapInfoChanged.BSRKey;
+        this._songCard.songCardData.pluginBsrKey    = dataEvent.mapInfoChanged.BSRKey;
         this._songCard.songCardData.bpm             = dataEvent.mapInfoChanged.BPM;
         this._songCard.songCardData.difficultyClass = dataEvent.mapInfoChanged.difficulty;
         this._songCard.songCardData.totalTime       = dataEvent.mapInfoChanged.duration;

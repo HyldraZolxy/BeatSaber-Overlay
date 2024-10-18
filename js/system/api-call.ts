@@ -3,8 +3,9 @@ import { Tools }    from "./tools.js";
 
 // JSON object always send by Proxy or API
 interface I_JSONMessageFromAPI {
-    errorMessage: string; // Provided by API or the proxy
-    error       : string; // Provided by BeatSaver API
+    errorMessage: string;  // Provided by API or the proxy
+    error       : string;  // Provided by BeatSaver API
+    success?    : boolean; // Provided by 404 BeatSaver API
 }
 
 export interface I_scoreSaberPlayerJSON extends I_JSONMessageFromAPI {

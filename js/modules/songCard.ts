@@ -57,7 +57,7 @@ export class SongCard {
         mapper              : "Yasu",
         author              : "Camellia",
 
-        oldBsrKey           : "",
+        pluginBsrKey        : "",
         bsrKey              : "2319e",
         hashMap             : "280378d7157542f5b160e8a464f0dcfdc3a1de56",
         bpm                 : 272,
@@ -194,15 +194,15 @@ export class SongCard {
         if (this.songCardData.scoringSystem === Globals.E_SCORING_SYSTEM.BEATLEADER)    data = await this._beatLeader.  getSongInfo(this.songCardData.hashMap);
         else                                                                            data = await this._beatSaver.   getSongInfo(this.songCardData.hashMap);
 
-        if (data.errorMessage !== undefined || data.error !== undefined) {
+        if (data.errorMessage !== undefined || data.error !== undefined || data.success === false) {
             this.songCardData.ranked        = false;
             this.songCardData.qualified     = false;
-            this.songCardData.bsrKey        = (this.songCardData.oldBsrKey === this.songCardData.bsrKey) ? "NotFound" : this.songCardData.bsrKey;
+            this.songCardData.bsrKey        = (this.songCardData.pluginBsrKey === "") ? "NotFound" : this.songCardData.pluginBsrKey;
             this.songCardData.endedUpdate   = true;
             return;
         }
 
-        this.songCardData.bsrKey                = data.id.replace(/x/g, "");
+        this.songCardData.bsrKey                = (data.id === "") ? this.songCardData.pluginBsrKey : data.id.replace(/x/g, "");
         this.songCardData.cover                 = ("versions" in data) ? data.versions[0].coverURL : data.coverImage;
         this.songCardData.totalTimeToLetters    = this.timeToLetters(this.songCardData.totalTime);
 
