@@ -60,7 +60,9 @@ export class SongCard {
         pluginBsrKey        : "",
         bsrKey              : "2319e",
         hashMap             : "280378d7157542f5b160e8a464f0dcfdc3a1de56",
+        levelId             : "custom_level_280378d7157542f5b160e8a464f0dcfdc3a1de56",
         bpm                 : 272,
+        builtIn             : false,
 
         difficulty          : "Expert+",
         difficultyClass     : "ExpertPlus",
@@ -181,6 +183,8 @@ export class SongCard {
     }
 
     private async updateSongInfo(): Promise<void> {
+        this.songCardData.builtIn = !this.songCardData.levelId.includes('custom_level_');
+
         if (this.songCardData.disabled || !this.songCardData.needUpdate || !this._tools.checkGames(this.songCardGames, this.websocketMod) || !this._tools.checkPlugins(Globals.E_MODULES.SONGCARD, this.websocketMod)) {
             this.songCardData.needUpdate    = false;
             this.songCardData.endedUpdate   = true;
@@ -191,46 +195,54 @@ export class SongCard {
 
         let data: I_beatSaverSongJSON | I_beatLeaderSongJSON;
 
-        if (this.songCardData.scoringSystem === Globals.E_SCORING_SYSTEM.BEATLEADER)    data = await this._beatLeader.  getSongInfo(this.songCardData.hashMap);
-        else                                                                            data = await this._beatSaver.   getSongInfo(this.songCardData.hashMap);
+        if (!this.songCardData.builtIn) {
+            if (this.songCardData.scoringSystem === Globals.E_SCORING_SYSTEM.BEATLEADER)    data = await this._beatLeader.  getSongInfo(this.songCardData.hashMap);
+            else                                                                            data = await this._beatSaver.   getSongInfo(this.songCardData.hashMap);
 
-        if (data.errorMessage !== undefined || data.error !== undefined || data.success === false) {
-            this.songCardData.ranked        = false;
-            this.songCardData.qualified     = false;
-            this.songCardData.bsrKey        = (this.songCardData.pluginBsrKey === "") ? "NotFound" : this.songCardData.pluginBsrKey;
-            this.songCardData.endedUpdate   = true;
-            return;
-        }
+            if (data.errorMessage !== undefined || data.error !== undefined || data.success === false) {
+                this.songCardData.ranked        = false;
+                this.songCardData.qualified     = false;
+                this.songCardData.bsrKey        = (this.songCardData.pluginBsrKey === "")
+                                                    ? (this.songCardData.levelId.includes('WIP'))
+                                                        ? 'WIP' : "NotFound"
+                                                    : this.songCardData.pluginBsrKey;
+                this.songCardData.endedUpdate   = true;
+                return;
+            }
 
-        this.songCardData.bsrKey                = (data.id === "") ? this.songCardData.pluginBsrKey : data.id.replace(/x/g, "");
-        this.songCardData.cover                 = ("versions" in data) ? data.versions[0].coverURL : data.coverImage;
-        this.songCardData.totalTimeToLetters    = this.timeToLetters(this.songCardData.totalTime);
+            this.songCardData.bsrKey = (data.id === "") ? this.songCardData.pluginBsrKey : data.id.replace(/x/g, "");
+            this.songCardData.cover  = ("versions" in data) ? data.versions[0].coverURL : data.coverImage;
 
-        if (this.songCardData.scoringSystem === Globals.E_SCORING_SYSTEM.SCORESABER) {
-            this.songCardData.ranked    = ("ranked" in data) ? data.ranked : false;
-            this.songCardData.qualified = ("qualified" in data) ? (this.songCardData.ranked) ? false : data.qualified : false;
-        } else if (this.songCardData.scoringSystem === Globals.E_SCORING_SYSTEM.BEATLEADER) {
-            if ("difficulties" in data) {
-                for (let i = 0; i <= data.difficulties.length; i++) {
-                    if (data.difficulties[i]["difficultyName"] === this.songCardData.difficultyClass) {
-                        if (data.difficulties[i]["rankedTime"] > 0) {
-                            this.songCardData.ranked    = true;
-                            this.songCardData.qualified = false;
-                        } else if (data.difficulties[i]["qualifiedTime"] > 0) {
-                            this.songCardData.ranked    = false;
-                            this.songCardData.qualified = true;
-                        } else if (data.difficulties[i]["rankedTime"] === 0 && data.difficulties[i]["qualifiedTime"] === 0) {
-                            this.songCardData.ranked    = data.difficulties[i]["stars"] > 0;
-                            this.songCardData.qualified = false;
+            if (this.songCardData.scoringSystem === Globals.E_SCORING_SYSTEM.SCORESABER) {
+                this.songCardData.ranked    = ("ranked" in data) ? data.ranked : false;
+                this.songCardData.qualified = ("qualified" in data) ? (this.songCardData.ranked) ? false : data.qualified : false;
+            } else if (this.songCardData.scoringSystem === Globals.E_SCORING_SYSTEM.BEATLEADER) {
+                if ("difficulties" in data) {
+                    for (let i = 0; i <= data.difficulties.length; i++) {
+                        if (data.difficulties[i]["difficultyName"] === this.songCardData.difficultyClass) {
+                            if (data.difficulties[i]["rankedTime"] > 0) {
+                                this.songCardData.ranked    = true;
+                                this.songCardData.qualified = false;
+                            } else if (data.difficulties[i]["qualifiedTime"] > 0) {
+                                this.songCardData.ranked    = false;
+                                this.songCardData.qualified = true;
+                            } else if (data.difficulties[i]["rankedTime"] === 0 && data.difficulties[i]["qualifiedTime"] === 0) {
+                                this.songCardData.ranked    = data.difficulties[i]["stars"] > 0;
+                                this.songCardData.qualified = false;
+                            }
+
+                            break;
                         }
-
-                        break;
                     }
                 }
             }
+        } else {
+            this.songCardData.bsrKey = 'OST Map';
+            if (this.songCardData.mapper === '' || this.songCardData.mapper === null) this.songCardData.mapper = '[BeatGames]';
         }
 
-        this.songCardData.endedUpdate = true;
+        this.songCardData.totalTimeToLetters = this.timeToLetters(this.songCardData.totalTime);
+        this.songCardData.endedUpdate        = true;
     }
 
     ////////////////////

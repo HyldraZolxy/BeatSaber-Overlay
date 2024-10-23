@@ -216,7 +216,9 @@ export namespace Globals {
         pluginBsrKey        : string;   // BSR key of the actual song, but plugin side
         bsrKey              : string;   // BSR key of the actual song
         hashMap             : string;   // Hash ID of the actual song
+        levelId             : string;   // Raw level ID (Can contains "custom_level_HASHOFMAP" or "TheNameOfTheBuiltInSong")
         bpm                 : number;   // BPM of the actual song
+        builtIn             : boolean;  // The map is an Official song of Beat Games ? (Built-In, not custom)
 
         difficulty          : string;   // Difficulty of the actual song (Easy, Normal, Hard, Expert, Expert+)
         difficultyClass     : string;   // Class Difficulty of the actual song (Easy, Normal, Hard, Expert, ExpertPlus)

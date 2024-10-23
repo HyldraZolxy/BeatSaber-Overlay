@@ -251,9 +251,10 @@ export class HTTP_sira_Status {
 
         this._songCard.songCardData.title           = <string>dataEvent.status.beatmap?.songName;
         this._songCard.songCardData.subTitle        = <string>dataEvent.status.beatmap?.songSubName;
-        this._songCard.songCardData.mapper          = (<string>dataEvent.status.beatmap?.levelAuthorName !== "") ? "[" + <string>dataEvent.status.beatmap?.levelAuthorName.trim() + "]" : "";
+        this._songCard.songCardData.mapper          = (<string>dataEvent.status.beatmap?.levelAuthorName !== null) ? "[" + <string>dataEvent.status.beatmap?.levelAuthorName.trim() + "]" : "";
         this._songCard.songCardData.author          = <string>dataEvent.status.beatmap?.songAuthorName;
         this._songCard.songCardData.hashMap         = <string>dataEvent.status.beatmap?.songHash;
+        this._songCard.songCardData.levelId         = <string>dataEvent.status.beatmap?.levelId;
         this._songCard.songCardData.difficulty      = <string>dataEvent.status.beatmap?.difficulty;
         this._songCard.songCardData.difficultyClass = <string>dataEvent.status.beatmap?.difficultyEnum;
         this._songCard.songCardData.bpm             = <number>dataEvent.status.beatmap?.songBPM;

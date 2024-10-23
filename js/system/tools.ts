@@ -111,4 +111,32 @@ export class Tools {
             default: return false;
         }
     }
+
+    // @ts-ignore
+    public compareVersions = ((prep, l, i, r) => (a, b) =>
+    {
+        a = prep(a);
+        b = prep(b);
+        // @ts-ignore
+        l = Math.max(a.length, b.length);
+        // @ts-ignore
+        i = 0;
+        r = i;
+        // @ts-ignore
+        while (!r && i < l)
+            //convert into integer, including undefined values
+            { // @ts-ignore
+                r = ~~a[i] - ~~b[i++];
+            }
+
+        // @ts-ignore
+        return r < 0 ? -1 : (r ? 1 : 0);
+    })((t: string) => ("" + t)
+        // treat non-numerical characters as lower version
+        // replacing them with a negative number based on charcode of first character
+        .replace(/[^\d.]+/g, c => "." + (c.replace(/[\W_]+/, "").toUpperCase().charCodeAt(0) - 65536) + ".")
+        // remove trailing "." and "0" if followed by non-numerical characters (1.0.0b);
+        .replace(/(?:\.0+)*(\.-\d+(?:\.\d+)?)\.*$/g, "$1")
+        // return array
+        .split("."));
 }

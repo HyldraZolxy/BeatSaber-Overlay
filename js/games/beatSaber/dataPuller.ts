@@ -1,6 +1,7 @@
 import { Globals }      from "../../globals.js";
 import { PlayerCard }   from "../../modules/playerCard.js";
 import { SongCard }     from "../../modules/songCard.js";
+import { Tools }        from '../../system/tools.js';
 
 interface I_dataPullerMapDataObject {
     GameVersion                     : string;           // Game version
@@ -11,6 +12,7 @@ interface I_dataPullerMapDataObject {
     LevelFailed                     : boolean;          // Level is failed ?
     LevelQuit                       : boolean;          // Level is quited ?
     Hash                            : string;           // Hash of the song
+    LevelID                         : string;           // Raw level ID (Can contains "custom_level_HASHOFMAP" or "TheNameOfTheBuiltInSong")
     SongName                        : string;           // Name of the song
     SongSubName                     : string;           // Subtitle of the song
     SongAuthor                      : string;           // Author of the song
@@ -104,6 +106,7 @@ export class DataPuller {
     //////////////////////
     private _playerCard : PlayerCard;
     private _songCard   : SongCard;
+    private _tools      : Tools;
 
     ///////////////////////
     // Private Variables //
@@ -116,6 +119,7 @@ export class DataPuller {
     constructor() {
         this._playerCard    = PlayerCard.Instance;
         this._songCard      = SongCard.Instance;
+        this._tools         = new Tools();
     }
 
     /////////////////////
@@ -196,6 +200,24 @@ export class DataPuller {
         this._songCard.songCardData.difficultyClass = dataEvent.Difficulty;
         this._songCard.songCardData.hashMap         = dataEvent.Hash;
 
+        const versions = this._tools.compareVersions(dataEvent.PluginVersion, '2.1.11');
+        if (versions >= 0) {
+            if (dataEvent.LevelID === null) this._songCard.songCardData.levelId = 'custom_level_' + dataEvent.Hash;
+            else                            this._songCard.songCardData.levelId = dataEvent.LevelID;
+        } else {
+            // Trying to determine if the song is an actual built-in song or not
+            if (dataEvent.Hash !== null) {
+                this._songCard.songCardData.levelId = 'custom_level_' + dataEvent.Hash;
+            } else {
+                if (dataEvent.CustomDifficultyLabel !== null) {
+                    this._songCard.songCardData.levelId = 'custom_level_' + dataEvent.SongName + ' WIP';
+                } else {
+                    // I can't determine if it's a built-in or not at this state, so make it built-it by default
+                    this._songCard.songCardData.levelId = dataEvent.SongName;
+                }
+            }
+        }
+
         this._songCard.songCardData.cover           = (dataEvent.coverImage !== null) ? "data:image/png;base64," + dataEvent.coverImage : "./pictures/default/notFound.jpg";
         this._songCard.songCardData.pluginBsrKey    = (dataEvent.BSRKey !== null) ? dataEvent.BSRKey : "";
         this._songCard.songCardData.difficulty      = (dataEvent.Difficulty === "ExpertPlus") ? "Expert +" : dataEvent.Difficulty;
@@ -224,7 +246,7 @@ export class DataPuller {
         this._songCard.songCardPerformance.combo    = dataEvent.Combo;
         this._songCard.songCardPerformance.miss     = dataEvent.Misses;
         this._songCard.songCardPerformance.health   = dataEvent.PlayerHealth;
-        this._songCard.songCardPerformance.accuracy = Number(Math.round((dataEvent.Accuracy * 100 + Number.EPSILON) * 100) / 100);
+        this._songCard.songCardPerformance.accuracy = Number(Math.round((dataEvent.Accuracy + Number.EPSILON) * 100) / 100);
         this._songCard.songCardPerformance.score    = dataEvent.Score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
