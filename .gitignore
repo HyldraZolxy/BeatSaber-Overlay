@@ -4,6 +4,7 @@
 /dist/
 /pictures/coverSong/*.jpg
 *.tsbuildinfo
+package-lock.json
 
 /js/*.js
 /js/games/adofai/*.js

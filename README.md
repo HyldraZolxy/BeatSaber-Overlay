@@ -7,9 +7,9 @@
 <div>
    <strong>Work with:</strong>
 
-- **[BeatSaberPlus](https://github.com/hardcpp/BeatSaberPlus)**: BS ver (1.21.0 to 1.37.1)
-- **[HTTPSiraStatus](https://github.com/denpadokei/HttpSiraStatus)**: BS ver (1.12.1 to 1.37.1)
-- **[DataPuller DJDavid98](https://github.com/DJDavid98/BSDataPuller)**: BS ver (1.28.0 to 1.35.0)
+- **[BeatSaberPlus](https://github.com/hardcpp/BeatSaberPlus)**: BS ver (1.21.0 to 1.40)
+- **[HTTPSiraStatus](https://github.com/denpadokei/HttpSiraStatus)**: BS ver (1.12.1 to 1.40)
+- **[DataPuller DJDavid98](https://github.com/DJDavid98/BSDataPuller)**: BS ver (1.28.0 to 1.38.0)
 
 Older version of Beat Saber
 - **[DataPuller](https://github.com/ReadieFur/BSDataPuller)**: BS ver (1.20.0 to 1.28.0)

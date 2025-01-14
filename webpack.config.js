@@ -10,9 +10,10 @@ module.exports = {
             new TerserPlugin({
                 parallel: true,
                 terserOptions: {
-                    ecma: 2022,
+                    ecma: 2015,
                     mangle: {
-                        toplevel: true
+                        toplevel: true,
+                        properties: true
                     },
                     compress: {
                         drop_console: false
