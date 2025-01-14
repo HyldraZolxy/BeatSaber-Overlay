@@ -1,27 +1,27 @@
 import { WebSocketManager } from '../../websocketsManager';
-import { DataPuller }       from '../../../../games/beatSaber/dataPuller';
+import { Adofai }           from '../../../../games/adofai/adofai';
 
-export class DataPullerPlugin {
+export class AdofaiWebPlugin {
     private readonly key: string;
     private manager     : WebSocketManager;
-    private _dataPuller = new DataPuller();
+    private _adofai     = new Adofai();
 
     constructor(manager: WebSocketManager) {
         this.manager = manager;
-        this.key     = 'datapuller_mapdata';
+        this.key     = 'adofaiweb';
 
         // Initialize the WebSocket with plugin-specific message handler
-        this.manager.initialize(this.key, 'ws://127.0.0.1:2946/BSDataPuller/MapData', this.handleMessage.bind(this));
+        this.manager.initialize(this.key, 'ws://127.0.0.1:420/server', this.handleMessage.bind(this));
     }
 
     /**
-     * Handles incoming messages for the DataPuller WebSocket.
+     * Handles incoming messages for the AdofaiWeb WebSocket.
      * @param message The received WebSocket message.
      */
     private handleMessage(message: string): void {
-        console.log(`DataPuller MapData Message: ${message}`);
+        console.log(`AdofaiWebPlugin Message: ${message}`);
         // Handle plugin-specific WebSocket message logic here
-        this._dataPuller.dataParser(message, "mapData"); ///TODO: Hardcoded for now
+        this._adofai.dataParser(message)
     }
 
     /**

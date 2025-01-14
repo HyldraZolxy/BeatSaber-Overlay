@@ -15,7 +15,7 @@ export class HttpSiraStatusPlugin {
     }
 
     /**
-     * Handles incoming messages for the BSPlus WebSocket.
+     * Handles incoming messages for the HttpSiraStatus WebSocket.
      * @param message The received WebSocket message.
      */
     private handleMessage(message: string): void {

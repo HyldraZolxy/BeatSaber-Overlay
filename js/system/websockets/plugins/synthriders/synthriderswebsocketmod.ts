@@ -1,27 +1,27 @@
 import { WebSocketManager } from '../../websocketsManager';
-import { DataPuller }       from '../../../../games/beatSaber/dataPuller';
+import { SynthRiders }      from '../../../../games/synthRiders/synthRiders';
 
-export class DataPullerPlugin {
-    private readonly key: string;
-    private manager     : WebSocketManager;
-    private _dataPuller = new DataPuller();
+export class SynthRidersWebsocketModPlugin {
+    private readonly key : string;
+    private manager      : WebSocketManager;
+    private _synthriders = new SynthRiders();
 
     constructor(manager: WebSocketManager) {
         this.manager = manager;
-        this.key     = 'datapuller_mapdata';
+        this.key     = 'synthriderswebsocketmod';
 
         // Initialize the WebSocket with plugin-specific message handler
-        this.manager.initialize(this.key, 'ws://127.0.0.1:2946/BSDataPuller/MapData', this.handleMessage.bind(this));
+        this.manager.initialize(this.key, 'ws://127.0.0.1:9000/', this.handleMessage.bind(this));
     }
 
     /**
-     * Handles incoming messages for the DataPuller WebSocket.
+     * Handles incoming messages for the SynthRidersWebsocketMod WebSocket.
      * @param message The received WebSocket message.
      */
     private handleMessage(message: string): void {
-        console.log(`DataPuller MapData Message: ${message}`);
+        console.log(`SynthRidersWebsocketMod Message: ${message}`);
         // Handle plugin-specific WebSocket message logic here
-        this._dataPuller.dataParser(message, "mapData"); ///TODO: Hardcoded for now
+        this._synthriders.dataParser(message)
     }
 
     /**

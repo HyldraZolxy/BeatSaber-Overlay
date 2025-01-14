@@ -12,8 +12,14 @@ package-lock.json
 /js/games/audioTrip/*.js
 /js/games/beatSaber/*.js
 /js/games/synthRiders/*.js
+
 /js/modules/*.js
 /js/system/*.js
+
 /js/system/websockets/*.js
 /js/system/websockets/plugins/*.js
+/js/system/websockets/plugins/adofai/*.js
+/js/system/websockets/plugins/audica/*.js
+/js/system/websockets/plugins/audiotrip/*.js
 /js/system/websockets/plugins/beatsaber/*.js
+/js/system/websockets/plugins/synthriders/*.js

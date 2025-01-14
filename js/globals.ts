@@ -44,7 +44,7 @@ export namespace Globals {
 
             beatSaberPlus             : boolean; // https://github.com/hardcpp/BeatSaberPlus
             beatSaberPlusLeaderboard  : boolean; // https://github.com/hardcpp/BeatSaberPlus
-            dataPuller                : boolean; // https://github.com/ReadieFur/BSDataPuller
+            dataPuller                : boolean; // https://github.com/ReadieFur/BSDataPuller (old) / https://github.com/DJDavid98/BSDataPuller (new)
             httpSiraStatus            : boolean; // https://github.com/denpadokei/HttpSiraStatus
         }
 
