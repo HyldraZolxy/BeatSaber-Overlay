@@ -1,15 +1,16 @@
 export class WebSocketManager {
-    private sockets: Map<string, WebSocket>; // Active WebSocket connections
+    private sockets           : Map<string, WebSocket>; // Active WebSocket connections
     private reconnectionTimers: Map<string, NodeJS.Timeout>; // Reconnection timers per WebSocket
     private pendingConnections: Map<string, { url: string; onMessage: (msg: string) => void }>; // Store connection info
-    private activeSocketKey: string | null; // Track active WebSocket
+    private activeSocketKey   : string | null; // Track active WebSocket
+
     private readonly reconnectionInterval = 5000; // Interval for retries in milliseconds
 
     constructor() {
-        this.sockets = new Map();
+        this.sockets            = new Map();
         this.reconnectionTimers = new Map();
         this.pendingConnections = new Map();
-        this.activeSocketKey = null;
+        this.activeSocketKey    = null;
     }
 
     /**
@@ -53,16 +54,12 @@ export class WebSocketManager {
 
             // If the closed socket was the active one, reinitialize all connections
             if (this.activeSocketKey === key) {
-                console.log(
-                    `The active WebSocket "${key}" was closed. Reinitializing all WebSockets...`
-                );
+                console.log(`The active WebSocket "${key}" was closed. Reinitializing all WebSockets...`);
                 this.activeSocketKey = null; // Reset active socket
                 this.reinitializeAll(); // Reinitialize all WebSockets
             } else {
                 // Otherwise, schedule reconnection for the closed WebSocket if no active connections
-                if (!this.activeSocketKey) {
-                    this.scheduleReconnection(key, url, onMessage);
-                }
+                if (!this.activeSocketKey) this.scheduleReconnection(key, url, onMessage);
             }
         };
 
@@ -95,9 +92,7 @@ export class WebSocketManager {
      */
     private scheduleReconnection(key: string, url: string, onMessage: (message: string) => void): void {
         // If a reconnection attempt is already pending, do nothing
-        if (this.reconnectionTimers.has(key)) {
-            return;
-        }
+        if (this.reconnectionTimers.has(key)) return;
 
         console.log(`Scheduling reconnection for WebSocket "${key}" in ${this.reconnectionInterval}ms.`);
 

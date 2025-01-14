@@ -16,3 +16,4 @@ package-lock.json
 /js/system/*.js
 /js/system/websockets/*.js
 /js/system/websockets/plugins/*.js
+/js/system/websockets/plugins/beatsaber/*.js

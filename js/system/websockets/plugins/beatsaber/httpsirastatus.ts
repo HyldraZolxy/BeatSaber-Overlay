@@ -1,15 +1,17 @@
-import { WebSocketManager } from '../websocketsManager';
+import { WebSocketManager } from '../../websocketsManager';
+import { HTTP_sira_Status } from '../../../../games/beatSaber/HTTP_sira_Status';
 
-export class DataPuller {
-    private readonly key: string;
-    private manager: WebSocketManager;
+export class HttpSiraStatusPlugin {
+    private readonly key    : string;
+    private manager         : WebSocketManager;
+    private _httpSiraStatus = new HTTP_sira_Status();
 
     constructor(manager: WebSocketManager) {
         this.manager = manager;
-        this.key = 'datapuller_mapdata';
+        this.key     = 'httpsirastatus';
 
         // Initialize the WebSocket with plugin-specific message handler
-        this.manager.initialize(this.key, 'ws://127.0.0.1:2946/BSDataPuller/MapData', this.handleMessage.bind(this));
+        this.manager.initialize(this.key, 'ws://127.0.0.1:6557/socket', this.handleMessage.bind(this));
     }
 
     /**
@@ -17,8 +19,9 @@ export class DataPuller {
      * @param message The received WebSocket message.
      */
     private handleMessage(message: string): void {
-        console.log(`DataPuller MapData Message: ${message}`);
+        console.log(`HttpSiraStatus Message: ${message}`);
         // Handle plugin-specific WebSocket message logic here
+        this._httpSiraStatus.dataParser(message);
     }
 
     /**

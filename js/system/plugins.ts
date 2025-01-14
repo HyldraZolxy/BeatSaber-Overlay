@@ -1,7 +1,7 @@
-import { WebSocketManager } from "./websockets/websocketsManager";
-import { BsPlusPlugin } from './websockets/plugins/beatsaber_bsplus';
-import { HttpSiraStatus } from './websockets/plugins/beatsaber_httpsirastatus';
-import { DataPuller } from './websockets/plugins/beatsaber_datapuller';
+import { WebSocketManager }     from "./websockets/websocketsManager";
+import { BsPlusPlugin }         from './websockets/plugins/beatsaber/bsplus';
+import { HttpSiraStatusPlugin } from './websockets/plugins/beatsaber/httpsirastatus';
+import { DataPullerPlugin }     from './websockets/plugins/beatsaber/datapuller';
 
 export class Plugins {
 
@@ -19,7 +19,7 @@ export class Plugins {
     // Public Variables //
     //////////////////////
     ///TODO: Remove it when setup is on rework process
-    public setupDisplay     = false;
+    public setupDisplay = false;
 
     constructor() {}
 
@@ -28,13 +28,15 @@ export class Plugins {
     ////////////////////
     public async connection(): Promise<void> {
         new BsPlusPlugin(this.manager);
-        new HttpSiraStatus(this.manager);
-        new DataPuller(this.manager);
+        new HttpSiraStatusPlugin(this.manager);
+        new DataPullerPlugin(this.manager);
     }
 
-    ///TODO: Remove it when setup is on rework process
+    ///TODO: Remove it when setup is on rework process, or maybe make the WebSocketManager an unique instance and use it into the setup 🤔
     public removeConnection(): Promise<unknown> {
         return new Promise(resolve => {
+            this.manager.disconnectAll();
+
             setTimeout(() => resolve(""), 250);
         });
     }
