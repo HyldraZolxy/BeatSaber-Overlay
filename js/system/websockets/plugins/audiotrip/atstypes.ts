@@ -11,15 +11,15 @@ export class AtsTypesPlugin {
         this.key     = 'atstypes';
 
         // Initialize the WebSocket with plugin-specific message handler
-        this.manager.initialize(this.key, 'ws://127.0.0.1:48998/', this.handleMessage.bind(this));
+        this.manager.initialize(`${this.key}`, 'ws://127.0.0.1:48998/', this.handlePrimaryMessage.bind(this));
     }
 
     /**
      * Handles incoming messages for the AtsTypes WebSocket.
      * @param message The received WebSocket message.
      */
-    private handleMessage(message: string): void {
-        console.log(`AtsTypes Message: ${message}`);
+    private handlePrimaryMessage(message: string): void {
+        console.log(`[AtsTypes] Message: ${message}`);
         // Handle plugin-specific WebSocket message logic here
         this._audiotrip.dataParser(message)
     }
@@ -28,7 +28,7 @@ export class AtsTypesPlugin {
      * Sends a message through the WebSocket.
      * @param data The data to send.
      */
-    public sendMessage(data: string): void {
+    public sendPrimaryMessage(data: string): void {
         this.manager.sendMessage(this.key, data);
     }
 }

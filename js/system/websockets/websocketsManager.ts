@@ -80,7 +80,7 @@ export class WebSocketManager {
         this.disconnectAllExcept(key);
 
         // Clear all scheduled reconnection attempts for other WebSockets
-        this.clearReconnectionTimers();
+        this.clearReconnectionTimers(key);
     }
 
     /**
@@ -111,8 +111,10 @@ export class WebSocketManager {
      * @param key Identifier of the WebSocket to keep active.
      */
     private disconnectAllExcept(key: string): void {
+        const processedSocketKey = key.split('-')[0];
+
         this.sockets.forEach((socket, socketKey) => {
-            if (socketKey !== key) {
+            if (socketKey !== key && !socketKey.startsWith(processedSocketKey)) {
                 console.log(`Closing WebSocket "${socketKey}" because "${key}" is now active.`);
                 socket.close();
                 this.sockets.delete(socketKey); // Clean up the map
@@ -121,10 +123,24 @@ export class WebSocketManager {
     }
 
     /**
-     * Cancels all pending reconnection attempts.
+     * Clears the reconnection timers associated with the specified key or all timers if no key is provided.
+     *
+     * @param key - An optional key to specify which timers to clear. If provided, only timers that do not match the
+     * key or its base socket key are cleared.
      */
-    private clearReconnectionTimers(): void {
-        this.reconnectionTimers.forEach((timer) => clearTimeout(timer));
+    private clearReconnectionTimers(key?: string): void {
+        if (key) {
+            const processedSocketKey = key.split('-')[0];
+
+            this.reconnectionTimers.forEach((timer, timerKey) => {
+                if (timerKey !== key && !timerKey.startsWith(processedSocketKey)) {
+                    clearTimeout(timer);
+                }
+            });
+        } else {
+            this.reconnectionTimers.forEach((timer) => clearTimeout(timer));
+        }
+
         this.reconnectionTimers.clear();
     }
 
