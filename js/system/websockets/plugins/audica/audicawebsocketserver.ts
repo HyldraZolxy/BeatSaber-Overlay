@@ -19,7 +19,7 @@ export class AudicaWebsocketServerPlugin {
      * @param message The received WebSocket message.
      */
     private handlePrimaryMessage(message: string): void {
-        console.log(`AudicaWebsocketServerPlugin Message: ${message}`);
+        console.log(`[AudicaWebsocketServerPlugin] Message: ${message}`);
         // Handle plugin-specific WebSocket message logic here
         this._audica.dataParser(message)
     }

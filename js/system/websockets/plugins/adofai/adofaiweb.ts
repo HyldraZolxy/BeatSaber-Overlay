@@ -19,7 +19,7 @@ export class AdofaiWebPlugin {
      * @param message The received WebSocket message.
      */
     private handlePrimaryMessage(message: string): void {
-        console.log(`AdofaiWebPlugin Message: ${message}`);
+        console.log(`[AdofaiWebPlugin] Message: ${message}`);
         // Handle plugin-specific WebSocket message logic here
         this._adofai.dataParser(message)
     }
