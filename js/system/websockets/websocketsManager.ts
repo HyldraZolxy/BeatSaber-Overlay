@@ -2,15 +2,16 @@ export class WebSocketManager {
     private sockets           : Map<string, WebSocket>; // Active WebSocket connections
     private reconnectionTimers: Map<string, NodeJS.Timeout>; // Reconnection timers per WebSocket
     private pendingConnections: Map<string, { url: string; onMessage: (msg: string) => void }>; // Store connection info
-    private activeSocketKey   : string | null; // Track active WebSocket
+    private activeSocketKey   : Set<string>; // Track active WebSocket
 
+    ///TODO: When the config file is on rewriting process, change this for a config one
     private readonly reconnectionInterval = 5000; // Interval for retries in milliseconds
 
     constructor() {
         this.sockets            = new Map();
         this.reconnectionTimers = new Map();
         this.pendingConnections = new Map();
-        this.activeSocketKey    = null;
+        this.activeSocketKey    = new Set();
     }
 
     /**
@@ -22,11 +23,12 @@ export class WebSocketManager {
      * @param onMessage Callback to handle WebSocket messages.
      */
     public initialize(key: string, url: string, onMessage: (message: string) => void): void {
-        console.log(`Initializing WebSocket "${key}"...`);
+        // If this is the first time initializing
+        if (!this.reconnectionTimers.has(key)) console.log(`Initializing WebSocket "${key}"...`);
 
         // If a WebSocket already exists for this key, avoid reinitializing it
         if (this.sockets.has(key)) {
-            console.warn(`WebSocket "${key}" is already active.`);
+            console.warn(`WebSocket "${key}" is already existing.`);
             return;
         }
 
@@ -44,22 +46,20 @@ export class WebSocketManager {
             onMessage(event.data); // Forward incoming messages to the plugin's handler
         };
 
-        socket.onerror = (error) => {
-            console.error(`WebSocket "${key}" encountered an error:`, error);
-        };
+        socket.onerror = () => {}; // Not used for now, maybe in futur purpose ?
 
         socket.onclose = () => {
             console.log(`WebSocket "${key}" closed.`);
-            this.sockets.delete(key); // Ensure the socket is removed from active connections
+            this.sockets.delete(key); // Ensure the socket is removed from websockets connections
 
             // If the closed socket was the active one, reinitialize all connections
-            if (this.activeSocketKey === key) {
+            if (this.activeSocketKey.has(key)) {
                 console.log(`The active WebSocket "${key}" was closed. Reinitializing all WebSockets...`);
-                this.activeSocketKey = null; // Reset active socket
+                this.activeSocketKey.delete(key); // Delete active socket
                 this.reinitializeAll(); // Reinitialize all WebSockets
             } else {
                 // Otherwise, schedule reconnection for the closed WebSocket if no active connections
-                if (!this.activeSocketKey) this.scheduleReconnection(key, url, onMessage);
+                if (!this.activeSocketKey.size) this.scheduleReconnection(key, url, onMessage);
             }
         };
 
@@ -74,7 +74,7 @@ export class WebSocketManager {
      */
     private handleSocketSuccess(key: string): void {
         console.log(`WebSocket "${key}" is now the active connection.`);
-        this.activeSocketKey = key;
+        this.activeSocketKey.add(key);
 
         // Disconnect all other WebSockets
         this.disconnectAllExcept(key);
@@ -111,9 +111,12 @@ export class WebSocketManager {
      * @param key Identifier of the WebSocket to keep active.
      */
     private disconnectAllExcept(key: string): void {
+        // For multi-websockets plugins like DataPuller and BSPlus, the key is something like [PluginName]-[Primary/Secondary]
+        // So I split the key, for keeping the PluginName
         const processedSocketKey = key.split('-')[0];
 
         this.sockets.forEach((socket, socketKey) => {
+            // If the socket key is different of the key i want to keep, and also is the PluginName for multi-websocket is different of the key
             if (socketKey !== key && !socketKey.startsWith(processedSocketKey)) {
                 console.log(`Closing WebSocket "${socketKey}" because "${key}" is now active.`);
                 socket.close();
@@ -130,6 +133,8 @@ export class WebSocketManager {
      */
     private clearReconnectionTimers(key?: string): void {
         if (key) {
+            // For multi-websockets plugins like DataPuller and BSPlus, the key is something like [PluginName]-[Primary/Secondary]
+            // So I split the key, for keeping the PluginName
             const processedSocketKey = key.split('-')[0];
 
             this.reconnectionTimers.forEach((timer, timerKey) => {
@@ -184,7 +189,7 @@ export class WebSocketManager {
         });
 
         this.sockets.clear();
-        this.activeSocketKey = null;
+        this.activeSocketKey.clear();
 
         // Clear reconnection timers
         this.clearReconnectionTimers();
