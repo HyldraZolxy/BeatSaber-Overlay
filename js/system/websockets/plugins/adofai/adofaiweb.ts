@@ -1,5 +1,5 @@
-import { WebSocketManager } from '../../websocketsManager';
-import { Adofai }           from '../../../../games/adofai/adofai';
+import { WebSocketManager } from '../../websocketsManager.js';
+import { Adofai }           from '../../../../games/adofai/adofai.js';
 
 export class AdofaiWebPlugin {
     private readonly key: string;

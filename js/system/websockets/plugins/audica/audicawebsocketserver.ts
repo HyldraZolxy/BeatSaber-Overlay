@@ -1,5 +1,5 @@
-import { WebSocketManager } from '../../websocketsManager';
-import { Audica }           from '../../../../games/audica/audica';
+import { WebSocketManager } from '../../websocketsManager.js';
+import { Audica }           from '../../../../games/audica/audica.js';
 
 export class AudicaWebsocketServerPlugin {
     private readonly key: string;

@@ -1,5 +1,5 @@
-import { WebSocketManager } from '../../websocketsManager';
-import { SynthRiders }      from '../../../../games/synthRiders/synthRiders';
+import { WebSocketManager } from '../../websocketsManager.js';
+import { SynthRiders }      from '../../../../games/synthRiders/synthRiders.js';
 
 export class SynthRidersWebsocketModPlugin {
     private readonly key : string;

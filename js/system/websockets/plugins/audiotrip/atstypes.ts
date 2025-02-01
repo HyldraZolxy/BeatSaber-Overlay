@@ -1,5 +1,5 @@
-import { WebSocketManager } from '../../websocketsManager';
-import { AudioTrip }        from '../../../../games/audioTrip/audioTrip';
+import { WebSocketManager } from '../../websocketsManager.js';
+import { AudioTrip }        from '../../../../games/audioTrip/audioTrip.js';
 
 export class AtsTypesPlugin {
     private readonly key: string;

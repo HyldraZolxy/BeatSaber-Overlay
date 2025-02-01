@@ -1,5 +1,5 @@
-import { WebSocketManager } from '../../websocketsManager';
-import { HTTP_sira_Status } from '../../../../games/beatSaber/HTTP_sira_Status';
+import { WebSocketManager } from '../../websocketsManager.js';
+import { HTTP_sira_Status } from '../../../../games/beatSaber/HTTP_sira_Status.js';
 
 export class HttpSiraStatusPlugin {
     private readonly key    : string;

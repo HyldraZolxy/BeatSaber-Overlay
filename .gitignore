@@ -23,3 +23,5 @@ package-lock.json
 /js/system/websockets/plugins/audiotrip/*.js
 /js/system/websockets/plugins/beatsaber/*.js
 /js/system/websockets/plugins/synthriders/*.js
+
+/js/system/utils/*.js

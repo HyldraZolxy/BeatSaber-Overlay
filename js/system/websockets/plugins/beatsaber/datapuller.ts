@@ -1,5 +1,5 @@
-import { WebSocketManager } from '../../websocketsManager';
-import { DataPuller }       from '../../../../games/beatSaber/dataPuller';
+import { WebSocketManager } from '../../websocketsManager.js';
+import { DataPuller }       from '../../../../games/beatSaber/dataPuller.js';
 
 export class DataPullerPlugin {
     private readonly key : string;
@@ -12,8 +12,6 @@ export class DataPullerPlugin {
 
         // Initialize the WebSocket with plugin-specific message handler
         this.manager.initialize(`${this.key}-primary`, 'ws://127.0.0.1:2946/BSDataPuller/MapData', this.handlePrimaryMessage.bind(this));
-
-        ///TODO: Make it work ... Actually, i don't know how to make it connect along side the first one
         this.manager.initialize(`${this.key}-secondary`, 'ws://127.0.0.1:2946/BSDataPuller/LiveData', this.handleSecondaryMessage.bind(this));
     }
 

@@ -1,16 +1,17 @@
-import { WebSocketManager } from "./websockets/websocketsManager";
+import { WebSocketManager } from "./websockets/websocketsManager.js";
+
 // Beat Saber Plugin
-import { BsPlusPlugin }         from './websockets/plugins/beatsaber/bsplus';
-import { HttpSiraStatusPlugin } from './websockets/plugins/beatsaber/httpsirastatus';
-import { DataPullerPlugin }     from './websockets/plugins/beatsaber/datapuller';
+import { BsPlusPlugin }         from './websockets/plugins/beatsaber/bsplus.js';
+import { HttpSiraStatusPlugin } from './websockets/plugins/beatsaber/httpsirastatus.js';
+import { DataPullerPlugin }     from './websockets/plugins/beatsaber/datapuller.js';
 // Adofai Plugin
-import { AdofaiWebPlugin } from './websockets/plugins/adofai/adofaiweb';
+import { AdofaiWebPlugin } from './websockets/plugins/adofai/adofaiweb.js';
 // Audica Plugin
-import { AudicaWebsocketServerPlugin } from './websockets/plugins/audica/audicawebsocketserver';
+import { AudicaWebsocketServerPlugin } from './websockets/plugins/audica/audicawebsocketserver.js';
 // AudioTrip Plugin
-import { AtsTypesPlugin } from './websockets/plugins/audiotrip/atstypes';
+import { AtsTypesPlugin } from './websockets/plugins/audiotrip/atstypes.js';
 // SynthRiders Plugin
-import { SynthRidersWebsocketModPlugin } from './websockets/plugins/synthriders/synthriderswebsocketmod';
+import { SynthRidersWebsocketModPlugin } from './websockets/plugins/synthriders/synthriderswebsocketmod.js';
 
 export class Plugins {
 
