@@ -52,10 +52,17 @@ export class WebSocketManager {
             console.log(`WebSocket "${key}" closed.`);
             this.sockets.delete(key); // Ensure the socket is removed from websockets connections
 
+            const processedSocketKey = key.split('-')[0] + '-secondary';
+            this.sockets.delete(processedSocketKey); // Ensure the secondary socket is removed from websockets connections
+            this.pendingConnections.delete(processedSocketKey); // Ensure the secondary socket is not reinitialized automatically
+
             // If the closed socket was the active one, reinitialize all connections
             if (this.activeSocketKey.has(key)) {
                 console.log(`The active WebSocket "${key}" was closed. Reinitializing all WebSockets...`);
+
                 this.activeSocketKey.delete(key); // Delete active socket
+                this.activeSocketKey.delete(processedSocketKey); // Delete active secondary socket
+
                 this.reinitializeAll(); // Reinitialize all WebSockets
             } else {
                 // Otherwise, schedule reconnection for the closed WebSocket if no active connections

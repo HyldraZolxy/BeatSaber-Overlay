@@ -1,11 +1,15 @@
-import {WebSocketManager} from '../../websocketsManager.js';
-import {LoggerService} from '../../../utils/logger.js';
-import {GameStateEvent_P, HandshakeEvent_P, HandshakeEvent_S, MapInfoEvent_P, PauseEvent_P, PlayerJoinedEvent_S, PlayerUpdatedEvent_S, ResumeEvent_P, RoomStateEvent_S, ScoreEvent_P, ScoreEvent_S, WebsocketPrimaryMessage, WebsocketSecondaryMessage} from '../types/beatsaber/bsplus';
+import { WebSocketManager } from '../../websocketsManager.js';
+import { LoggerService }    from '../../../utils/logger.js';
+import {
+    GameStateEvent_P, HandshakeEvent_P, HandshakeEvent_S, MapInfoEvent_P, PauseEvent_P, PlayerJoinedEvent_S, PlayerUpdatedEvent_S, ResumeEvent_P, RoomStateEvent_S, ScoreEvent_P, ScoreEvent_S, WebsocketPrimaryMessage, WebsocketSecondaryMessage
+} from '../types/beatsaber/bsplus';
 
 export class BsPlusPlugin {
     private readonly key: string;
     private manager     : WebSocketManager;
     private logger      : LoggerService;
+
+    private secondaryWebsocketLaunched: boolean = false;
 
     ///TODO: This thing is in "songCard.ts", when the rewrite is done for "songCard.ts", delete that
     private songCardMapInfo: Map<string, MapInfoEvent_P>;
@@ -54,7 +58,6 @@ export class BsPlusPlugin {
 
         // Initialize the WebSocket with plugin-specific message handler
         this.manager.initialize(`${this.key}-primary`, 'ws://192.168.1.153:2947/socket', this.handlePrimaryMessage.bind(this));
-        this.manager.initialize(`${this.key}-secondary`, 'ws://192.168.1.153:2948/socket', this.handleSecondaryMessage.bind(this));
 
         this.songCardMapInfo = new Map();
 
@@ -62,11 +65,24 @@ export class BsPlusPlugin {
         this.leaderboardCardPlayerPerformanceInfo = new Map();
     }
 
+    private secondarySocketLauncher(): void {
+        if (!this.secondaryWebsocketLaunched) {
+            this.manager.initialize(`${this.key}-secondary`, 'ws://192.168.1.153:2948/socket', this.handleSecondaryMessage.bind(this));
+            this.secondaryWebsocketLaunched = true;
+
+            setTimeout(() => {
+                this.secondaryWebsocketLaunched = false;
+            }, 5000);
+        }
+    }
+
     /**
      * Handles incoming messages for the BSPlus SoloData WebSocket.
      * @param message The received WebSocket message.
      */
     private handlePrimaryMessage(message: string): void {
+        this.secondarySocketLauncher(); // Launch the secondary socket of Beat Saber Plus
+
         let messageParsed: WebsocketPrimaryMessage = JSON.parse(message);
         this.routePrimaryMessage(messageParsed);
     }
